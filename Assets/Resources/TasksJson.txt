@@ -1,0 +1,48 @@
+[
+  {
+    "taskName": "Break the Chain",
+    "description": "The mansion gate is locked with a heavy chain. Find a hammer and hit multiple times to break it.",
+    "hint": "Search near the tool shed or behind the crates."
+  },
+  {
+    "taskName": "Find Map Pieces",
+    "description": "Granny is nearby. Hide in cupboards, move quietly, and find the map torn into 3 pieces.",
+    "hint": "Check cupboards, drawers, and shelves on each floor."
+  },
+  {
+    "taskName": "Enter Basement",
+    "description": "Find a flashlight, avoid traps, and reach the basement. A chained door and a diary await.",
+    "hint": "Flashlight may be on the upper floor table or storage box."
+  },
+  {
+    "taskName": "Recover Broken Photograph",
+    "description": "The map shows a locked room Granny avoids. Create a distraction, enter, and retrieve a broken family photo.",
+    "hint": "Noise can lure Granny away—try knocking items down."
+  },
+  {
+    "taskName": "Calm the Ghost",
+    "description": "The ghost of Granny’s granddaughter cries for her lost toys. Collect 3 toys to calm her and reveal the truth.",
+    "hint": "Toys may be in the nursery, attic, or living room drawers."
+  },
+  {
+    "taskName": "Restart Generator",
+    "description": "A power outage plunges the house into darkness. Restart the basement generator while avoiding Granny.",
+    "hint": "The generator is near the old boiler room."
+  },
+  {
+    "taskName": "Retrieve Ritual Book",
+    "description": "The Ritual Book is hidden in the attic, guarded by mannequins that move when you're not looking.",
+    "hint": "Keep your eyes on the mannequins. The book is on a central table."
+  },
+  {
+    "taskName": "Collect Cursed Objects",
+    "description": "To break the curse, gather 4 cursed objects: Granny’s locket, granddaughter’s ribbon, blood-stained needle, music box.",
+    "hint": "Each item is protected by traps or sudden scares. Move slowly.",
+    "objectsRequired": 4
+  },
+  {
+    "taskName": "Final Escape",
+    "description": "The curse breaks and Granny weakens. Repair the exit door, find the final key, and escape before she recovers.",
+    "hint": "Listen carefully—fast footsteps mean she is close."
+  }
+]
