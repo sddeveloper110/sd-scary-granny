@@ -1,19 +1,18 @@
 using UnityEngine;
+using System;
 
 public class InteractableObject : MonoBehaviour
 {
     [Header("Interactable Settings")]
-    public InteractionType type = InteractionType.None;
     public Animator anim;
     public string animationTrigger = "Activate";
 
     [Header("Interaction Count (For things like breaking chains)")]
-    public int interactionRequired = 1;      // how many times player must hit/interact
-    private int interactionDone = 0;         // internal counter
+    public int interactionRequired = 1;
+    private int interactionDone = 0;
 
-    [Header("Task Integration")]
-    public bool completesTask = false;       // check this if this object completes a task
-    public string taskNameToComplete;        // leave empty to complete current task
+    // GLOBAL EVENT fired when this interactable is fully activated
+    public static Action<InteractableObject> OnInteractableActivated;
 
     public void TryInteract(PickableObject heldItem)
     {
@@ -23,7 +22,7 @@ public class InteractableObject : MonoBehaviour
             return;
         }
 
-        if (heldItem.interactsWith == type)
+        if (heldItem.interactsWith == this)
         {
             interactionDone++;
             Debug.Log($"Interaction success {interactionDone}/{interactionRequired}: {heldItem.name} -> {name}");
@@ -46,19 +45,7 @@ public class InteractableObject : MonoBehaviour
 
         Debug.Log($"{name} activated!");
 
-        // ---------------------------
-        // TASK COMPLETION SECTION
-        // ---------------------------
-        if (completesTask)
-        {
-            if (!string.IsNullOrEmpty(taskNameToComplete))
-            {
-                GameManager.Instance.CompleteTaskByName(taskNameToComplete);
-            }
-            else
-            {
-                GameManager.Instance.CompleteCurrentTask();
-            }
-        }
+        // FIRE GLOBAL EVENT
+        OnInteractableActivated?.Invoke(this);
     }
 }

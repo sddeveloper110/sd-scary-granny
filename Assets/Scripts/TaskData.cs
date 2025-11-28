@@ -39,6 +39,9 @@ public class TaskData
     public string hint;
     public Transform taskSpawnPoint;
 
+    [Header("Task Completion Binding")]
+    public InteractableObject interactableToComplete;
+
     public string GetTaskName() => taskName;
     public string GetDescription() => description;
     public string GetHint() => hint;

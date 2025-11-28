@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private Camera menuCamera;
     [SerializeField] private string jsonFileName = "Tasks";
-    [SerializeField] private GameObject missionSpawnPoints; // Parent containing spawn points
+    [SerializeField] private GameObject missionSpawnPoints;
 
     [Header("UI")]
     [SerializeField] private Button hintButton;
@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
 
     public bool isGameStarted = false;
 
-    // Event fired when the game starts
     public Action OnGameStarted;
 
     private void Awake()
@@ -31,11 +30,18 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
 
         isGameStarted = false;
+
+        // Subscribe to global event
+        InteractableObject.OnInteractableActivated += HandleInteractableActivated;
+    }
+
+    private void OnDestroy()
+    {
+        InteractableObject.OnInteractableActivated -= HandleInteractableActivated;
     }
 
     private void Start()
     {
-
         if (tasks == null)
             LoadTasks();
         LoadProgress();
@@ -53,9 +59,6 @@ public class GameManager : MonoBehaviour
         AssignSpawnPointsFromScene();
     }
 
-    /// <summary>
-    /// Automatically assigns spawn points from the children of missionSpawnPoints
-    /// </summary>
     private void AssignSpawnPointsFromScene()
     {
         if (missionSpawnPoints == null)
@@ -65,26 +68,20 @@ public class GameManager : MonoBehaviour
         }
 
         Transform[] spawnChildren = missionSpawnPoints.GetComponentsInChildren<Transform>();
-
-        // Skip the parent itself
         List<Transform> childSpawns = new List<Transform>();
+
         foreach (Transform t in spawnChildren)
         {
             if (t != missionSpawnPoints.transform)
                 childSpawns.Add(t);
         }
 
-        // Assign to tasks in order
         for (int i = 0; i < tasks.Count; i++)
         {
             if (i < childSpawns.Count)
-            {
                 tasks[i].taskSpawnPoint = childSpawns[i];
-            }
             else
-            {
                 Debug.LogWarning($"Not enough spawn points for Task {i + 1}");
-            }
         }
     }
 
@@ -100,7 +97,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("All tasks completed.");
             return;
         }
-
+        print("CompleteCurrentTask");
         currentTaskIndex++;
         SaveProgress();
         OnTaskChanged();
@@ -119,11 +116,8 @@ public class GameManager : MonoBehaviour
         if (menuCamera != null)
             menuCamera.gameObject.SetActive(false);
 
-        // Fire event — any subscriber (e.g., PlayerController) reacts
         OnGameStarted?.Invoke();
-
     }
-
 
     #endregion
 
@@ -144,7 +138,6 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region UI + Hints
-
 
     public void CompleteTaskByName(string taskName)
     {
@@ -167,7 +160,6 @@ public class GameManager : MonoBehaviour
         Debug.LogWarning($"Task '{taskName}' not found in task list.");
     }
 
-
     private void ShowCurrentTaskHint()
     {
         TaskData task = GetCurrentTask();
@@ -184,6 +176,27 @@ public class GameManager : MonoBehaviour
 
         if (objectiveText != null)
             objectiveText.text = task.GetDescription();
+    }
+
+    #endregion
+
+    #region Interactable Events
+
+    [Button]
+    private void HandleInteractableActivated(InteractableObject interactable)
+    {
+        TaskData current = GetCurrentTask();
+        if (current == null) return;
+
+        if (current.interactableToComplete == interactable)
+        {
+            Debug.Log($"Task completed by interactable: {interactable.name}");
+            CompleteCurrentTask();
+        }
+        else
+        {
+            Debug.Log($"Interactable {interactable.name} activated but does NOT belong to current task.");
+        }
     }
 
     #endregion

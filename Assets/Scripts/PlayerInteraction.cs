@@ -16,14 +16,14 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentTarget = pickable;
             currentTarget.OnHighlight();
-            Debug.Log("Entered Pickable Range: " + currentTarget.name);
+            //Debug.Log("Entered Pickable Range: " + currentTarget.name);
         }
 
         InteractableObject interactable = other.GetComponent<InteractableObject>();
         if (interactable != null)
         {
             currentInteractable = interactable;
-            Debug.Log("Entered Interactable Range: " + currentInteractable.name);
+            //Debug.Log("Entered Interactable Range: " + currentInteractable.name);
         }
     }
 
@@ -32,13 +32,13 @@ public class PlayerInteraction : MonoBehaviour
         if (currentTarget != null && other.GetComponent<PickableObject>() == currentTarget)
         {
             currentTarget.OnUnhighlight();
-            Debug.Log("Left Pickable Range: " + currentTarget.name);
+            //Debug.Log("Left Pickable Range: " + currentTarget.name);
             currentTarget = null;
         }
 
         if (currentInteractable != null && other.GetComponent<InteractableObject>() == currentInteractable)
         {
-            Debug.Log("Left Interactable Range: " + currentInteractable.name);
+            //Debug.Log("Left Interactable Range: " + currentInteractable.name);
             currentInteractable = null;
         }
     }
@@ -57,13 +57,11 @@ public class PlayerInteraction : MonoBehaviour
             if (heldItem == null && currentTarget != null)
             {
                 heldItem = currentTarget;
-                heldItem.PickUp();
-                Debug.Log("Picked up (E): " + heldItem.name);
+                heldItem.PickUp(hand);
             }
             else if (heldItem != null)
             {
                 heldItem.Throw(hand.forward * throwForce);
-                Debug.Log("Thrown (E): " + heldItem.name);
                 heldItem = null;
             }
         }
@@ -71,7 +69,6 @@ public class PlayerInteraction : MonoBehaviour
         // Interact using keyboard (F)
         if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
         {
-            Debug.Log("Interacted (F) with: " + currentInteractable.name);
             currentInteractable.TryInteract(heldItem);
         }
     }
@@ -84,7 +81,6 @@ public class PlayerInteraction : MonoBehaviour
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 5f))
         {
-            Debug.Log("Click Raycast: Hit nothing.");
             return;
         }
 
@@ -96,20 +92,20 @@ public class PlayerInteraction : MonoBehaviour
             if (heldItem == null)
             {
                 heldItem = currentTarget;
-                heldItem.PickUp();
-                Debug.Log("Picked up (CLICK): " + heldItem.name);
+                heldItem.PickUp(hand);
+                //Debug.Log("Picked up (CLICK): " + heldItem.name);
             }
             else if (heldItem == currentTarget)
             {
                 heldItem.Throw(hand.forward * throwForce);
-                Debug.Log("Thrown (CLICK): " + heldItem.name);
+                //Debug.Log("Thrown (CLICK): " + heldItem.name);
                 heldItem = null;
             }
             return;
         }
 
         // Click interact (ONLY if inside trigger)
-        if (currentInteractable != null && hit.collider.GetComponent<InteractableObject>() == currentInteractable)
+        if (currentInteractable != null && hit.collider.GetComponentInParent<InteractableObject>() == currentInteractable)
         {
             Debug.Log("Interacted (CLICK) with: " + currentInteractable.name);
             currentInteractable.TryInteract(heldItem);

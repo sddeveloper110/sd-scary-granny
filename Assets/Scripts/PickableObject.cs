@@ -1,30 +1,19 @@
 using UnityEngine;
 
-public enum InteractionType
-{
-    None,
-    Door,
-    Generator,
-    Terminal
-}
 
 public class PickableObject : MonoBehaviour
 {
     [Header("Pickable Settings")]
-    public InteractionType interactsWith = InteractionType.None;
+    public InteractableObject interactsWith;
     public GameObject highlightVFX;
 
     protected bool isPicked;
     protected Rigidbody rb;
-    public Transform hand;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
 
-        // Fetch player hand automatically
-        PlayerInteraction player = FindObjectOfType<PlayerInteraction>();
-        if (player != null) hand = player.hand;
     }
 
     // Highlight
@@ -32,11 +21,11 @@ public class PickableObject : MonoBehaviour
     public void OnUnhighlight() => highlightVFX?.SetActive(false);
 
     // Pick
-    public void PickUp()
+    public void PickUp(Transform holderObject)
     {
         isPicked = true;
         if (rb != null) { rb.isKinematic = true; rb.useGravity = false; }
-        transform.SetParent(hand);
+        transform.SetParent(holderObject);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
     }
