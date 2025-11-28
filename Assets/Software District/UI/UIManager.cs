@@ -97,12 +97,10 @@ public class UIManager : MonoBehaviour
 
         if (panelToHide == null)
         {
-            Debug.LogWarning($"UIManager: Panel with name '{panelName}' not found in 'allPanels' array to hide.", this);
             return;
         }
 
         panelToHide.Hide();
-        Debug.Log($"UIManager: Panel '{panelToHide.gameObject.name}' requested to hide.");
 
         // If it was the current main panel, clear the reference
         if (_currentActiveMainPanel == panelToHide)

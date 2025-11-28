@@ -32058,8 +32058,8 @@ MonoBehaviour:
     taskSpawnPoint: {fileID: 0}
     interactableToComplete: {fileID: 0}
   - taskName: Calm the Ghost
-    description: "The ghost of Granny\uFFFDs granddaughter cries for her lost toys.
-      Collect 3 toys to calm her and reveal the truth."
+    description: The ghost of Granny's granddaughter cries for her lost toys. Collect
+      3 toys to calm her and reveal the truth.
     hint: Toys may be in the nursery, attic, or living room drawers.
     taskSpawnPoint: {fileID: 0}
     interactableToComplete: {fileID: 0}
@@ -32076,8 +32076,8 @@ MonoBehaviour:
     taskSpawnPoint: {fileID: 0}
     interactableToComplete: {fileID: 0}
   - taskName: Collect Cursed Objects
-    description: "To break the curse, gather 4 cursed objects: Granny\uFFFDs locket,
-      granddaughter\uFFFDs ribbon, blood-stained needle, music box."
+    description: 'To break the curse, gather 4 cursed objects: Granny''s locket,
+      granddaughter''s ribbon, blood-stained needle, music box.'
     hint: Each item is protected by traps or sudden scares. Move slowly.
     taskSpawnPoint: {fileID: 0}
     interactableToComplete: {fileID: 0}
