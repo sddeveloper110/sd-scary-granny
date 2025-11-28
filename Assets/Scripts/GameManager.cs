@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Button hintButton;
-    [SerializeField] private Text objectiveText;
+    [SerializeField] private TypeWriter objectiveText;
 
     public List<TaskData> tasks = new List<TaskData>();
     public int currentTaskIndex = 0;
@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
         isGameStarted = false;
 
         // Subscribe to global event
-        InteractableObject.OnInteractableActivated += HandleInteractableActivated;
+        InteractableObject.OnObjectInteractionDone += HandleInteractableActivated;
     }
 
     private void OnDestroy()
     {
-        InteractableObject.OnInteractableActivated -= HandleInteractableActivated;
+        InteractableObject.OnObjectInteractionDone -= HandleInteractableActivated;
     }
 
     private void Start()
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         if (tasks == null)
             LoadTasks();
         LoadProgress();
-        OnTaskChanged();
+
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ShowCurrentTaskHint);
@@ -97,10 +97,11 @@ public class GameManager : MonoBehaviour
             Debug.Log("All tasks completed.");
             return;
         }
-        print("CompleteCurrentTask");
         currentTaskIndex++;
         SaveProgress();
-        OnTaskChanged();
+        UpdateTask();
+
+
     }
 
     #endregion
@@ -117,6 +118,7 @@ public class GameManager : MonoBehaviour
             menuCamera.gameObject.SetActive(false);
 
         OnGameStarted?.Invoke();
+        UpdateTask();
     }
 
     #endregion
@@ -169,14 +171,16 @@ public class GameManager : MonoBehaviour
         HintSystem.Instance.ShowHint(task.GetHint());
     }
 
-    private void OnTaskChanged()
+
+
+    private void UpdateTask()
     {
         TaskData task = GetCurrentTask();
         if (task == null) return;
 
-        if (objectiveText != null)
-            objectiveText.text = task.GetDescription();
+        objectiveText.ShowText(task.GetDescription());
     }
+
 
     #endregion
 
@@ -185,6 +189,7 @@ public class GameManager : MonoBehaviour
     [Button]
     private void HandleInteractableActivated(InteractableObject interactable)
     {
+
         TaskData current = GetCurrentTask();
         if (current == null) return;
 

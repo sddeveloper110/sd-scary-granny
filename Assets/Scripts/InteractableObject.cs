@@ -12,13 +12,12 @@ public class InteractableObject : MonoBehaviour
     private int interactionDone = 0;
 
     // GLOBAL EVENT fired when this interactable is fully activated
-    public static Action<InteractableObject> OnInteractableActivated;
+    public static Action<InteractableObject> OnObjectInteractionDone;
 
     public void TryInteract(PickableObject heldItem)
     {
         if (heldItem == null)
         {
-            Debug.Log("You need an item to interact.");
             return;
         }
 
@@ -43,9 +42,8 @@ public class InteractableObject : MonoBehaviour
         if (anim != null)
             anim.SetTrigger(animationTrigger);
 
-        Debug.Log($"{name} activated!");
 
         // FIRE GLOBAL EVENT
-        OnInteractableActivated?.Invoke(this);
+        OnObjectInteractionDone?.Invoke(this);
     }
 }

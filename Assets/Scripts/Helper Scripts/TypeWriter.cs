@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class Typewriter : MonoBehaviour
+public class TypeWriter : MonoBehaviour
 {
     public Text uiText;
     public float typingSpeed = 0.04f;

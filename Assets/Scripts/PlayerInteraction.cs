@@ -84,7 +84,6 @@ public class PlayerInteraction : MonoBehaviour
             return;
         }
 
-        Debug.Log("Clicked on: " + hit.collider.name);
 
         // Click pickup (ONLY if inside trigger)
         if (currentTarget != null && hit.collider.GetComponentInParent<PickableObject>() == currentTarget)
@@ -93,12 +92,10 @@ public class PlayerInteraction : MonoBehaviour
             {
                 heldItem = currentTarget;
                 heldItem.PickUp(hand);
-                //Debug.Log("Picked up (CLICK): " + heldItem.name);
             }
             else if (heldItem == currentTarget)
             {
                 heldItem.Throw(hand.forward * throwForce);
-                //Debug.Log("Thrown (CLICK): " + heldItem.name);
                 heldItem = null;
             }
             return;
@@ -107,7 +104,6 @@ public class PlayerInteraction : MonoBehaviour
         // Click interact (ONLY if inside trigger)
         if (currentInteractable != null && hit.collider.GetComponentInParent<InteractableObject>() == currentInteractable)
         {
-            Debug.Log("Interacted (CLICK) with: " + currentInteractable.name);
             currentInteractable.TryInteract(heldItem);
         }
     }

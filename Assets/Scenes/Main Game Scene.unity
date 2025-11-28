@@ -31028,6 +31028,7 @@ GameObject:
   - component: {fileID: 955109779}
   - component: {fileID: 955109781}
   - component: {fileID: 955109780}
+  - component: {fileID: 955109782}
   m_Layer: 0
   m_Name: ObjectiveTxt
   m_TagString: Untagged
@@ -31096,6 +31097,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 955109778}
   m_CullTransparentMesh: 1
+--- !u!114 &955109782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955109778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57f171e541f6e184ebf7771eb8ce92e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TypeWriter
+  uiText: {fileID: 955109780}
+  typingSpeed: 0.04
+  typingSound: {fileID: 0}
 --- !u!1001 &957527771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32015,7 +32031,7 @@ MonoBehaviour:
   jsonFileName: TasksJson
   missionSpawnPoints: {fileID: 314931580}
   hintButton: {fileID: 1792228059}
-  objectiveText: {fileID: 955109780}
+  objectiveText: {fileID: 955109782}
   tasks:
   - taskName: Break the Chain
     description: The mansion gate is locked with a heavy chain. Find an axe or hammer
