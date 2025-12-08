@@ -12,7 +12,7 @@ public class PlayerInteraction : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         PickableObject pickable = other.GetComponent<PickableObject>();
-        if (pickable != null)
+        if (pickable != null && !pickable.isPicked)
         {
             currentTarget = pickable;
             currentTarget.OnHighlight();

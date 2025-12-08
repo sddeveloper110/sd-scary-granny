@@ -6,8 +6,10 @@ public class PickableObject : MonoBehaviour
     [Header("Pickable Settings")]
     public InteractableObject interactsWith;
     public GameObject highlightVFX;
+    public Animator animator;
+    public string animationTrigger = "Activate";
 
-    protected bool isPicked;
+    public bool isPicked;
     protected Rigidbody rb;
 
     private void Awake()
@@ -23,11 +25,14 @@ public class PickableObject : MonoBehaviour
     // Pick
     public void PickUp(Transform holderObject)
     {
+
         isPicked = true;
         if (rb != null) { rb.isKinematic = true; rb.useGravity = false; }
         transform.SetParent(holderObject);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+        OnUnhighlight();
+
     }
 
     // Throw
@@ -43,5 +48,7 @@ public class PickableObject : MonoBehaviour
     {
         Debug.Log($"{name} used on {target.name}");
         // Optional: Add object-specific action here
+        if (animator != null)
+            animator.SetTrigger(animationTrigger);
     }
 }
