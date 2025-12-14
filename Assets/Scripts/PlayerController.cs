@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
     public void SetupForGameplay()
     {
+        ResetPlayer(GameManager.Instance.GetSpawnPosition,Quaternion.identity);
         ToggleControls(true);
         ShowGameplayUI();
     }
@@ -56,7 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         ToggleControls(false);
         HideGameplayUI();
-        transform.position = position;
+        transform.localPosition = position;
         transform.rotation = rotation;
     }
 }

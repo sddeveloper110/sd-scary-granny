@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System;
 
 public class InteractableObject : MonoBehaviour
@@ -16,7 +16,13 @@ public class InteractableObject : MonoBehaviour
 
     public void TryInteract(PickableObject heldItem)
     {
-        if (heldItem == null)
+        if (interactionRequired == 0)
+        {
+            interactionDone++;
+            Activate();
+        }
+
+        if (heldItem == null && interactionRequired > 0)
         {
             return;
         }

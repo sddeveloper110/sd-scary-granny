@@ -135,6 +135,8 @@ public class GameManager : MonoBehaviour
         currentTaskIndex = PlayerPrefs.GetInt("TaskIndex", 0);
         if (currentTaskIndex >= tasks.Count)
             currentTaskIndex = tasks.Count - 1;
+
+        
     }
 
     #endregion
@@ -202,6 +204,15 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"Interactable {interactable.name} activated but does NOT belong to current task.");
         }
+    }
+
+    #endregion
+
+    #region Helper
+
+    public Vector3 GetSpawnPosition
+    {
+        get => tasks[currentTaskIndex].taskSpawnPoint.position;
     }
 
     #endregion
