@@ -29,6 +29,6 @@ public class HintSystem : MonoBehaviour
     /// </summary>
     public void HideHint()
     {
-        UIManager.Instance.HidePanel("HintPanel");
+        UIManager.Instance.HideHint();
     }
 }

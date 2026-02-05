@@ -110,15 +110,22 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (isGameStarted) return;
+       
+        Loading.StartLoading(() =>
+        {
+            if (isGameStarted) return;
 
-        isGameStarted = true;
+            isGameStarted = true;
 
-        if (menuCamera != null)
-            menuCamera.gameObject.SetActive(false);
+            if (menuCamera != null)
+                menuCamera.gameObject.SetActive(false);
 
-        OnGameStarted?.Invoke();
-        UpdateTask();
+            OnGameStarted?.Invoke();
+            
+            UpdateTask();
+        });
+
+
     }
 
     #endregion
@@ -169,7 +176,7 @@ public class GameManager : MonoBehaviour
         TaskData task = GetCurrentTask();
         if (task == null) return;
 
-        UIManager.Instance.ShowPanel("HintPanel");
+        UIManager.Instance.ShowHint();
         HintSystem.Instance.ShowHint(task.GetHint());
     }
 

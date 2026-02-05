@@ -36,14 +36,18 @@ public class PlayerController : MonoBehaviour
 
     private void ShowGameplayUI()
     {
-        if (gameplayPanel != null)
-            UIManager.Instance.ShowPanel(gameplayPanel.name, isOverlay: false);
+        //if (gameplayPanel != null)
+        //    UIManager.Instance.ShowPanel(gameplayPanel.name, isOverlay: false);
+
+        UIManager.Instance.ShowGameplay();
     }
 
     private void HideGameplayUI()
     {
-        if (gameplayPanel != null)
-            UIManager.Instance.HidePanel(gameplayPanel.name);
+        //if (gameplayPanel != null)
+        //    UIManager.Instance.HidePanel(gameplayPanel.name);
+        UIManager.Instance.HideGameplay();
+
     }
 
     public void SetupForGameplay()

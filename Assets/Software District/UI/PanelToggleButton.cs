@@ -48,35 +48,35 @@ public class PanelToggleButton : MonoBehaviour
     [Button("Simulate Click")]
     public void OnButtonClicked()
     {
-        if (targetPanel == null)
-        {
-            Debug.LogWarning($"PanelToggleButton on '{gameObject.name}': No Target Panel assigned!", this);
-            return;
-        }
+        //    if (targetPanel == null)
+        //    {
+        //        Debug.LogWarning($"PanelToggleButton on '{gameObject.name}': No Target Panel assigned!", this);
+        //        return;
+        //    }
 
-        if (UIManager.Instance == null)
-        {
-            Debug.LogError($"PanelToggleButton on '{gameObject.name}': UIManager.Instance is null.", this);
-            return;
-        }
+        //    if (UIManager.Instance == null)
+        //    {
+        //        Debug.LogError($"PanelToggleButton on '{gameObject.name}': UIManager.Instance is null.", this);
+        //        return;
+        //    }
 
-        switch (actionType)
-        {
-            case PanelActionType.Open:
-                UIManager.Instance.ShowPanel(targetPanel.gameObject.name);
-                break;
+        //    switch (actionType)
+        //    {
+        //        case PanelActionType.Open:
+        //            UIManager.Instance.ShowPanel(targetPanel.gameObject.name);
+        //            break;
 
-            case PanelActionType.Close:
-                UIManager.Instance.HidePanel(targetPanel.gameObject.name);
-                break;
+        //        case PanelActionType.Close:
+        //            UIManager.Instance.HidePanel(targetPanel.gameObject.name);
+        //            break;
 
-            case PanelActionType.Toggle:
-            default:
-                if (targetPanel.gameObject.activeSelf)
-                    UIManager.Instance.HidePanel(targetPanel.gameObject.name);
-                else
-                    UIManager.Instance.ShowPanel(targetPanel.gameObject.name);
-                break;
-        }
+        //        case PanelActionType.Toggle:
+        //        default:
+        //            if (targetPanel.gameObject.activeSelf)
+        //                UIManager.Instance.HidePanel(targetPanel.gameObject.name);
+        //            else
+        //                UIManager.Instance.ShowPanel(targetPanel.gameObject.name);
+        //            break;
+        //    }
     }
 }
