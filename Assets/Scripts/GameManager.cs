@@ -33,11 +33,15 @@ public class GameManager : MonoBehaviour
 
         // Subscribe to global event
         InteractableObject.OnObjectInteractionDone += HandleInteractableActivated;
+        CanvasManager.OnGameExit += ExitGame;
+        CanvasManager.OnGameRetry += Retry;
     }
 
     private void OnDestroy()
     {
         InteractableObject.OnObjectInteractionDone -= HandleInteractableActivated;
+        CanvasManager.OnGameExit -= ExitGame;
+        CanvasManager.OnGameRetry -= Retry;
     }
 
     private void Start()
@@ -119,6 +123,26 @@ public class GameManager : MonoBehaviour
 
         OnGameStarted?.Invoke();
         UpdateTask();
+    }
+
+    public void Retry()
+    {
+        isGameStarted = false;
+
+
+        StartGame();
+    }
+
+    public void ExitGame()
+    {
+        SaveProgress();
+
+        // Reset game state
+        isGameStarted = false;
+
+        // Optional: enable menu camera again
+        if (menuCamera != null)
+            menuCamera.gameObject.SetActive(true);
     }
 
     #endregion

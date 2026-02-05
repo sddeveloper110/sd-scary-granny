@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,7 +7,7 @@ public class HintSystem : MonoBehaviour
     public static HintSystem Instance { get; private set; }
 
     [Header("References")]
-    [SerializeField] private Text hintText; // Assign Text component inside HintPanel
+    [SerializeField] private TextMeshProUGUI hintText; // Assign Text component inside HintPanel
 
     private void Awake()
     {

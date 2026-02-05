@@ -1,13 +1,28 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerInteraction : MonoBehaviour
 {
     public Transform hand;
     public float throwForce = 6f;
 
+    [Header("UI Buttons")]
+    public Button pickBtn;
+    public Button dropBtn;
+    public Button interactBtn;
+
     private PickableObject currentTarget;
     private PickableObject heldItem;
     private InteractableObject currentInteractable;
+
+    void Start()
+    {
+        pickBtn.onClick.AddListener(Pick);
+        dropBtn.onClick.AddListener(Drop);
+        interactBtn.onClick.AddListener(Interact); 
+
+        UpdateButtons();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,15 +31,15 @@ public class PlayerInteraction : MonoBehaviour
         {
             currentTarget = pickable;
             currentTarget.OnHighlight();
-            //Debug.Log("Entered Pickable Range: " + currentTarget.name);
         }
 
         InteractableObject interactable = other.GetComponent<InteractableObject>();
         if (interactable != null)
         {
             currentInteractable = interactable;
-            //Debug.Log("Entered Interactable Range: " + currentInteractable.name);
         }
+
+        UpdateButtons();
     }
 
     private void OnTriggerExit(Collider other)
@@ -32,16 +47,58 @@ public class PlayerInteraction : MonoBehaviour
         if (currentTarget != null && other.GetComponent<PickableObject>() == currentTarget)
         {
             currentTarget.OnUnhighlight();
-            //Debug.Log("Left Pickable Range: " + currentTarget.name);
             currentTarget = null;
         }
 
         if (currentInteractable != null && other.GetComponent<InteractableObject>() == currentInteractable)
         {
-            //Debug.Log("Left Interactable Range: " + currentInteractable.name);
             currentInteractable = null;
         }
+
+        UpdateButtons();
     }
+
+    void UpdateButtons()
+    {
+        // Pick button
+        pickBtn.gameObject.SetActive(heldItem == null && currentTarget != null);
+
+        // Drop button
+        dropBtn.gameObject.SetActive(heldItem != null);
+
+        interactBtn.gameObject.SetActive(heldItem != null && currentInteractable != null);
+
+    }
+
+    // ===== Button Actions =====
+
+    public void Pick()
+    {
+        if (heldItem == null && currentTarget != null)
+        {
+            heldItem = currentTarget;
+            heldItem.PickUp(hand);
+            UpdateButtons();
+        }
+    }
+
+    public void Drop()
+    {
+        if (heldItem != null)
+        {
+            heldItem.Throw(hand.forward * throwForce);
+            heldItem = null;
+            UpdateButtons();
+        }
+    }
+    public void Interact()
+    {
+        if (currentInteractable != null)
+        {
+            currentInteractable.TryInteract(heldItem);
+        }
+    }
+
 
     private void Update()
     {

@@ -31,8 +31,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Panels")]
     [SerializeField] List<Panel> panels = new List<Panel>();
     [SerializeField] Image fadeScreen;
-    [SerializeField] Slider farmingFillBar;
-    public GameObject profilePanel;
+    public GameObject privacyPolicy;
 
     [Header("Volume UI")]
     [SerializeField] Slider[] soundVol;
@@ -40,45 +39,25 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Text")]
     [SerializeField] TextMeshProUGUI loadingTxt;
+    [SerializeField] Image loadingBar;
     [SerializeField] TextMeshProUGUI popupTxt;
 
-    [Header("Moving Tag")]
-    [SerializeField] GameObject gameTag;
-     
     [Header("Button")]
     [SerializeField] Button[] exitGameplayBtn;
-    [SerializeField] Button SwithControlBtn;
-    [SerializeField] Button skipLevel;
+    [SerializeField] Button retryBtn;
     [SerializeField] Button nextLevelBtn;
 
-    [Header("Menu Camera")]
-    [SerializeField] GameObject[] OnlyActiveInMenu;
-
-
-
-    RectTransform gameTagRT;
+  
     [HideInInspector] public PanelType lastActivePanel;
-    float screenWidth;
-    float tagSpeed = 20f;                                                                                                                                                      
-    int controllerIndex;
+
     private Coroutine popupCoroutine;
     public static event Action OnGameStart;
+    public static event Action OnGameExit;
+    public static event Action OnGameRetry;
 
     void Start()
     {
         Init();
-    }
-
-    void Update()
-    {
-        if (gameTagRT == null) return;
-
-        gameTagRT.anchoredPosition += Vector2.right * tagSpeed * Time.deltaTime;
-
-        if (gameTagRT.anchoredPosition.x > screenWidth / 2 + 100)
-        {
-            gameTagRT.anchoredPosition = new Vector2(-screenWidth / 2 - 100, gameTagRT.anchoredPosition.y);
-        }
     }
 
     #region UI Setup
@@ -88,18 +67,15 @@ public class CanvasManager : MonoBehaviour
 
         //nextLevelBtn.onClick.AddListener(LoadNextLevel);
         //SwithControlBtn.onClick.AddListener(SwitchController);
-        //skipLevel.onClick.AddListener(SkipLevel);
+        retryBtn.onClick.AddListener(Retry);
+   
 
         for(int i = 0; i < exitGameplayBtn.Length; i++)
         {
-            //exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
+            exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
         }
 
-        if (gameTag != null)
-        {
-            gameTagRT = gameTag.GetComponent<RectTransform>();
-            screenWidth = Screen.width;
-        }
+       
 
         // ✅ Sliders auto-update
         for (int i = 0; i < soundVol.Length; i++)
@@ -135,7 +111,7 @@ public class CanvasManager : MonoBehaviour
                 });
             }
         }
-        LoadToGameplay();
+        LoadToMainMenu();
     }
     #endregion
 
@@ -200,10 +176,23 @@ public class CanvasManager : MonoBehaviour
         Instance.StartCoroutine(Instance.Loading(4, () =>
         {
             EnablePanel(PanelType.Gameplay);
+            if (PlayerPrefs.GetInt("FirstTimePlay", 0) == 0)
+            {
+                EnablePanel(PanelType.PrivacyPolicy);
+                PlayerPrefs.SetInt("FirstTimePlay", 1);
+            }
         }));
     }
+
+    void Retry()
+    {
+        OnGameRetry?.Invoke();
+        StartCoroutine(Loading(4, () => EnablePanel(PanelType.Gameplay)));
+    }
+
     public static void LoadToMainMenu()
     {
+        OnGameExit?.Invoke();
         Instance.StartCoroutine(Instance.Loading(3, () =>
         {
             EnablePanel(PanelType.MainMenu);
@@ -238,6 +227,8 @@ public class CanvasManager : MonoBehaviour
                 dotCount = (dotCount + 1) % 4;
                 loadingTxt.text = $"Loading{new string('.', dotCount)}";
             }
+
+            loadingBar.fillAmount = timer / duration;
 
             yield return null;
         }
@@ -303,18 +294,6 @@ public class CanvasManager : MonoBehaviour
         fadeScreen.gameObject.SetActive(false);
     }
 
-    public static void ShowFarmingFill(float value = 0,bool shouldActive = true)
-    {
-        GameObject barGO = Instance.farmingFillBar.gameObject;
-
-        if (barGO.activeSelf != shouldActive)
-            barGO.SetActive(shouldActive);
-
-        if (!shouldActive)
-            return;
-
-        Instance.farmingFillBar.value = value;
-    }
 
     public static void FadeReverse(float duration, UnityAction ua)
     {
@@ -406,5 +385,7 @@ public enum PanelType
     Gameplay,
     Pause,
     LevelComplete,
-    Hint
+    Hint,
+    PrivacyPolicy,
+    RateUs
 }
