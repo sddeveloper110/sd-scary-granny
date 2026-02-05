@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         ToggleControls(GameManager.Instance.isGameStarted);
-        HideGameplayUI();
     }
 
     public void ToggleControls(bool isActive)
@@ -36,14 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void ShowGameplayUI()
     {
-        if (gameplayPanel != null)
-            UIManager.Instance.ShowPanel(gameplayPanel.name, isOverlay: false);
-    }
-
-    private void HideGameplayUI()
-    {
-        if (gameplayPanel != null)
-            UIManager.Instance.HidePanel(gameplayPanel.name);
+        CanvasManager.LoadToGameplay();
     }
 
     public void SetupForGameplay()
@@ -56,7 +48,6 @@ public class PlayerController : MonoBehaviour
     public void ResetPlayer(Vector3 position, Quaternion rotation)
     {
         ToggleControls(false);
-        HideGameplayUI();
         transform.localPosition = position;
         transform.rotation = rotation;
     }

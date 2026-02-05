@@ -169,7 +169,7 @@ public class GameManager : MonoBehaviour
         TaskData task = GetCurrentTask();
         if (task == null) return;
 
-        UIManager.Instance.ShowPanel("HintPanel");
+        CanvasManager.EnablePanel(PanelType.Hint);
         HintSystem.Instance.ShowHint(task.GetHint());
     }
 

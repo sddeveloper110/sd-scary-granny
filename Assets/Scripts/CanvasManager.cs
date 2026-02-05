@@ -84,15 +84,15 @@ public class CanvasManager : MonoBehaviour
     #region UI Setup
     void Init()
     {
-        StartCoroutine(SplashSequence());
+        //StartCoroutine(SplashSequence());
 
-        nextLevelBtn.onClick.AddListener(LoadNextLevel);
-        SwithControlBtn.onClick.AddListener(SwitchController);
-        skipLevel.onClick.AddListener(SkipLevel);
+        //nextLevelBtn.onClick.AddListener(LoadNextLevel);
+        //SwithControlBtn.onClick.AddListener(SwitchController);
+        //skipLevel.onClick.AddListener(SkipLevel);
 
         for(int i = 0; i < exitGameplayBtn.Length; i++)
         {
-            exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
+            //exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
         }
 
         if (gameTag != null)
@@ -104,14 +104,14 @@ public class CanvasManager : MonoBehaviour
         // ✅ Sliders auto-update
         for (int i = 0; i < soundVol.Length; i++)
         {
-            soundVol[i].value = AudioManager.SoundVol;
-            soundVol[i].onValueChanged.AddListener(AudioManager.SetSound);
+            //soundVol[i].value = AudioManager.SoundVol;
+            //soundVol[i].onValueChanged.AddListener(AudioManager.SetSound);
         }
 
         for (int i = 0; i < musicVol.Length; i++)
         {
-            musicVol[i].value = AudioManager.MusicVol;
-            musicVol[i].onValueChanged.AddListener(AudioManager.SetMusic);
+            //musicVol[i].value = AudioManager.MusicVol;
+            //musicVol[i].onValueChanged.AddListener(AudioManager.SetMusic);
         }
 
         // ✅ Auto assign open/close buttons
@@ -121,7 +121,7 @@ public class CanvasManager : MonoBehaviour
             {
                 btn.onClick.AddListener(() =>
                 {
-                    AudioManager.PlayTap();
+                    //AudioManager.PlayTap();
                     EnablePanel(p.type);
                 });
             }
@@ -130,11 +130,12 @@ public class CanvasManager : MonoBehaviour
             {
                 btn.onClick.AddListener(() =>
                 {
-                    AudioManager.PlayTap();
+                    //AudioManager.PlayTap();
                     p.panelGO.SetActive(false);
                 });
             }
         }
+        LoadToGameplay();
     }
     #endregion
 
@@ -163,7 +164,6 @@ public class CanvasManager : MonoBehaviour
             }
         }
 
-        Instance.UpdateMenuCamera();
     }
 
     public static void DisableAllPanel()
@@ -189,42 +189,27 @@ public class CanvasManager : MonoBehaviour
         return p != null && p.panelGO.activeSelf;
     }
 
-    void UpdateMenuCamera()
-    {
-        bool isMenuActive = IsPanelActive(PanelType.MainMenu);
-        bool isSelectionActive = IsPanelActive(PanelType.BusSelection);
-        bool isGameplayActive = IsPanelActive(PanelType.Gameplay);
-
-        // MENU-ONLY OBJECTS
-        for (int i = 0; i < OnlyActiveInMenu.Length; i++)
-        {
-            OnlyActiveInMenu[i].SetActive(isMenuActive);
-        }
-
-        if (PlayerPrefs.GetInt("IsGamePlayedFirstTime", 0) == 0)
-            return;
-            // OPTIMIZATION OBJECTS
-            if (isMenuActive)
-        {
-            Optimizer.AcitiveSelectionOptimize(!isMenuActive);
-            Optimizer.ActiveMenuOptimize(isMenuActive);
-        }
-        else if (isSelectionActive)
-        {
-            Optimizer.ActiveMenuOptimize(!isSelectionActive);
-            Optimizer.AcitiveSelectionOptimize(isSelectionActive);
-        }
-        else if (isGameplayActive)
-        {
-            Optimizer.ActiveMenuOptimize(false);
-            Optimizer.AcitiveSelectionOptimize(false);
-        }
-    }
 
 
     #endregion
 
     #region Splash + Loading
+
+    public static void LoadToGameplay()
+    {
+        Instance.StartCoroutine(Instance.Loading(4, () =>
+        {
+            EnablePanel(PanelType.Gameplay);
+        }));
+    }
+    public static void LoadToMainMenu()
+    {
+        Instance.StartCoroutine(Instance.Loading(3, () =>
+        {
+            EnablePanel(PanelType.MainMenu);
+        }));
+    }
+
 
     IEnumerator SplashSequence()
     {
@@ -232,80 +217,8 @@ public class CanvasManager : MonoBehaviour
 
         yield return new WaitForSeconds(6f);
 
-        LoadToMainMenu();
+        //LoadToMainMenu();
     }
-
-    public static void LoadToGameplay()
-    {
-
-
-        SetCameraFixed(false);
-        Instance.StartCoroutine(Instance.Loading(5f, () =>
-        {
-            AudioManager.PlayGameplayMusic(true);
-            EnablePanel(PanelType.Gameplay);
-            RCC_SceneManager.Instance.activePlayerVehicle.StartEngine();
-            OnGameStart?.Invoke();
-            print("gamepleay");
-        }));
-        RCC_SceneManager.Instance.activePlayerVehicle.GetComponent<Rigidbody>().isKinematic = false;
-
-    }
-
-    public static void LoadToMainMenu()
-    {
-       RCC_SceneManager.Instance.activePlayerVehicle.GetComponent<Rigidbody>().isKinematic = true;
-        AdMobManager.Instance.HideBottomBanner();
-        GoBackToDefaultPosition();
-        Arrow.Hide();
-        ActivateHarvester(false);
-        FindAnyObjectByType<BusSelection>().Refresh();
-        RCC_TruckTrailer[] allAttachments = RCC_SceneManager.Instance.activePlayerVehicle.GetComponentsInChildren<RCC_TruckTrailer>(true);
-        foreach (var a in allAttachments)
-        {
-                a.gameObject.SetActive(false);
-        }
-
-        SetCameraFixed(true);
-        Instance.StartCoroutine(Instance.Loading(3f, () =>
-        {
-            RCC_SceneManager.Instance.activePlayerVehicle.KillEngine();
-            EnablePanel(PanelType.MainMenu);
-            if (PlayerPrefs.GetInt("IsGamePlayedFirstTime", 0) == 0)
-            {
-                CutsceneManager.PlayCutscene(Lvl.One);
-            }
-            AudioManager.PlayGameplayMusic(false);
-
-        }));
-    }
-
-    void LoadNextLevel()
-    {
-        AudioManager.PlayTap();
-        RCC_SceneManager.Instance.activePlayerVehicle.GetComponent<Rigidbody>().isKinematic = true;
-        AdMobManager.Instance.HideBottomBanner();
-        GoBackToDefaultPosition();
-        Arrow.Hide();
-        ActivateHarvester(false);
-        FindAnyObjectByType<BusSelection>().Refresh();
-        RCC_TruckTrailer[] allAttachments = RCC_SceneManager.Instance.activePlayerVehicle.GetComponentsInChildren<RCC_TruckTrailer>(true);
-        foreach (var a in allAttachments)
-        {
-            a.gameObject.SetActive(false);
-        }
-
-        bool loaded = GameManager.LoadNextLevel();
-
-        if (!loaded)
-        {
-            Debug.Log("No next level available!");
-            LoadToMainMenu();
-            return;
-        }
-        LoadToGameplay();
-    }
-
     public IEnumerator Loading(float duration, UnityAction action)
     {
         EnablePanel(PanelType.Loading);
@@ -334,38 +247,8 @@ public class CanvasManager : MonoBehaviour
 
     #endregion
 
-    void SkipLevel()
-    {
-        AdMobManager.Instance.ShowRewardedAd(() =>
-        {
-            FadeIn(2, () => {
-                GameManager.CompleteLevelInstance(); CanvasManager.EnablePanel(PanelType.LevelComplete);
-            });
-        });
+ 
 
-    }
-
-    void SwitchController()
-    {
-        controllerIndex++;
-        if (controllerIndex > 2)
-            controllerIndex = 0;
-
-        switch (controllerIndex)
-        {
-
-            case 0:
-                RCC.SetMobileController(RCC_Settings.MobileController.TouchScreen);
-                break;
-            case 1:
-                RCC.SetMobileController(RCC_Settings.MobileController.SteeringWheel);
-                break;
-            case 2:
-                RCC.SetMobileController(RCC_Settings.MobileController.Joystick);
-                break;
-
-        }
-    }
 
     public void OpenUrl(string url)
     {
@@ -522,8 +405,6 @@ public enum PanelType
     Settings,
     Gameplay,
     Pause,
-    LevelSelection,
-    BusSelection,
-    MapSelection,
     LevelComplete,
+    Hint
 }
