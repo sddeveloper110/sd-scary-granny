@@ -1,0 +1,529 @@
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.Events;
+using static GameManager;
+using System;
+
+public class CanvasManager : MonoBehaviour
+{
+    public static CanvasManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+    [System.Serializable]
+    public class Panel
+    {
+        public PanelType type;
+        public Button[] OpenButton;
+        public Button[] CloseButton;
+        public GameObject panelGO;
+        public bool hideOthers = true;  // ✅ new toggle
+    }
+    
+
+    [Header("Panels")]
+    [SerializeField] List<Panel> panels = new List<Panel>();
+    [SerializeField] Image fadeScreen;
+    [SerializeField] Slider farmingFillBar;
+    public GameObject profilePanel;
+
+    [Header("Volume UI")]
+    [SerializeField] Slider[] soundVol;
+    [SerializeField] Slider[] musicVol;
+
+    [Header("Text")]
+    [SerializeField] TextMeshProUGUI loadingTxt;
+    [SerializeField] TextMeshProUGUI popupTxt;
+
+    [Header("Moving Tag")]
+    [SerializeField] GameObject gameTag;
+     
+    [Header("Button")]
+    [SerializeField] Button[] exitGameplayBtn;
+    [SerializeField] Button SwithControlBtn;
+    [SerializeField] Button skipLevel;
+    [SerializeField] Button nextLevelBtn;
+
+    [Header("Menu Camera")]
+    [SerializeField] GameObject[] OnlyActiveInMenu;
+
+
+
+    RectTransform gameTagRT;
+    [HideInInspector] public PanelType lastActivePanel;
+    float screenWidth;
+    float tagSpeed = 20f;                                                                                                                                                      
+    int controllerIndex;
+    private Coroutine popupCoroutine;
+    public static event Action OnGameStart;
+
+    void Start()
+    {
+        Init();
+    }
+
+    void Update()
+    {
+        if (gameTagRT == null) return;
+
+        gameTagRT.anchoredPosition += Vector2.right * tagSpeed * Time.deltaTime;
+
+        if (gameTagRT.anchoredPosition.x > screenWidth / 2 + 100)
+        {
+            gameTagRT.anchoredPosition = new Vector2(-screenWidth / 2 - 100, gameTagRT.anchoredPosition.y);
+        }
+    }
+
+    #region UI Setup
+    void Init()
+    {
+        StartCoroutine(SplashSequence());
+
+        nextLevelBtn.onClick.AddListener(LoadNextLevel);
+        SwithControlBtn.onClick.AddListener(SwitchController);
+        skipLevel.onClick.AddListener(SkipLevel);
+
+        for(int i = 0; i < exitGameplayBtn.Length; i++)
+        {
+            exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
+        }
+
+        if (gameTag != null)
+        {
+            gameTagRT = gameTag.GetComponent<RectTransform>();
+            screenWidth = Screen.width;
+        }
+
+        // ✅ Sliders auto-update
+        for (int i = 0; i < soundVol.Length; i++)
+        {
+            soundVol[i].value = AudioManager.SoundVol;
+            soundVol[i].onValueChanged.AddListener(AudioManager.SetSound);
+        }
+
+        for (int i = 0; i < musicVol.Length; i++)
+        {
+            musicVol[i].value = AudioManager.MusicVol;
+            musicVol[i].onValueChanged.AddListener(AudioManager.SetMusic);
+        }
+
+        // ✅ Auto assign open/close buttons
+        foreach (var p in panels)
+        {
+            foreach (var btn in p.OpenButton)
+            {
+                btn.onClick.AddListener(() =>
+                {
+                    AudioManager.PlayTap();
+                    EnablePanel(p.type);
+                });
+            }
+
+            foreach (var btn in p.CloseButton)
+            {
+                btn.onClick.AddListener(() =>
+                {
+                    AudioManager.PlayTap();
+                    p.panelGO.SetActive(false);
+                });
+            }
+        }
+    }
+    #endregion
+
+    #region Panel Control
+    public static void EnablePanel(PanelType type)
+    {
+        Panel openedPanel = Instance.panels.Find(p => p.type == type);
+
+        if (openedPanel == null)
+        {
+            Debug.LogError("Panel not found: " + type);
+            return;
+        }
+
+        if (openedPanel.panelGO.activeSelf)
+            return;
+
+        openedPanel.panelGO.SetActive(true);
+
+        if (openedPanel.hideOthers)
+        {
+            foreach (var p in Instance.panels)
+            {
+                if (p != openedPanel && p.panelGO != null)
+                    p.panelGO.SetActive(false);
+            }
+        }
+
+        Instance.UpdateMenuCamera();
+    }
+
+    public static void DisableAllPanel()
+    {
+        foreach (var p in Instance.panels)
+        {
+            if (p.panelGO.activeSelf)
+            {
+                Instance.lastActivePanel = p.type;
+                break;
+            }
+        }
+
+        foreach (var p in Instance.panels)
+        {
+                p.panelGO.SetActive(false);
+        }
+    }
+
+    public static bool IsPanelActive(PanelType type)
+    {
+        Panel p = Instance.panels.Find(x => x.type == type);
+        return p != null && p.panelGO.activeSelf;
+    }
+
+    void UpdateMenuCamera()
+    {
+        bool isMenuActive = IsPanelActive(PanelType.MainMenu);
+        bool isSelectionActive = IsPanelActive(PanelType.BusSelection);
+        bool isGameplayActive = IsPanelActive(PanelType.Gameplay);
+
+        // MENU-ONLY OBJECTS
+        for (int i = 0; i < OnlyActiveInMenu.Length; i++)
+        {
+            OnlyActiveInMenu[i].SetActive(isMenuActive);
+        }
+
+        if (PlayerPrefs.GetInt("IsGamePlayedFirstTime", 0) == 0)
+            return;
+            // OPTIMIZATION OBJECTS
+            if (isMenuActive)
+        {
+            Optimizer.AcitiveSelectionOptimize(!isMenuActive);
+            Optimizer.ActiveMenuOptimize(isMenuActive);
+        }
+        else if (isSelectionActive)
+        {
+            Optimizer.ActiveMenuOptimize(!isSelectionActive);
+            Optimizer.AcitiveSelectionOptimize(isSelectionActive);
+        }
+        else if (isGameplayActive)
+        {
+            Optimizer.ActiveMenuOptimize(false);
+            Optimizer.AcitiveSelectionOptimize(false);
+        }
+    }
+
+
+    #endregion
+
+    #region Splash + Loading
+
+    IEnumerator SplashSequence()
+    {
+        EnablePanel(PanelType.Splash);
+
+        yield return new WaitForSeconds(6f);
+
+        LoadToMainMenu();
+    }
+
+    public static void LoadToGameplay()
+    {
+
+
+        SetCameraFixed(false);
+        Instance.StartCoroutine(Instance.Loading(5f, () =>
+        {
+            AudioManager.PlayGameplayMusic(true);
+            EnablePanel(PanelType.Gameplay);
+            RCC_SceneManager.Instance.activePlayerVehicle.StartEngine();
+            OnGameStart?.Invoke();
+            print("gamepleay");
+        }));
+        RCC_SceneManager.Instance.activePlayerVehicle.GetComponent<Rigidbody>().isKinematic = false;
+
+    }
+
+    public static void LoadToMainMenu()
+    {
+       RCC_SceneManager.Instance.activePlayerVehicle.GetComponent<Rigidbody>().isKinematic = true;
+        AdMobManager.Instance.HideBottomBanner();
+        GoBackToDefaultPosition();
+        Arrow.Hide();
+        ActivateHarvester(false);
+        FindAnyObjectByType<BusSelection>().Refresh();
+        RCC_TruckTrailer[] allAttachments = RCC_SceneManager.Instance.activePlayerVehicle.GetComponentsInChildren<RCC_TruckTrailer>(true);
+        foreach (var a in allAttachments)
+        {
+                a.gameObject.SetActive(false);
+        }
+
+        SetCameraFixed(true);
+        Instance.StartCoroutine(Instance.Loading(3f, () =>
+        {
+            RCC_SceneManager.Instance.activePlayerVehicle.KillEngine();
+            EnablePanel(PanelType.MainMenu);
+            if (PlayerPrefs.GetInt("IsGamePlayedFirstTime", 0) == 0)
+            {
+                CutsceneManager.PlayCutscene(Lvl.One);
+            }
+            AudioManager.PlayGameplayMusic(false);
+
+        }));
+    }
+
+    void LoadNextLevel()
+    {
+        AudioManager.PlayTap();
+        RCC_SceneManager.Instance.activePlayerVehicle.GetComponent<Rigidbody>().isKinematic = true;
+        AdMobManager.Instance.HideBottomBanner();
+        GoBackToDefaultPosition();
+        Arrow.Hide();
+        ActivateHarvester(false);
+        FindAnyObjectByType<BusSelection>().Refresh();
+        RCC_TruckTrailer[] allAttachments = RCC_SceneManager.Instance.activePlayerVehicle.GetComponentsInChildren<RCC_TruckTrailer>(true);
+        foreach (var a in allAttachments)
+        {
+            a.gameObject.SetActive(false);
+        }
+
+        bool loaded = GameManager.LoadNextLevel();
+
+        if (!loaded)
+        {
+            Debug.Log("No next level available!");
+            LoadToMainMenu();
+            return;
+        }
+        LoadToGameplay();
+    }
+
+    public IEnumerator Loading(float duration, UnityAction action)
+    {
+        EnablePanel(PanelType.Loading);
+
+        float timer = 0f;
+        float dotTimer = 0f;
+        int dotCount = 0;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            dotTimer += Time.deltaTime;
+
+            if (dotTimer >= 0.5f)
+            {
+                dotTimer = 0f;
+                dotCount = (dotCount + 1) % 4;
+                loadingTxt.text = $"Loading{new string('.', dotCount)}";
+            }
+
+            yield return null;
+        }
+
+        action?.Invoke();
+    }
+
+    #endregion
+
+    void SkipLevel()
+    {
+        AdMobManager.Instance.ShowRewardedAd(() =>
+        {
+            FadeIn(2, () => {
+                GameManager.CompleteLevelInstance(); CanvasManager.EnablePanel(PanelType.LevelComplete);
+            });
+        });
+
+    }
+
+    void SwitchController()
+    {
+        controllerIndex++;
+        if (controllerIndex > 2)
+            controllerIndex = 0;
+
+        switch (controllerIndex)
+        {
+
+            case 0:
+                RCC.SetMobileController(RCC_Settings.MobileController.TouchScreen);
+                break;
+            case 1:
+                RCC.SetMobileController(RCC_Settings.MobileController.SteeringWheel);
+                break;
+            case 2:
+                RCC.SetMobileController(RCC_Settings.MobileController.Joystick);
+                break;
+
+        }
+    }
+
+    public void OpenUrl(string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            Debug.LogError("URL is empty");
+            return;
+        }
+
+        Debug.Log("Opening URL: " + url);
+        Application.OpenURL(url);
+    }
+
+    public static void FadeIn(float duration, UnityAction ua)
+    {
+        Instance.StartCoroutine(Instance.FadeSequence(duration, ua));
+    }
+
+    private IEnumerator FadeSequence(float duration, UnityAction ua)
+    {
+        // Fade in (transparency to 1)
+        fadeScreen.gameObject.SetActive(true);
+        fadeScreen.color = new Color(0, 0, 0, 0);
+
+        float timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float alpha = Mathf.Lerp(0, 1, timer / duration);
+            fadeScreen.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
+
+        fadeScreen.color = new Color(0, 0, 0, 1);
+
+        // Perform action
+        ua?.Invoke();
+
+        // Fade out quickly (1.2 seconds)
+        timer = 0f;
+        float fadeOutDuration = 2f;
+
+        while (timer < fadeOutDuration)
+        {
+            timer += Time.deltaTime;
+            float alpha = Mathf.Lerp(1, 0, timer / fadeOutDuration);
+            fadeScreen.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
+
+        fadeScreen.color = new Color(0, 0, 0, 0);
+        fadeScreen.gameObject.SetActive(false);
+    }
+
+    public static void ShowFarmingFill(float value = 0,bool shouldActive = true)
+    {
+        GameObject barGO = Instance.farmingFillBar.gameObject;
+
+        if (barGO.activeSelf != shouldActive)
+            barGO.SetActive(shouldActive);
+
+        if (!shouldActive)
+            return;
+
+        Instance.farmingFillBar.value = value;
+    }
+
+    public static void FadeReverse(float duration, UnityAction ua)
+    {
+        Instance.StartCoroutine(Instance.FadeReverseSequence(duration, ua));
+    }
+
+    private IEnumerator FadeReverseSequence(float duration, UnityAction ua)
+    {
+        // 🟦 1 — Instantly black
+        fadeScreen.gameObject.SetActive(true);
+        fadeScreen.color = new Color(0, 0, 0, 1);
+
+        // 🟦 2 — Wait 2 seconds
+        yield return new WaitForSeconds(3f);
+
+        // 🟦 3 — Do your action
+        ua?.Invoke();
+
+        // 🟦 4 — Now fade-out (1 → 0)
+        float timer = 0f;
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            float alpha = Mathf.Lerp(1, 0, timer / duration);
+            fadeScreen.color = new Color(0, 0, 0, alpha);
+            yield return null;
+        }
+
+        // 🟦 RESET
+        fadeScreen.color = new Color(0, 0, 0, 0);
+        fadeScreen.gameObject.SetActive(false);
+    }
+    public static void ShowPopup(string msg)
+    {
+        Instance.popupTxt.text = msg;
+        //Instance.popupTxt.transform.localScale = Vector3.zero;
+
+        Instance.popupTxt.StartCoroutine(PopupRoutine());
+    }
+
+    private static IEnumerator PopupRoutine()
+    {
+        Transform popPanel = Instance.popupTxt.transform.parent;
+        if (popPanel == null) yield break;
+
+        popPanel.transform.localScale = Vector3.zero;
+
+        // POP IN (0 → 1)
+        float t = 0f;
+        while (t < 1f)
+        {
+            if (popPanel == null) yield break;
+
+            t += Time.deltaTime * 6f;
+            float s = Mathf.Lerp(0f, 1f, t);
+            popPanel.transform.localScale = Vector3.one * s;
+            yield return null;
+        }
+
+        popPanel.transform.localScale = Vector3.one;
+
+        // WAIT
+        yield return new WaitForSeconds(4f);
+
+        // POP OUT (1 → 0)
+        t = 0f;
+        while (t < 1f)
+        {
+            if (popPanel == null) yield break;
+
+            t += Time.deltaTime * 6f;
+            float s = Mathf.Lerp(1f, 0f, t);
+            popPanel.transform.localScale = Vector3.one * s;
+            yield return null;
+        }
+
+        popPanel.transform.localScale = Vector3.zero;
+    }
+
+}
+
+
+public enum PanelType
+{
+    Splash,
+    Loading,
+    MainMenu,
+    Settings,
+    Gameplay,
+    Pause,
+    LevelSelection,
+    BusSelection,
+    MapSelection,
+    LevelComplete,
+}

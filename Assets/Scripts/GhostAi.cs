@@ -33,7 +33,7 @@ public class GhostAi : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        player = FindFirstObjectByType<MovementController>().transform;
+        player = FindFirstObjectByType<MovementController>(FindObjectsInactive.Include).transform;
 
         waypoints = new Transform[waypointParent.childCount];
         for (int i = 0; i < waypoints.Length; i++)
