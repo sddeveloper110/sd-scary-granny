@@ -93,10 +93,7 @@ public class PlayerInteraction : MonoBehaviour
     }
     public void Interact()
     {
-        if (currentInteractable != null)
-        {
             currentInteractable.TryInteract(heldItem);
-        }
     }
 
 

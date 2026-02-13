@@ -50,5 +50,8 @@ public class PlayerController : MonoBehaviour
         ToggleControls(false);
         transform.localPosition = position;
         transform.rotation = rotation;
+
+        transform.GetChild(0).localPosition = Vector3.zero;
+        transform.GetChild(0).rotation = Quaternion.Euler(0,90,0);
     }
 }

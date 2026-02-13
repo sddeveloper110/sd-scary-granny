@@ -120,7 +120,6 @@ public class GameManager : MonoBehaviour
 
         if (menuCamera != null)
             menuCamera.gameObject.SetActive(false);
-
         OnGameStarted?.Invoke();
         UpdateTask();
     }
@@ -128,7 +127,6 @@ public class GameManager : MonoBehaviour
     public void Retry()
     {
         isGameStarted = false;
-
 
         StartGame();
     }

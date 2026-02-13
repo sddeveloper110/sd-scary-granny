@@ -10,13 +10,13 @@ using System;
 public class CanvasManager : MonoBehaviour
 {
     public static CanvasManager Instance;
-
+    
     private void Awake()
     {
         Instance = this;
     }
 
-
+    
     [System.Serializable]
     public class Panel
     {
