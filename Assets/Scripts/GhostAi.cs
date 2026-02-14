@@ -47,12 +47,24 @@ public class GhostAi : MonoBehaviour
     float suspiciousTimer = 0f;
     bool isAttacking = false;
 
+    private void OnEnable()
+    {
+        CanvasManager.OnGameStart += ResetGhost;
+        CanvasManager.OnGameRetry += ResetGhost;
+    }
+    private void OnDisable()
+    {
+        CanvasManager.OnGameStart -= ResetGhost;
+        CanvasManager.OnGameRetry -= ResetGhost;
+    }
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        // IMPORTANT: Disable NavMesh rotation for Root Motion compatibility
         agent.updateRotation = false;
+
+        // Save starting transform for reset function
+        startPosition = transform.position;
+        startRotation = transform.rotation;
 
         player = FindFirstObjectByType<MovementController>(FindObjectsInactive.Include).transform;
 
@@ -60,8 +72,39 @@ public class GhostAi : MonoBehaviour
         for (int i = 0; i < waypoints.Length; i++)
             waypoints[i] = waypointParent.GetChild(i);
 
+        // Start the delayed activation
+        StartCoroutine(StartWithDelay());
+    }
+
+    IEnumerator StartWithDelay()
+    {
+        //// Shuru mein agent aur logic band rahegi
+        //isAttacking = true;
+      //  if (anim != null) anim.Play("Idle"); // Agar idle animation hai toh, warna walk hi rehne dein
+
+        yield return new WaitForSeconds(startDelay);
+
+        isAttacking = false;
         if (anim != null) anim.Play(walkAnimName);
         GoToNextWaypoint();
+    }
+
+    // --- RESET FUNCTION ---
+    public void ResetGhost()
+    {
+        StopAllCoroutines(); // Purani saari movement/attack cancel
+
+        isAttacking = false;
+        agent.enabled = false; // Teleport ke liye disable zaroori hai
+
+        transform.position = startPosition;
+        transform.rotation = startRotation;
+
+        agent.enabled = true;
+        state = GhostState.Roam;
+
+        // Reset hone ke baad bhi thoda wait karke dobara shuru karegi
+        StartCoroutine(StartWithDelay());
     }
 
     private void Update()

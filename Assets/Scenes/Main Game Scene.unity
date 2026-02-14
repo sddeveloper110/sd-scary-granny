@@ -8479,7 +8479,7 @@ MonoBehaviour:
   randomImages: []
   popDuration: 0.42
   appearFrom: 2
-  slideDuration: 2
+  slideDuration: 1
   offsetDistance: 1000
 --- !u!1001 &233597299
 PrefabInstance:
@@ -50220,6 +50220,7 @@ MonoBehaviour:
   headBone: {fileID: 371034011}
   lookAtWeight: 1
   lookAtSpeed: 5
+  startDelay: 4
   forwardOffset: 0.8
   heightOffset: 0.3
 --- !u!95 &1432649345 stripped
@@ -71768,7 +71769,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2005860659}
-  - component: {fileID: 2005860660}
   m_Layer: 0
   m_Name: UI Manager
   m_TagString: Untagged
@@ -71791,18 +71791,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 495398389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2005860660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2005860658}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b7cd84d2be05f34eaeeb19f85683c75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &2006530147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -93489,7 +93477,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &5423892383090200839
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -97288,7 +97276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1001 &6493458771520785136
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -98231,7 +98219,7 @@ MonoBehaviour:
   shineWait: 3
   randomImages: []
   popDuration: 0.42
-  appearFrom: 1
+  appearFrom: 0
   slideDuration: 2
   offsetDistance: 1000
 --- !u!1001 &6719279278677830226
@@ -103438,7 +103426,7 @@ MonoBehaviour:
   shineSpeed: 500
   shineWait: 3
   randomImages: []
-  popDuration: 2
+  popDuration: 1
   appearFrom: 1
   slideDuration: 0.5
   offsetDistance: 1000
@@ -106590,7 +106578,7 @@ MonoBehaviour:
   shineSpeed: 500
   shineWait: 3
   randomImages: []
-  popDuration: 1.5
+  popDuration: 0.75
   appearFrom: 1
   slideDuration: 0.5
   offsetDistance: 1000
@@ -106863,7 +106851,7 @@ MonoBehaviour:
   shineSpeed: 500
   shineWait: 3
   randomImages: []
-  popDuration: 1
+  popDuration: 0.5
   appearFrom: 1
   slideDuration: 0.5
   offsetDistance: 1000
@@ -107049,7 +107037,7 @@ MonoBehaviour:
   randomImages: []
   popDuration: 0.42
   appearFrom: 1
-  slideDuration: 2
+  slideDuration: 1
   offsetDistance: 1000
 --- !u!4 &8910813543373471405
 Transform:
@@ -107718,7 +107706,7 @@ MonoBehaviour:
   randomImages: []
   popDuration: 0.42
   appearFrom: 0
-  slideDuration: 2
+  slideDuration: 1
   offsetDistance: 1000
 --- !u!23 &9089431014000073048
 MeshRenderer:
