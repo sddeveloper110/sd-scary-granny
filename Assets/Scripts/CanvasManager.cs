@@ -44,7 +44,7 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Button")]
     [SerializeField] Button[] exitGameplayBtn;
-    [SerializeField] Button retryBtn;
+    [SerializeField] Button[] retryBtn;
     [SerializeField] Button nextLevelBtn;
 
   
@@ -67,7 +67,8 @@ public class CanvasManager : MonoBehaviour
 
         //nextLevelBtn.onClick.AddListener(LoadNextLevel);
         //SwithControlBtn.onClick.AddListener(SwitchController);
-        retryBtn.onClick.AddListener(Retry);
+        for(int i = 0; i < retryBtn.Length;i++)
+            retryBtn[i].onClick.AddListener(Retry);
    
 
         for(int i = 0; i < exitGameplayBtn.Length; i++)
@@ -387,5 +388,6 @@ public enum PanelType
     LevelComplete,
     Hint,
     PrivacyPolicy,
-    RateUs
+    RateUs,
+    GameOver
 }

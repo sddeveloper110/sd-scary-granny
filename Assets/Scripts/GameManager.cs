@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
         // Subscribe to global event
         InteractableObject.OnObjectInteractionDone += HandleInteractableActivated;
+        GhostAi.OnAttackEnemy += () => isGameStarted = false;
         CanvasManager.OnGameExit += ExitGame;
         CanvasManager.OnGameRetry += Retry;
     }
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         InteractableObject.OnObjectInteractionDone -= HandleInteractableActivated;
+        GhostAi.OnAttackEnemy -= () => isGameStarted = false;
         CanvasManager.OnGameExit -= ExitGame;
         CanvasManager.OnGameRetry -= Retry;
     }
@@ -120,6 +122,7 @@ public class GameManager : MonoBehaviour
 
         if (menuCamera != null)
             menuCamera.gameObject.SetActive(false);
+        isGameStarted = true;
         OnGameStarted?.Invoke();
         UpdateTask();
     }
@@ -129,6 +132,11 @@ public class GameManager : MonoBehaviour
         isGameStarted = false;
 
         StartGame();
+    }
+
+    public void GameEnd()
+    {
+        CanvasManager.FadeIn(.5f, () => { CanvasManager.EnablePanel(PanelType.GameOver); });
     }
 
     public void ExitGame()

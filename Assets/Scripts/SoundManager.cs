@@ -5,85 +5,111 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     [Header("Audio Sources")]
-    [SerializeField] private AudioSource musicSource;  
-    [SerializeField] private AudioSource sfxSource;    
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
 
     [Header("Audio Clips")]
     [SerializeField] private AudioClip menuMusic;
     [SerializeField] private AudioClip gameMusic;
+    [SerializeField] private AudioClip horrosMusic;
+    [SerializeField] public AudioClip slapSound; // Slap ke liye sound yahan assign karein
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject); // Optional: Scene change pe sound na ruke
         }
         else
         {
             Destroy(gameObject);
             return;
         }
-
-        if (musicSource == null)
-        {
-            Debug.LogWarning("SoundManager: Music AudioSource is not assigned.");
-        }
-
-        if (sfxSource == null)
-        {
-            Debug.LogWarning("SoundManager: SFX AudioSource is not assigned.");
-        }
     }
 
     private void Start()
     {
-        // Start with menu music by default
         PlayMenuMusic();
     }
+
+    // --- SFX / Sound Playback ---
+
+
 
     #region Music Control
 
     public void PlayMenuMusic()
     {
         if (musicSource == null || menuMusic == null) return;
-
-        musicSource.clip = menuMusic;
-        musicSource.loop = true;
-        musicSource.volume = 0.5f; // Adjust volume as needed
-        musicSource.Play();
+        UpdateMusicSettings(menuMusic);
     }
 
-    public void PlayGameMusic()
+    public void PlayGameDefaultMusic()
     {
         if (musicSource == null || gameMusic == null) return;
+        UpdateMusicSettings(gameMusic);
+    }
 
-        musicSource.clip = gameMusic;
+    public void PlayGameGrannyMusic()
+    {
+        if (musicSource == null || horrosMusic == null) return;
+        UpdateMusicSettings(horrosMusic);
+    }
+
+    private void UpdateMusicSettings(AudioClip clip)
+    {
+        musicSource.clip = clip;
         musicSource.loop = true;
-        musicSource.volume = 0.5f; // Adjust volume as needed
+        musicSource.volume = MusicVol;
         musicSource.Play();
     }
 
     public void StopMusic()
     {
-        if (musicSource == null) return;
-        musicSource.Stop();
+        if (musicSource != null) musicSource.Stop();
     }
 
+    // Properties for Music
     public void SetMusicVolume(float volume)
     {
         if (musicSource != null) musicSource.volume = Mathf.Clamp01(volume);
+        MusicVol = volume;
     }
 
+    public static float MusicVol
+    {
+        get => PlayerPrefs.GetFloat(nameof(MusicVol), .5f);
+        set => PlayerPrefs.SetFloat(nameof(MusicVol), value);
+    }
     #endregion
 
-    #region SFX Control (Optional)
-
-    public void PlaySFX(AudioClip clip, float volume = 1f)
+    #region Sound (SFX) Control 
+    public static void PlayThisAudio(AudioSource audioSource, AudioClip audioClip)
     {
-        if (sfxSource != null && clip != null)
+        if (audioSource == null || audioClip == null) return;
+        audioSource.volume = SoundVol; // SoundVol property use ho rahi hai
+        audioSource.PlayOneShot(audioClip);
+    }
+
+    public static void PlayThisAudio(AudioClip audioClip)
+    {
+        if (Instance.sfxSource == null || audioClip == null) return;
+        Instance.sfxSource.PlayOneShot(audioClip, SoundVol);
+    }
+    public void SetSoundVolume(float volume)
+    {
+        if (sfxSource != null)
         {
-            sfxSource.PlayOneShot(clip, volume);
+            sfxSource.volume = volume;
         }
+        SoundVol = volume;
+    }
+
+    public static float SoundVol
+    {
+        get => PlayerPrefs.GetFloat(nameof(SoundVol), .5f);
+        set => PlayerPrefs.SetFloat(nameof(SoundVol), value);
     }
 
     #endregion

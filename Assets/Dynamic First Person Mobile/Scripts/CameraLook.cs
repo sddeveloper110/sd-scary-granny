@@ -54,8 +54,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
 		private void Update() 
 		{
-
-			if (Input.touchCount == 0) return;
+            if (!GameManager.Instance.isGameStarted)
+                return;
+            if (Input.touchCount == 0) return;
 			foreach (var touch in Input.touches)
 			{
 				if ((touch.phase == TouchPhase.Began && m_EventStytem != null) &&
@@ -77,8 +78,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
 		private void LateUpdate()
 		{
-			
-			m_HorizontalRot = delta.x * m_Sensitivity.x * Time.deltaTime * invertX;
+            if (!GameManager.Instance.isGameStarted)
+                return;
+            m_HorizontalRot = delta.x * m_Sensitivity.x * Time.deltaTime * invertX;
 			m_VerticalRot += delta.y * m_Sensitivity.y * Time.deltaTime * invertY;
 			m_VerticalRot = Mathf.Clamp(m_VerticalRot, -m_BottomClamp, m_TopClamp);
 			

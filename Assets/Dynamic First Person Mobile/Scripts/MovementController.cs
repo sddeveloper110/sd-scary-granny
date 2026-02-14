@@ -128,8 +128,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         }
 
         private void Update() 
-        { 
-
+        {
+            if (!GameManager.Instance.isGameStarted)
+                return;
             Handle_InputMovement();
             Handle_AirMovement();   
             Handle_Crouch();

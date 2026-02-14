@@ -1,208 +1,167 @@
-﻿#if UNITY_EDITOR
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(UiFeelMaster))]
-public class UIFeelMasterEditor : Editor
+public class UiFeelMasterEditor : Editor
 {
-    private bool showScaleSettings = true;
-    private bool showRotateSettings = true;
-    private bool showShakeSettings = true;
-    private bool showShineSettings = true;
-    private bool showRandomImageSettings = true;
-    private bool showPopSettings = true;
-    private bool showSlideSettings = true;
+    private int toolbarTab;
+    private string[] toolbarLabels = { "Base Settings", "Continuous", "OnEnable", "Testing" };
+
+    // Logo slot
+    public Texture2D userLogo;
 
     public override void OnInspectorGUI()
     {
         UiFeelMaster script = (UiFeelMaster)target;
 
-        // Title
+        // --- Logo Section ---
         EditorGUILayout.Space(10);
-        GUIStyle titleStyle = new GUIStyle(EditorStyles.boldLabel);
-        titleStyle.fontSize = 16;
-        titleStyle.alignment = TextAnchor.MiddleCenter;
-        EditorGUILayout.LabelField("UI Feel Master", titleStyle);
-        EditorGUILayout.Space(5);
+        userLogo = (Texture2D)EditorGUILayout.ObjectField("My Logo", userLogo, typeof(Texture2D), false, GUILayout.Height(20));
 
-        EditorGUILayout.HelpBox("Enable effects that loop continuously during Update, or OnEnable effects that trigger when the object is enabled.", MessageType.Info);
-        EditorGUILayout.Space(10);
-
-        // Draw default toggles section
-        DrawPropertiesExcluding(serializedObject,
-            "m_Script",
-            "scaleAmount", "scaleDuration", "scaleWait",
-            "rotateStrength", "rotateFriction", "rotateWait",
-            "shakeStrength", "shakeSpeed", "shakeDuration", "shakeWait",
-            "shineObject", "shineSpeed", "shineWait",
-            "randomImages",
-            "popDuration",
-            "appearFrom", "slideDuration", "offsetDistance"
-        );
-
-        EditorGUILayout.Space(10);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-
-        // CONTINUOUS EFFECTS SECTION
-        GUIStyle headerStyle = new GUIStyle(EditorStyles.boldLabel);
-        headerStyle.fontSize = 13;
-        EditorGUILayout.LabelField("CONTINUOUS EFFECTS (Update Loop)", headerStyle);
-        EditorGUILayout.Space(5);
-
-        // ===== SCALE EFFECT =====
-        if (script.useScale)
+        if (userLogo != null)
         {
-            showScaleSettings = EditorGUILayout.Foldout(showScaleSettings, "Scale Settings", true);
-            if (showScaleSettings)
-            {
-                EditorGUI.indentLevel++;
-                script.scaleAmount = EditorGUILayout.Slider("Scale Amount", script.scaleAmount, 1.0f, 2.0f);
-                script.scaleDuration = EditorGUILayout.Slider("Duration", script.scaleDuration, 0.1f, 2.0f);
-                script.scaleWait = EditorGUILayout.Slider("Wait Time", script.scaleWait, 1.0f, 10.0f);
-
-                if (GUILayout.Button("▶ Test Scale"))
-                {
-                    script.TestScale();
-                }
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
+            Rect logoRect = GUILayoutUtility.GetRect(Screen.width, 100);
+            GUI.DrawTexture(logoRect, userLogo, ScaleMode.ScaleToFit);
+            
         }
-
-        // ===== ROTATE EFFECT =====
-        if (script.useRotate)
+        else
         {
-            showRotateSettings = EditorGUILayout.Foldout(showRotateSettings, "Rotate Settings", true);
-            if (showRotateSettings)
-            {
-                EditorGUI.indentLevel++;
-                script.rotateStrength = EditorGUILayout.Slider("Strength", script.rotateStrength, 100f, 2000f);
-                script.rotateFriction = EditorGUILayout.Slider("Friction", script.rotateFriction, 1.0f, 10.0f);
-                script.rotateWait = EditorGUILayout.Slider("Wait Time", script.rotateWait, 1.0f, 10.0f);
-
-                if (GUILayout.Button("▶ Test Rotate"))
-                {
-                    script.TestRotate();
-                }
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
-        }
-
-        // ===== SHAKE EFFECT =====
-        if (script.useShake)
-        {
-            showShakeSettings = EditorGUILayout.Foldout(showShakeSettings, "Shake Settings", true);
-            if (showShakeSettings)
-            {
-                EditorGUI.indentLevel++;
-                script.shakeStrength = EditorGUILayout.Slider("Strength", script.shakeStrength, 1.0f, 20.0f);
-                script.shakeSpeed = EditorGUILayout.Slider("Speed", script.shakeSpeed, 10.0f, 100.0f);
-                script.shakeDuration = EditorGUILayout.Slider("Duration", script.shakeDuration, 0.1f, 2.0f);
-                script.shakeWait = EditorGUILayout.Slider("Wait Time", script.shakeWait, 1.0f, 10.0f);
-
-                if (GUILayout.Button("▶ Test Shake"))
-                {
-                    script.TestShake();
-                }
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
-        }
-
-        // ===== SHINE EFFECT =====
-        if (script.useShine)
-        {
-            showShineSettings = EditorGUILayout.Foldout(showShineSettings, "Shine Settings", true);
-            if (showShineSettings)
-            {
-                EditorGUI.indentLevel++;
-                script.shineObject = (RectTransform)EditorGUILayout.ObjectField("Shine Object", script.shineObject, typeof(RectTransform), true);
-                script.shineSpeed = EditorGUILayout.Slider("Speed", script.shineSpeed, 100f, 1000f);
-                script.shineWait = EditorGUILayout.Slider("Wait Time", script.shineWait, 1.0f, 10.0f);
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
+            EditorGUILayout.HelpBox("Add your Logo texture above to brand this tool!", MessageType.Info);
         }
 
         EditorGUILayout.Space(10);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-        // ONENABLE EFFECTS SECTION
-        EditorGUILayout.LabelField("ONENABLE EFFECTS (When GameObject Enables)", headerStyle);
-        EditorGUILayout.Space(5);
+        // --- Professional Header ---
+        //GUIStyle headerStyle = new GUIStyle(EditorStyles.boldLabel);
+        //headerStyle.fontSize = 18;
+        //headerStyle.alignment = TextAnchor.MiddleCenter;
+        //headerStyle.normal.textColor = new Color(0.1f, 0.7f, 1f);
+        //EditorGUILayout.LabelField("UI FEEL MASTER", headerStyle);
+        //EditorGUILayout.Space(5);
 
-        // ===== RANDOM IMAGE =====
-        if (script.useRandomImage)
-        {
-            showRandomImageSettings = EditorGUILayout.Foldout(showRandomImageSettings, "Random Image Settings", true);
-            if (showRandomImageSettings)
-            {
-                EditorGUI.indentLevel++;
-
-                SerializedProperty randomImagesProp = serializedObject.FindProperty("randomImages");
-                EditorGUILayout.PropertyField(randomImagesProp, new GUIContent("Random Images"), true);
-
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
-        }
-
-        // ===== POP EFFECT =====
-        if (script.usePopEffect)
-        {
-            showPopSettings = EditorGUILayout.Foldout(showPopSettings, "Pop Effect Settings", true);
-            if (showPopSettings)
-            {
-                EditorGUI.indentLevel++;
-                script.popDuration = EditorGUILayout.Slider("Duration", script.popDuration, 0.1f, 1.0f);
-
-                if (GUILayout.Button("▶ Test Pop"))
-                {
-                    script.TestPop();
-                }
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
-        }
-
-        // ===== SLIDE EFFECT =====
-        if (script.useSlideEffect)
-        {
-            showSlideSettings = EditorGUILayout.Foldout(showSlideSettings, "Slide Effect Settings", true);
-            if (showSlideSettings)
-            {
-                EditorGUI.indentLevel++;
-                script.appearFrom = (UiFeelMaster.Direction)EditorGUILayout.EnumPopup("Appear From", script.appearFrom);
-                script.slideDuration = EditorGUILayout.Slider("Duration", script.slideDuration, 0.1f, 2.0f);
-                script.offsetDistance = EditorGUILayout.Slider("Offset Distance", script.offsetDistance, 100f, 2000f);
-
-                if (GUILayout.Button("▶ Test Slide"))
-                {
-                    script.TestSlide();
-                }
-                EditorGUI.indentLevel--;
-                EditorGUILayout.Space(5);
-            }
-        }
-
+        // --- Tabs / Toolbar ---
+        toolbarTab = GUILayout.Toolbar(toolbarTab, toolbarLabels);
         EditorGUILayout.Space(10);
-        EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-        // Utility Buttons
-        EditorGUILayout.Space(5);
-        if (GUILayout.Button("Reset All Timers", GUILayout.Height(30)))
+        Undo.RecordObject(script, "UI Feel Master Change");
+
+        switch (toolbarTab)
         {
-            script.ResetTimers();
+            case 0: // Base Toggles
+                DrawBaseSettings(script);
+                break;
+            case 1: // Continuous Settings
+                DrawContinuousSettings(script);
+                break;
+            case 2: // OnEnable Settings
+                DrawOnEnableSettings(script);
+                break;
+            case 3: // Test Buttons
+                DrawTestingSection(script);
+                break;
         }
-
-        // Apply changes
-        serializedObject.ApplyModifiedProperties();
 
         if (GUI.changed)
         {
             EditorUtility.SetDirty(script);
         }
     }
+
+    private void DrawBaseSettings(UiFeelMaster script)
+    {
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Main Toggles", EditorStyles.boldLabel);
+        script.useScale = EditorGUILayout.ToggleLeft(" Use Pulse Scale", script.useScale);
+        script.useRotate = EditorGUILayout.ToggleLeft(" Use Impact Rotation", script.useRotate);
+        script.useShake = EditorGUILayout.ToggleLeft(" Use Constant Shake", script.useShake);
+        script.useShine = EditorGUILayout.ToggleLeft(" Use Shine Overlay", script.useShine);
+        EditorGUILayout.EndVertical();
+
+        EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+        EditorGUILayout.LabelField("Spawn Toggles", EditorStyles.boldLabel);
+        script.usePopEffect = EditorGUILayout.ToggleLeft(" Enable Pop-In", script.usePopEffect);
+        script.useSlideEffect = EditorGUILayout.ToggleLeft(" Enable Sliding", script.useSlideEffect);
+        script.useRandomImage = EditorGUILayout.ToggleLeft(" Enable Random Sprites", script.useRandomImage);
+        EditorGUILayout.EndVertical();
+    }
+
+    private void DrawContinuousSettings(UiFeelMaster script)
+    {
+        if (script.useScale)
+        {
+            DrawHeader("Pulse Scale Configuration");
+            script.scaleAmount = EditorGUILayout.Slider("Scale Amount", script.scaleAmount, 0.5f, 2f);
+            script.scaleDuration = EditorGUILayout.FloatField("Duration", script.scaleDuration);
+            script.scaleWait = EditorGUILayout.FloatField("Wait Time", script.scaleWait);
+        }
+
+        if (script.useRotate)
+        {
+            DrawHeader("Rotation Configuration");
+            script.rotateStrength = EditorGUILayout.FloatField("Rotate Power", script.rotateStrength);
+            script.rotateFriction = EditorGUILayout.Slider("Friction", script.rotateFriction, 0.1f, 10f);
+            script.rotateWait = EditorGUILayout.FloatField("Wait Time", script.rotateWait);
+        }
+
+        if (script.useShake)
+        {
+            DrawHeader("Shake Configuration");
+            script.shakeStrength = EditorGUILayout.Slider("Shake Strength", script.shakeStrength, 0.1f, 50f);
+            script.shakeSpeed = EditorGUILayout.Slider("Shake Speed", script.shakeSpeed, 10f, 100f);
+            script.shakeWait = EditorGUILayout.FloatField("Wait Time", script.shakeWait);
+        }
+
+        if (script.useShine)
+        {
+            DrawHeader("Shine Configuration");
+            script.shineObject = (RectTransform)EditorGUILayout.ObjectField("Shine UI Object", script.shineObject, typeof(RectTransform), true);
+            script.shineSpeed = EditorGUILayout.FloatField("Shine Speed", script.shineSpeed);
+            script.shineWait = EditorGUILayout.FloatField("Shine Wait", script.shineWait);
+        }
+    }
+
+    private void DrawOnEnableSettings(UiFeelMaster script)
+    {
+        if (script.usePopEffect)
+        {
+            DrawHeader("Pop-In Settings");
+            script.popDuration = EditorGUILayout.Slider("Pop Duration", script.popDuration, 0.1f, 2f);
+        }
+
+        if (script.useSlideEffect)
+        {
+            DrawHeader("Slide Settings");
+            script.appearFrom = (UiFeelMaster.Direction)EditorGUILayout.EnumPopup("Direction", script.appearFrom);
+            script.slideDuration = EditorGUILayout.FloatField("Slide Duration", script.slideDuration);
+            script.offsetDistance = EditorGUILayout.FloatField("Travel Distance", script.offsetDistance);
+        }
+
+        if (script.useRandomImage)
+        {
+            DrawHeader("Random Sprite List");
+            SerializedObject so = new SerializedObject(script);
+            SerializedProperty sp = so.FindProperty("randomImages");
+            EditorGUILayout.PropertyField(sp, true);
+            so.ApplyModifiedProperties();
+        }
+    }
+
+    private void DrawTestingSection(UiFeelMaster script)
+    {
+        EditorGUILayout.HelpBox("Only works while Game is Running!", MessageType.Warning);
+        if (GUILayout.Button("Test Pulse", GUILayout.Height(30))) script.TestScale();
+        if (GUILayout.Button("Test Rotation", GUILayout.Height(30))) script.TestRotate();
+        if (GUILayout.Button("Test Shake", GUILayout.Height(30))) script.TestShake();
+        if (GUILayout.Button("Test Pop-In", GUILayout.Height(30))) script.TestPop();
+        if (GUILayout.Button("Test Slide", GUILayout.Height(30))) script.TestSlide();
+    }
+
+    private void DrawHeader(string label)
+    {
+        EditorGUILayout.Space(5);
+        GUIStyle s = new GUIStyle(EditorStyles.label);
+        s.normal.textColor = Color.yellow;
+        s.fontStyle = FontStyle.Bold;
+        EditorGUILayout.LabelField(label, s);
+    }
 }
-#endif
