@@ -6,259 +6,221 @@ using UnityEngine.AI;
 
 public class GhostAi : MonoBehaviour
 {
+    [Header("Movement Settings")]
     [SerializeField] Transform waypointParent;
-    [SerializeField] bool followRandomWaypoint;
+    [SerializeField] float roamSpeed = 3.5f;
+    [SerializeField] float chaseSpeed = 5.5f;
+    [SerializeField] float startDelay = 4f; // Timer delay
 
-    [Header("Radius Settings")]
-    [SerializeField] float suspiciousRadius = 10f;
-    [SerializeField] float chaseRadius = 6f;
-
-    [Header("State Settings")]
-    [SerializeField] float suspiciousTime = 3f;
+    [Header("Detection Settings")]
+    [SerializeField] float suspiciousRadius = 12f;
+    [SerializeField] float chaseRadius = 7f;
+    [SerializeField] float suspiciousTime = 4f;
     [SerializeField] float attackDistance = 2f;
-    [SerializeField] float rotationSpeed = 10f; // How fast she turns
 
-    [Header("Animation Settings")]
+    [Header("Animations & IK")]
     [SerializeField] Animator anim;
     [SerializeField] string walkAnimName = "Granny_Walk";
+    [SerializeField] string idleAnimName = "Granny_Idle"; // Added for the delay period
     [SerializeField] string attackAnimName = "Granny_Attack";
     [SerializeField] float attackAnimDuration = 1.5f;
+    [Range(0, 1)][SerializeField] float lookAtWeight = 1.0f;
 
-    [Header("Head Look Settings")]
-    [SerializeField] Transform headBone; // Drag Granny's Head bone here
-    [SerializeField] float lookAtWeight = 0f; // Smoothes the head turn
-    [SerializeField] float lookAtSpeed = 5f;
-
-    [Header("Events")]
     public static Action OnAttackEnemy;
 
-    private Vector3 startPosition;
-    private Quaternion startRotation;
+    // --- State Property with Music Logic ---
+    private GhostState _state = GhostState.Roam;
+    private GhostState State
+    {
+        get => _state;
+        set
+        {
+            if (_state == value) return; // Exit if state hasn't actually changed
+            _state = value;
+            OnStateChanged(_state);
+        }
+    }
 
-    [Header("Startup Settings")]
-    [SerializeField] float startDelay = 4f;
+    private NavMeshAgent agent;
+    private Transform player;
+    private Transform[] waypoints;
 
-    GhostState state = GhostState.Roam;
-    Transform[] waypoints;
-    Transform player;
-    NavMeshAgent agent;
-    Vector3 lastPlayerPosition;
-    int currentWaypoint = 0;
-    float suspiciousTimer = 0f;
-    bool isAttacking = false;
+    private float susTimer;
+    private bool isAttacking;
+    private bool isWaitingAtStart; // New delay bool
+    private int currentWaypoint;
+    private Vector3 startPos;
+    private Quaternion startRot;
 
     private void OnEnable()
     {
-        CanvasManager.OnGameStart += ResetGhost;
+        GameManager.OnGameStarted += ResetGhost;
         CanvasManager.OnGameRetry += ResetGhost;
+        GameManager.OnSurvivalStarted += () => State = GhostState.Survival;
     }
+
     private void OnDisable()
     {
-        CanvasManager.OnGameStart -= ResetGhost;
+        GameManager.OnGameStarted -= ResetGhost;
         CanvasManager.OnGameRetry -= ResetGhost;
+        GameManager.OnSurvivalStarted -= () => State = GhostState.Survival;
     }
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-
-        // Save starting transform for reset function
-        startPosition = transform.position;
-        startRotation = transform.rotation;
-
         player = FindFirstObjectByType<MovementController>(FindObjectsInactive.Include).transform;
 
         waypoints = new Transform[waypointParent.childCount];
-        for (int i = 0; i < waypoints.Length; i++)
-               waypoints[i] = waypointParent.GetChild(i);
+        for (int i = 0; i < waypoints.Length; i++) waypoints[i] = waypointParent.GetChild(i);
 
-        // Start the delayed activation
-        StartCoroutine(StartWithDelay());
-    }
+        startPos = transform.position;
+        startRot = transform.rotation;
 
-    IEnumerator StartWithDelay()
-    {
-        //// Shuru mein agent aur logic band rahegi
-        isAttacking = true;
-      //  if (anim != null) anim.Play("Idle"); // Agar idle animation hai toh, warna walk hi rehne dein
-
-        yield return new WaitForSeconds(startDelay);
-
-        isAttacking = false;
-        if (anim != null) anim.Play(walkAnimName);
-        GoToNextWaypoint();
-    }
-
-    // --- RESET FUNCTION ---
-    public void ResetGhost()
-    {
-        StopAllCoroutines(); // Purani saari movement/attack cancel
-
-        isAttacking = false;
-        agent.enabled = false; // Teleport ke liye disable zaroori hai
-
-        transform.position = startPosition;
-        transform.rotation = startRotation;
-
-        agent.enabled = true;
-        state = GhostState.Roam;
-
-        // Reset hone ke baad bhi thoda wait karke dobara shuru karegi
-        StartCoroutine(StartWithDelay());
+        agent.updateRotation = true;
+        ResetGhost();
     }
 
     private void Update()
     {
-        if (!GameManager.Instance.isGameStarted)
-        {
-            return;
-        }
-        if (isAttacking ) return;
+        if (!GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart) return;
 
-        HandleManualRotation();
-        float distToPlayer = Vector3.Distance(transform.position, player.position);
+        HandleLogic();
+    }
 
-        switch (state)
+    private void HandleLogic()
+    {
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        switch (State)
         {
             case GhostState.Roam:
+                agent.speed = roamSpeed;
                 if (!agent.pathPending && agent.remainingDistance < 0.5f)
                     GoToNextWaypoint();
 
-                if (distToPlayer <= chaseRadius && CanSeePlayer()) state = GhostState.Chase;
-                else if (distToPlayer <= suspiciousRadius) state = GhostState.Suspicious;
+                if (distanceToPlayer <= chaseRadius) State = GhostState.Chase;
+                else if (distanceToPlayer <= suspiciousRadius) State = GhostState.Suspicious;
                 break;
 
             case GhostState.Suspicious:
-                agent.SetDestination(lastPlayerPosition);
-                suspiciousTimer += Time.deltaTime;
+                agent.speed = roamSpeed;
+                agent.SetDestination(player.position);
 
-                if (suspiciousTimer >= suspiciousTime)
+                susTimer += Time.deltaTime;
+                if (distanceToPlayer <= chaseRadius)
                 {
-                    suspiciousTimer = 0f;
-                    state = GhostState.Roam;
+                    State = GhostState.Chase;
+                    susTimer = 0;
                 }
-                if (distToPlayer <= chaseRadius && CanSeePlayer()) state = GhostState.Chase;
+                else if (susTimer >= suspiciousTime || distanceToPlayer > suspiciousRadius)
+                {
+                    susTimer = 0;
+                    State = GhostState.Roam;
+                }
                 break;
 
             case GhostState.Chase:
+                agent.speed = chaseSpeed;
                 agent.SetDestination(player.position);
-                if (distToPlayer <= attackDistance) StartCoroutine(AttackSequence());
-                if (!CanSeePlayer() && distToPlayer > chaseRadius) state = GhostState.Suspicious;
+
+                if (distanceToPlayer <= attackDistance) StartCoroutine(AttackSequence());
+                if (distanceToPlayer > chaseRadius) State = GhostState.Suspicious;
+                break;
+
+            case GhostState.Survival:
+                agent.speed = chaseSpeed;
+                agent.SetDestination(player.position);
+                if (distanceToPlayer <= attackDistance) StartCoroutine(AttackSequence());
                 break;
         }
     }
 
-    // --- MANUAL ROTATION FOR ROOT MOTION ---
-    void HandleManualRotation()
+    // --- Fixed Music Logic (Called only once per state change) ---
+    private void OnStateChanged(GhostState newState)
     {
-        Vector3 targetDirection = Vector3.zero;
-
-        if (state == GhostState.Chase)
+        if (newState == GhostState.Chase || newState == GhostState.Survival)
         {
-            // When chasing, look directly at the player
-            targetDirection = (player.position - transform.position).normalized;
+            SoundManager.Instance.PlayGameGrannyMusic();
         }
         else
         {
-            // When roaming/suspicious, look where the NavMesh path is actually going
-            // This prevents her from walking "backwards" or "sideways"
-            if (agent.steeringTarget != Vector3.zero)
-            {
-                targetDirection = (agent.steeringTarget - transform.position).normalized;
-            }
-        }
-
-        if (targetDirection != Vector3.zero)
-        {
-            targetDirection.y = 0; // Keep her vertical
-            Quaternion targetRot = Quaternion.LookRotation(targetDirection);
-
-            // Use a higher multiplier for rotationSpeed if it feels slow
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            SoundManager.Instance.PlayGameDefaultMusic();
         }
     }
 
-    // --- HEAD LOOK LOGIC ---
+    private void GoToNextWaypoint()
+    {
+        if (waypoints.Length == 0) return;
+        currentWaypoint = UnityEngine.Random.Range(0, waypoints.Length);
+        agent.SetDestination(waypoints[currentWaypoint].position);
+    }
+
     private void OnAnimatorIK(int layerIndex)
     {
         if (anim == null) return;
+        bool shouldLook = (State == GhostState.Chase || State == GhostState.Survival) && !isAttacking && !isWaitingAtStart;
 
-        // Only look at player when Chasing or Suspicious
-        bool shouldLook = (state == GhostState.Chase || state == GhostState.Suspicious) && !isAttacking;
-
-        lookAtWeight = Mathf.Lerp(lookAtWeight, shouldLook ? 1f : 0f, Time.deltaTime * lookAtSpeed);
-
-        if (lookAtWeight > 0.01f)
+        if (shouldLook)
         {
-            anim.SetLookAtWeight(lookAtWeight, 0.2f, 0.8f, 0.9f, 0.5f);
-            anim.SetLookAtPosition(player.position + Vector3.up * 1.5f); // Aim for player's head area
+            anim.SetLookAtWeight(lookAtWeight, 0.1f, 0.9f, 1.0f, 0.5f);
+            anim.SetLookAtPosition(player.position + Vector3.up * 1.3f);
         }
+        else anim.SetLookAtWeight(0);
     }
-
-    [Header("Jumpscare Settings")]
-    [SerializeField] float forwardOffset = 1.2f; // Distance in front of player's face
-    [SerializeField] float heightOffset = 0f;    // Adjust if she appears too high or low
 
     IEnumerator AttackSequence()
     {
         isAttacking = true;
-        agent.enabled = false; // Disable NavMeshAgent to allow manual position snapping
+        agent.isStopped = true;
 
-        // 1. Calculate the position directly in front of the player
-        // player.forward is the direction the player is looking
-        Vector3 jumpscarePos = player.position + (player.forward * forwardOffset);
-        jumpscarePos.y = player.position.y + heightOffset;
+        transform.position = player.position + (player.forward * 1.2f);
+        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
 
-        // 2. Snap Granny to that position
-        transform.position = jumpscarePos;
-
-        // 3. Make Granny look exactly at the player's face
-        Vector3 lookAtPlayer = player.position;
-        lookAtPlayer.y = transform.position.y; // Keep her vertical
-        transform.LookAt(lookAtPlayer);
-
-        // 4. Play Animation and Event
         if (anim != null) anim.Play(attackAnimName);
         OnAttackEnemy?.Invoke();
 
-        Debug.Log("Jumpscare Snapped!");
-
         yield return new WaitForSeconds(attackAnimDuration);
 
-        // 5. Cleanup
         isAttacking = false;
-        agent.enabled = true; // Re-enable for roaming
         agent.isStopped = false;
+        if (State != GhostState.Survival) State = GhostState.Roam;
+    }
 
+    public void ResetGhost()
+    {
+        StopAllCoroutines();
+        StartCoroutine(StartDelayRoutine());
+    }
+
+    IEnumerator StartDelayRoutine()
+    {
+        isWaitingAtStart = true;
+        agent.enabled = false;
+
+        transform.position = startPos;
+        transform.rotation = startRot;
+
+        if (anim != null) anim.Play(idleAnimName);
+
+        yield return new WaitForSeconds(startDelay);
+
+        agent.enabled = true;
+        isWaitingAtStart = false;
+        State = GhostState.Roam;
         if (anim != null) anim.Play(walkAnimName);
-
-        state = GhostState.Roam;
         GoToNextWaypoint();
     }
-    void GoToNextWaypoint()
-    {
-        if (waypoints.Length == 0) return;
-        if (followRandomWaypoint) currentWaypoint = UnityEngine.Random.Range(0, waypoints.Length);
-        agent.SetDestination(waypoints[currentWaypoint].position);
-        currentWaypoint = (currentWaypoint + 1) % waypoints.Length;
-    }
 
-    bool CanSeePlayer()
+    private void OnDrawGizmos()
     {
-        Vector3 dirToPlayer = (player.position - transform.position).normalized;
-        Ray ray = new Ray(transform.position + Vector3.up * 1.5f, dirToPlayer);
-        if (Physics.Raycast(ray, out RaycastHit hit, 15f))
-        {
-            if (hit.transform == player) return true;
-        }
-        return false;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, suspiciousRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, chaseRadius);
     }
 }
-
 public enum GhostState
 {
-    Roam,
-    Suspicious,
-    Chase,
-    Attack
+    Roam, Survival,Chase,Attack,Suspicious
 }

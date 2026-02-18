@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int finaleTaskIndex = 9; // Task 10 is index 9
     [SerializeField] private float survivalTime = 120f; // 2 Minutes
 
-    public Action OnSurvivalStarted;
+    public static event Action OnSurvivalStarted;
     public Action OnGameWin;
 
     private bool isInSurvivalMode = false;
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     public bool isGameStarted = false;
 
-    public Action OnGameStarted;
+    public static event Action OnGameStarted;
 
     private void Awake()
     {

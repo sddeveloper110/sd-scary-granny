@@ -81,14 +81,14 @@ public class CanvasManager : MonoBehaviour
         // ✅ Sliders auto-update
         for (int i = 0; i < soundVol.Length; i++)
         {
-            //soundVol[i].value = AudioManager.SoundVol;
-            //soundVol[i].onValueChanged.AddListener(AudioManager.SetSound);
+            soundVol[i].value = SoundManager.SoundVol;
+            soundVol[i].onValueChanged.AddListener(SoundManager.SetSoundVolume);
         }
 
         for (int i = 0; i < musicVol.Length; i++)
         {
-            //musicVol[i].value = AudioManager.MusicVol;
-            //musicVol[i].onValueChanged.AddListener(AudioManager.SetMusic);
+            musicVol[i].value = SoundManager.MusicVol;
+            musicVol[i].onValueChanged.AddListener(SoundManager.SetMusicVolume);
         }
 
         // ✅ Auto assign open/close buttons
@@ -98,7 +98,7 @@ public class CanvasManager : MonoBehaviour
             {
                 btn.onClick.AddListener(() =>
                 {
-                    //AudioManager.PlayTap();
+                    SoundManager.PlayTapAudio();
                     EnablePanel(p.type);
                 });
             }
@@ -107,7 +107,7 @@ public class CanvasManager : MonoBehaviour
             {
                 btn.onClick.AddListener(() =>
                 {
-                    //AudioManager.PlayTap();
+                    SoundManager.PlayTapAudio();
                     p.panelGO.SetActive(false);
                 });
             }
@@ -249,8 +249,11 @@ public class CanvasManager : MonoBehaviour
 
     #endregion
 
- 
 
+    public void OnStartButtonPress()
+    {
+        OnGameStart?.Invoke();
+    }
 
     public void OpenUrl(string url)
     {

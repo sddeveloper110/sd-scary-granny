@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         if (GameManager.Instance != null)
-            GameManager.Instance.OnGameStarted += SetupForGameplay;
+            GameManager.OnGameStarted += SetupForGameplay;
         GhostAi.OnAttackEnemy += HandlePlayerHit;
     }
 
@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         if (GameManager.Instance != null)
-            GameManager.Instance.OnGameStarted -= SetupForGameplay;
+            GameManager.OnGameStarted -= SetupForGameplay;
     GhostAi.OnAttackEnemy -= HandlePlayerHit;
     }
 

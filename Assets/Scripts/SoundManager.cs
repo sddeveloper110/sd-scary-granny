@@ -8,18 +8,20 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
 
-    [Header("Audio Clips")]
-    [SerializeField] private AudioClip menuMusic;
-    [SerializeField] private AudioClip gameMusic;
-    [SerializeField] private AudioClip horrosMusic;
-    [SerializeField] public AudioClip slapSound; // Slap ke liye sound yahan assign karein
+    [Header("Audio Clip Arrays (Random Selection)")]
+    [SerializeField] private AudioClip[] menuMusicTracks;
+    [SerializeField] private AudioClip[] gameMusicTracks;
+    [SerializeField] private AudioClip[] horrorMusicTracks;
 
+    [Header("Single SFX")]
+    public AudioClip slapSound;
+    public AudioClip tapSound;
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Optional: Scene change pe sound na ruke
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -33,28 +35,38 @@ public class SoundManager : MonoBehaviour
         PlayMenuMusic();
     }
 
-    // --- SFX / Sound Playback ---
-
-
-
     #region Music Control
 
     public void PlayMenuMusic()
     {
-        if (musicSource == null || menuMusic == null) return;
-        UpdateMusicSettings(menuMusic);
+        PlayRandomFromList(menuMusicTracks);
     }
 
     public void PlayGameDefaultMusic()
     {
-        if (musicSource == null || gameMusic == null) return;
-        UpdateMusicSettings(gameMusic);
+        PlayRandomFromList(gameMusicTracks);
     }
 
     public void PlayGameGrannyMusic()
     {
-        if (musicSource == null || horrosMusic == null) return;
-        UpdateMusicSettings(horrosMusic);
+        PlayRandomFromList(horrorMusicTracks);
+    }
+
+    /// <summary>
+    /// Picks a random clip from the provided array and plays it.
+    /// </summary>
+    private void PlayRandomFromList(AudioClip[] clips)
+    {
+        if (musicSource == null || clips == null || clips.Length == 0) return;
+
+        // Pick a random index
+        int randomIndex = Random.Range(0, clips.Length);
+        AudioClip selectedClip = clips[randomIndex];
+
+        // Only switch if it's a different clip (prevents restarting same song)
+        if (musicSource.clip == selectedClip && musicSource.isPlaying) return;
+
+        UpdateMusicSettings(selectedClip);
     }
 
     private void UpdateMusicSettings(AudioClip clip)
@@ -70,10 +82,9 @@ public class SoundManager : MonoBehaviour
         if (musicSource != null) musicSource.Stop();
     }
 
-    // Properties for Music
-    public void SetMusicVolume(float volume)
+    public static void SetMusicVolume(float volume)
     {
-        if (musicSource != null) musicSource.volume = Mathf.Clamp01(volume);
+        if (Instance.musicSource != null) Instance.musicSource.volume = Mathf.Clamp01(volume);
         MusicVol = volume;
     }
 
@@ -88,7 +99,7 @@ public class SoundManager : MonoBehaviour
     public static void PlayThisAudio(AudioSource audioSource, AudioClip audioClip)
     {
         if (audioSource == null || audioClip == null) return;
-        audioSource.volume = SoundVol; // SoundVol property use ho rahi hai
+        audioSource.volume = SoundVol;
         audioSource.PlayOneShot(audioClip);
     }
 
@@ -97,12 +108,15 @@ public class SoundManager : MonoBehaviour
         if (Instance.sfxSource == null || audioClip == null) return;
         Instance.sfxSource.PlayOneShot(audioClip, SoundVol);
     }
-    public void SetSoundVolume(float volume)
+
+    public static void PlayTapAudio()
     {
-        if (sfxSource != null)
-        {
-            sfxSource.volume = volume;
-        }
+        PlayThisAudio(Instance.tapSound);
+    }
+
+    public static void SetSoundVolume(float volume)
+    {
+        if (Instance.sfxSource != null) Instance.sfxSource.volume = volume;
         SoundVol = volume;
     }
 
@@ -111,6 +125,5 @@ public class SoundManager : MonoBehaviour
         get => PlayerPrefs.GetFloat(nameof(SoundVol), .5f);
         set => PlayerPrefs.SetFloat(nameof(SoundVol), value);
     }
-
     #endregion
 }
