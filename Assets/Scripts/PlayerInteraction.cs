@@ -66,7 +66,7 @@ public class PlayerInteraction : MonoBehaviour
         // Drop button
         dropBtn.gameObject.SetActive(heldItem != null);
 
-        interactBtn.gameObject.SetActive(heldItem != null && currentInteractable != null);
+        interactBtn.gameObject.SetActive(currentInteractable != null);
 
     }
 
@@ -100,11 +100,12 @@ public class PlayerInteraction : MonoBehaviour
     private void Update()
     {
         HandleKeyboardInput();
-        HandleClickInput();   // NEW FEATURE
+        HandleClickInput();
     }
 
     private void HandleKeyboardInput()
-    {
+    {  
+        // NEW FEATURE
         // Pick up / Throw using keyboard (E)
         if (Input.GetKeyDown(KeyCode.E))
         {

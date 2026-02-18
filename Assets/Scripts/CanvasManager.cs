@@ -130,7 +130,17 @@ public class CanvasManager : MonoBehaviour
         if (openedPanel.panelGO.activeSelf)
             return;
 
-        openedPanel.panelGO.SetActive(true);
+        if(type == PanelType.MainMenu)
+        {
+            SoundManager.Instance.PlayMenuMusic();
+        }
+        else if(type == PanelType.Gameplay)
+        {
+            SoundManager.Instance.PlayGameDefaultMusic();
+        }
+
+            openedPanel.panelGO.SetActive(true);
+
 
         if (openedPanel.hideOthers)
         {

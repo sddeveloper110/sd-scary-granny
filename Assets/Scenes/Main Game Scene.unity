@@ -11463,6 +11463,107 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2998607239146228082, guid: 960d48f70730e074bb66f03bc00f55e1, type: 3}
   m_PrefabInstance: {fileID: 316568882}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &320600110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 320600111}
+  - component: {fileID: 320600114}
+  - component: {fileID: 320600113}
+  - component: {fileID: 320600112}
+  m_Layer: 5
+  m_Name: Canvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &320600111
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320600110}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2005860659}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &320600112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320600110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &320600113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320600110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!223 &320600114
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320600110}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
 --- !u!1001 &321705436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15757,7 +15858,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -30977,8 +31078,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8007812, y: 2.226404, z: 1.4999944}
-  m_Center: {x: -1.0618591, y: 1.113202, z: -0.7470426}
+  m_Size: {x: 1.9086304, y: 2.226404, z: 1.4999944}
+  m_Center: {x: -1.0079346, y: 1.113202, z: -0.7470426}
 --- !u!114 &840624469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30992,7 +31093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 840624463}
-  animationTrigger: OpenBackdoor
+  animationTrigger: OpenDoor
   interactionRequired: 0
 --- !u!1001 &841963832
 PrefabInstance:
@@ -35604,6 +35705,8 @@ MonoBehaviour:
   missionSpawnPoints: {fileID: 314931580}
   hintButton: {fileID: 8509624275611239881}
   objectiveText: {fileID: 2308413598067220328}
+  finaleTaskIndex: 4
+  survivalTime: 120
   tasks:
   - taskName: Break the Chain
     description: The mansion gate is locked with a heavy chain. Find an axe or hammer
@@ -50208,10 +50311,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypointParent: {fileID: 1022191552}
   followRandomWaypoint: 1
-  suspiciousRadius: 8
-  chaseRadius: 6
+  suspiciousRadius: 10
+  chaseRadius: 8
   suspiciousTime: 3
-  attackDistance: 4
+  attackDistance: 2
   rotationSpeed: 10
   anim: {fileID: 1432649345}
   walkAnimName: Walking
@@ -71788,7 +71891,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 320600111}
   m_Father: {fileID: 495398389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2006530147
@@ -79363,7 +79467,7 @@ Transform:
   m_GameObject: {fileID: 919132149037568308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.583, y: 0, z: 0.586}
+  m_LocalPosition: {x: 0.583, y: 0.032, z: 0.586}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -80878,8 +80982,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.4727173, y: 2.226404, z: 2.6214294}
-  m_Center: {x: -0.03768921, y: 1.113202, z: -0.6666107}
+  m_Size: {x: 1.0487671, y: 2.226404, z: 2.6214294}
+  m_Center: {x: 0.6742859, y: 1.113202, z: -0.6666107}
 --- !u!1001 &924441849035163699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92684,7 +92788,7 @@ Transform:
   m_GameObject: {fileID: 8351053838765601691}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.008, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -96671,7 +96775,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 1232928141}
-  animationTrigger: OpenBackdoor
+  animationTrigger: OpenDoor
   interactionRequired: 0
 --- !u!54 &6348579717541660213
 Rigidbody:
@@ -97408,7 +97512,7 @@ Transform:
   m_GameObject: {fileID: 611285955427951503}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0000005426252, y: 0.020177104, z: -0.00000015155614}
+  m_LocalPosition: {x: -0.0000005426252, y: -0.013822902, z: -0.00000015155614}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -98750,8 +98854,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1412827136496662866}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.0543, z: -0.29999998}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.015, z: 0.174}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -99537,7 +99641,7 @@ Transform:
   m_GameObject: {fileID: 1173021401731890636}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0.5606048}
+  m_LocalPosition: {x: -0, y: 0.003, z: 0.5606048}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101686,6 +101790,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2878432252366085544, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
+      propertyPath: near clip plane
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 2878432252366085544, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: m_BackGroundColor.b
       value: 0.4745098
       objectReference: {fileID: 0}
@@ -103500,7 +103608,7 @@ Transform:
   m_GameObject: {fileID: 6821887586638433049}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00063390157, y: -9.325873e-16, z: 0.45037633}
+  m_LocalPosition: {x: 0.00063390157, y: 0.0393, z: 0.45037633}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -107048,7 +107156,7 @@ Transform:
   m_GameObject: {fileID: 6017510240158857035}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8735445e-31, y: -2.8865798e-16, z: -0.049999997}
+  m_LocalPosition: {x: -1.8735445e-31, y: 0, z: -0.049999997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

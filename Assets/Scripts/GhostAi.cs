@@ -70,7 +70,7 @@ public class GhostAi : MonoBehaviour
 
         waypoints = new Transform[waypointParent.childCount];
         for (int i = 0; i < waypoints.Length; i++)
-            waypoints[i] = waypointParent.GetChild(i);
+               waypoints[i] = waypointParent.GetChild(i);
 
         // Start the delayed activation
         StartCoroutine(StartWithDelay());
@@ -79,7 +79,7 @@ public class GhostAi : MonoBehaviour
     IEnumerator StartWithDelay()
     {
         //// Shuru mein agent aur logic band rahegi
-        //isAttacking = true;
+        isAttacking = true;
       //  if (anim != null) anim.Play("Idle"); // Agar idle animation hai toh, warna walk hi rehne dein
 
         yield return new WaitForSeconds(startDelay);
