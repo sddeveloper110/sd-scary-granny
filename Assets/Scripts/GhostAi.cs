@@ -37,7 +37,6 @@ public class GhostAi : MonoBehaviour
         {
             if (_state == value) return; // Exit if state hasn't actually changed
             _state = value;
-            OnStateChanged(_state);
         }
     }
 
@@ -123,13 +122,18 @@ public class GhostAi : MonoBehaviour
             case GhostState.Chase:
                 agent.speed = chaseSpeed;
                 agent.SetDestination(player.position);
-
+                OnStateChanged(_state);
                 if (distanceToPlayer <= attackDistance) StartCoroutine(AttackSequence());
-                if (distanceToPlayer > chaseRadius) State = GhostState.Suspicious;
+                if (distanceToPlayer > chaseRadius)
+                {
+                    OnStateChanged(_state);
+                    State = GhostState.Suspicious;
+                }
                 break;
 
             case GhostState.Survival:
                 agent.speed = chaseSpeed;
+                 OnStateChanged(_state);
                 agent.SetDestination(player.position);
                 if (distanceToPlayer <= attackDistance) StartCoroutine(AttackSequence());
                 break;
