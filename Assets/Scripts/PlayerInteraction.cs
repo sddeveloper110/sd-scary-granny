@@ -19,7 +19,7 @@ public class PlayerInteraction : MonoBehaviour
     {
         pickBtn.onClick.AddListener(Pick);
         dropBtn.onClick.AddListener(Drop);
-        interactBtn.onClick.AddListener(Interact); 
+        interactBtn.onClick.AddListener(Interact);
 
         UpdateButtons();
     }
@@ -58,19 +58,22 @@ public class PlayerInteraction : MonoBehaviour
         UpdateButtons();
     }
 
+    // Logic updated per your requirement:
     void UpdateButtons()
     {
-        // Pick button
+        if (pickBtn == null || dropBtn == null || interactBtn == null) return;
+
+        // Pick: Only show if hand is empty AND there is a target to pick
         pickBtn.gameObject.SetActive(heldItem == null && currentTarget != null);
 
-        // Drop button
+        // Drop: Only show if we are holding something
         dropBtn.gameObject.SetActive(heldItem != null);
 
+        // Interact: Show if an interactable is in range (regardless of holding item or not)
         interactBtn.gameObject.SetActive(currentInteractable != null);
-
     }
 
-    // ===== Button Actions =====
+    // ===== Action Wrappers (To ensure UI updates) =====
 
     public void Pick()
     {
@@ -78,7 +81,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             heldItem = currentTarget;
             heldItem.PickUp(hand);
-            UpdateButtons();
+            UpdateButtons(); // Critical call
         }
     }
 
@@ -88,14 +91,18 @@ public class PlayerInteraction : MonoBehaviour
         {
             heldItem.Throw(hand.forward * throwForce);
             heldItem = null;
+            UpdateButtons(); // Critical call
+        }
+    }
+
+    public void Interact()
+    {
+        if (currentInteractable != null)
+        {
+            currentInteractable.TryInteract(heldItem);
             UpdateButtons();
         }
     }
-    public void Interact()
-    {
-            currentInteractable.TryInteract(heldItem);
-    }
-
 
     private void Update()
     {
@@ -104,27 +111,16 @@ public class PlayerInteraction : MonoBehaviour
     }
 
     private void HandleKeyboardInput()
-    {  
-        // NEW FEATURE
-        // Pick up / Throw using keyboard (E)
+    {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (heldItem == null && currentTarget != null)
-            {
-                heldItem = currentTarget;
-                heldItem.PickUp(hand);
-            }
-            else if (heldItem != null)
-            {
-                heldItem.Throw(hand.forward * throwForce);
-                heldItem = null;
-            }
+            if (heldItem == null && currentTarget != null) Pick();
+            else if (heldItem != null) Drop();
         }
 
-        // Interact using keyboard (F)
         if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
         {
-            currentInteractable.TryInteract(heldItem);
+            Interact();
         }
     }
 
@@ -133,33 +129,19 @@ public class PlayerInteraction : MonoBehaviour
         if (!Input.GetMouseButtonDown(0)) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (!Physics.Raycast(ray, out RaycastHit hit, 5f)) return;
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, 5f))
-        {
-            return;
-        }
-
-
-        // Click pickup (ONLY if inside trigger)
+        // Click pickup
         if (currentTarget != null && hit.collider.GetComponentInParent<PickableObject>() == currentTarget)
         {
-            if (heldItem == null)
-            {
-                heldItem = currentTarget;
-                heldItem.PickUp(hand);
-            }
-            else if (heldItem == currentTarget)
-            {
-                heldItem.Throw(hand.forward * throwForce);
-                heldItem = null;
-            }
-            return;
+            if (heldItem == null) Pick();
+            else if (heldItem == currentTarget) Drop();
         }
 
-        // Click interact (ONLY if inside trigger)
+        // Click interact
         if (currentInteractable != null && hit.collider.GetComponentInParent<InteractableObject>() == currentInteractable)
         {
-            currentInteractable.TryInteract(heldItem);
+            Interact();
         }
     }
 }

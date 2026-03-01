@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
         if (GameManager.Instance != null)
             GameManager.OnGameStarted += SetupForGameplay;
         GhostAi.OnAttackEnemy += HandlePlayerHit;
+       
     }
 
 

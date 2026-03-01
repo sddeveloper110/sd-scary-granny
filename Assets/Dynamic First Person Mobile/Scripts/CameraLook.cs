@@ -37,7 +37,15 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
 		[HideInInspector] public Vector2 delta = Vector2.zero;
 
-		private void Start() 
+        private void OnEnable()
+        {
+			CanvasManager.OnSensetivityChange += SetSensitivity;
+        }
+        private void OnDisable()
+        {
+            CanvasManager.OnSensetivityChange -= SetSensitivity;
+        }
+        private void Start() 
 		{
 			
 			if (Camera.main != null)
@@ -112,7 +120,12 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
 		}
 
-		public void SetMode(int value)
+        public void SetSensitivity(float sensitivity)
+        {
+            m_Sensitivity = new Vector2(sensitivity, sensitivity);
+        }
+
+        public void SetMode(int value)
 		{
 			switch (value)
 			{

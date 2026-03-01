@@ -36,6 +36,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Volume UI")]
     [SerializeField] Slider[] soundVol;
     [SerializeField] Slider[] musicVol;
+    [SerializeField] Slider sensetivitySlider;
 
     [Header("Text")]
     [SerializeField] TextMeshProUGUI loadingTxt;
@@ -54,6 +55,7 @@ public class CanvasManager : MonoBehaviour
     public static event Action OnGameStart;
     public static event Action OnGameExit;
     public static event Action OnGameRetry;
+    public static event Action<float> OnSensetivityChange;
 
     void Start()
     {
@@ -75,8 +77,13 @@ public class CanvasManager : MonoBehaviour
         {
             exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
         }
+        sensetivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 1f);
 
-       
+        sensetivitySlider.onValueChanged.AddListener((value) =>
+        {
+            PlayerPrefs.SetFloat("Sensitivity", value);
+            OnSensetivityChange?.Invoke(value);
+        });
 
         // ✅ Sliders auto-update
         for (int i = 0; i < soundVol.Length; i++)

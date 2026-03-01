@@ -46,6 +46,7 @@ public class GhostAi : MonoBehaviour
 
     private float susTimer;
     private bool isAttacking;
+    private bool shouldPlaySuspense = false;
     private bool isWaitingAtStart; // New delay bool
     private int currentWaypoint;
     private Vector3 startPos;
@@ -85,6 +86,7 @@ public class GhostAi : MonoBehaviour
         if (!GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart) return;
 
         HandleLogic();
+        MusicHandler();
     }
 
     private void HandleLogic()
@@ -122,18 +124,18 @@ public class GhostAi : MonoBehaviour
             case GhostState.Chase:
                 agent.speed = chaseSpeed;
                 agent.SetDestination(player.position);
-                OnStateChanged(_state);
+                shouldPlaySuspense = true;
                 if (distanceToPlayer <= attackDistance) StartCoroutine(AttackSequence());
                 if (distanceToPlayer > chaseRadius)
                 {
-                    OnStateChanged(_state);
+                    shouldPlaySuspense = false;
                     State = GhostState.Suspicious;
                 }
                 break;
 
             case GhostState.Survival:
                 agent.speed = chaseSpeed;
-                 OnStateChanged(_state);
+                shouldPlaySuspense = true;
                 agent.SetDestination(player.position);
                 if (distanceToPlayer <= attackDistance) StartCoroutine(AttackSequence());
                 break;
@@ -141,15 +143,27 @@ public class GhostAi : MonoBehaviour
     }
 
     // --- Fixed Music Logic (Called only once per state change) ---
-    private void OnStateChanged(GhostState newState)
+
+    private bool lastSuspenseState; // Previous frame ka record rakhne ke liye
+
+    private void MusicHandler()
     {
-        if (newState == GhostState.Chase || newState == GhostState.Survival)
+        // Agar current state purani state se mukhtalif hai (bool has flipped)
+        if (shouldPlaySuspense != lastSuspenseState)
         {
-            SoundManager.Instance.PlayGameGrannyMusic();
-        }
-        else
-        {
-            SoundManager.Instance.PlayGameDefaultMusic();
+            if (shouldPlaySuspense)
+            {
+                // Pehli dafa true hua
+                SoundManager.Instance.PlayGameGrannyMusic();
+            }
+            else
+            {
+                // Pehli dafa false hua
+                SoundManager.Instance.PlayGameDefaultMusic();
+            }
+
+            // Update last state taake agli frame mein yeh 'if' trigger na ho
+            lastSuspenseState = shouldPlaySuspense;
         }
     }
 
