@@ -9,6 +9,7 @@ public class PickableObject : MonoBehaviour
     public Animator animator;
     public string animationTrigger = "Activate";
 
+    public AudioClip useAudio;
     public bool isPicked;
     protected Rigidbody rb;
 
@@ -50,5 +51,9 @@ public class PickableObject : MonoBehaviour
         // Optional: Add object-specific action here
         if (animator != null)
             animator.SetTrigger(animationTrigger);
+        if (!useAudio)
+        {
+            SoundManager.PlayThisAudio(useAudio);
+        }
     }
 }

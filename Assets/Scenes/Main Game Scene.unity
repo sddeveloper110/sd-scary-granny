@@ -4072,6 +4072,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 502766683}
   animator: {fileID: 0}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &106874032
 Rigidbody:
@@ -13766,6 +13767,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 1936947873}
   animator: {fileID: 0}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &370921865
 Rigidbody:
@@ -15789,6 +15791,73 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 8218764242573223044, guid: 70c61902f771fcb4c8a69af2f6d90e3e, type: 3}
   m_PrefabInstance: {fileID: 411282024}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &412809876
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 644473099}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+      propertyPath: m_Name
+      value: Scary Granny
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+--- !u!4 &412809877 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+  m_PrefabInstance: {fileID: 412809876}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &412809878 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
+  m_PrefabInstance: {fileID: 412809876}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &414268519
 PrefabInstance:
@@ -25404,6 +25473,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 1854935221}
   animator: {fileID: 0}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &642738947
 Rigidbody:
@@ -25484,7 +25554,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1432649342}
+  - {fileID: 412809877}
   m_Father: {fileID: 496962680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &644473100
@@ -25529,7 +25599,7 @@ MonoBehaviour:
   chaseRadius: 4.54
   suspiciousTime: 3
   attackDistance: 1
-  anim: {fileID: 1432649345}
+  anim: {fileID: 412809878}
   walkAnimName: Walking
   idleAnimName: Granny_Idle
   attackAnimName: Zombie Attack
@@ -34526,71 +34596,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 933423743}
   m_CullTransparentMesh: 1
---- !u!1001 &933494064
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 644473099}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_Name
-      value: Granny
-      objectReference: {fileID: 0}
-    - target: {fileID: 5866666021909216657, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 147a0c6f960ec7345bf10c0f58eca9c0, type: 2}
-    - target: {fileID: 5866666021909216657, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
 --- !u!1001 &934253344
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39032,6 +39037,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 604079044}
   animator: {fileID: 5709785288952737876}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &1071654014
 Rigidbody:
@@ -42135,8 +42141,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1808620555}
-  - {fileID: 7391888502481517135}
   - {fileID: 379533218}
+  - {fileID: 7391888502481517135}
   - {fileID: 6894072334913657200}
   - {fileID: 2003892521}
   - {fileID: 133906135}
@@ -45623,7 +45629,7 @@ Animator:
   m_GameObject: {fileID: 1233449153}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 83644dc5c838b0a47a259c35f488a28a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -50064,7 +50070,7 @@ Terrain:
   m_SplatMapDistance: 1000
   m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
-  m_ShadowCastingMode: 2
+  m_ShadowCastingMode: 0
   m_DrawHeightmap: 1
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
@@ -50959,6 +50965,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 255298238}
   animator: {fileID: 8253152690223150450}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &1407179066
 Rigidbody:
@@ -51622,16 +51629,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 7860395498815269461, guid: 654dd02befd841e4ba31f254ee518c69, type: 3}
   m_PrefabInstance: {fileID: 1426872753}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1432649342 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-  m_PrefabInstance: {fileID: 933494064}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1432649345 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 408c6bde31c6bd245a276c2c4e48542b, type: 3}
-  m_PrefabInstance: {fileID: 933494064}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1432931660
 PrefabInstance:
@@ -61445,6 +61442,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 992348198}
   animator: {fileID: 0}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &1690296740
 Rigidbody:
@@ -63190,6 +63188,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 1368545953}
   animator: {fileID: 6860290942571395462}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &1728741401
 Rigidbody:
@@ -80391,6 +80390,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8876311104705000408, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
+      propertyPath: useAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: c14dc479baef8b1499b353cebaa9afa5, type: 3}
+    - target: {fileID: 8876311104705000408, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
       propertyPath: interactsWith
       value: 
       objectReference: {fileID: 6471652502616847142}
@@ -95973,6 +95976,14 @@ PrefabInstance:
       value: -0.84919626
       objectReference: {fileID: 0}
     - target: {fileID: 8738127173345745322, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 1233449155}
+    - target: {fileID: 8738127173345745322, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
+      propertyPath: useAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b69717e9f9fec84faabaa69a2e76a78, type: 3}
+    - target: {fileID: 8738127173345745322, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
       propertyPath: interactsWith
       value: 
       objectReference: {fileID: 818260368}
@@ -100825,6 +100836,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 1866446844}
   animator: {fileID: 636136503}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!54 &6894072334913657202
 Rigidbody:
@@ -102921,8 +102933,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.6420517, y: 1, z: 1.3156614}
+  m_Center: {x: 0.005252838, y: -2.894651e-10, z: 0.15783073}
 --- !u!114 &7391888502481517138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102939,6 +102951,7 @@ MonoBehaviour:
   highlightVFX: {fileID: 148210353}
   animator: {fileID: 7391888502481517139}
   animationTrigger: Activate
+  useAudio: {fileID: 0}
   isPicked: 0
 --- !u!95 &7391888502481517139
 Animator:
