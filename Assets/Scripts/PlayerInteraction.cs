@@ -161,13 +161,16 @@ public class PlayerInteraction : MonoBehaviour
     bool IsFacingTarget(Transform target)
     {
         Vector3 dirToTarget = (target.position - transform.position).normalized;
-
         float distance = Vector3.Distance(transform.position, target.position);
-        if (distance > interactDistance) return false;
+
+        if (distance > interactDistance)
+            return false;
+
+        float dynamicThreshold = Mathf.Lerp(0.3f, viewDotThreshold, distance / interactDistance);
 
         float dot = Vector3.Dot(transform.forward, dirToTarget);
 
-        return dot >= viewDotThreshold;
+        return dot >= dynamicThreshold;
     }
     private void OnDrawGizmosSelected()
     {
