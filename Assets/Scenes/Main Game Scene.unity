@@ -95950,15 +95950,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7101332921277557961, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
       propertyPath: m_Size.x
-      value: 3
+      value: 1.9851518
       objectReference: {fileID: 0}
     - target: {fileID: 7101332921277557961, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
       propertyPath: m_Size.y
-      value: 4
+      value: 2.199038
       objectReference: {fileID: 0}
     - target: {fileID: 7101332921277557961, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
       propertyPath: m_Size.z
-      value: 3
+      value: 2.885249
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101332921277557961, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
+      propertyPath: m_Center.x
+      value: -0.5074217
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101332921277557961, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
+      propertyPath: m_Center.y
+      value: 0.900481
+      objectReference: {fileID: 0}
+    - target: {fileID: 7101332921277557961, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
+      propertyPath: m_Center.z
+      value: -0.84919626
       objectReference: {fileID: 0}
     - target: {fileID: 8738127173345745322, guid: 02c3a23618549944e83bec1225b4e435, type: 3}
       propertyPath: interactsWith
@@ -103555,7 +103567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2878432253606566071, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2878432253606566072, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: m_TopClamp
@@ -103721,6 +103733,14 @@ PrefabInstance:
       propertyPath: interactBtn
       value: 
       objectReference: {fileID: 8099096673321288139}
+    - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
+      propertyPath: interactDistance
+      value: 2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
+      propertyPath: viewDotThreshold
+      value: 0.801
+      objectReference: {fileID: 0}
     - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: interactableLayer.m_Bits
       value: 8

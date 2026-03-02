@@ -15,6 +15,11 @@ public class PlayerInteraction : MonoBehaviour
     private PickableObject heldItem;
     private InteractableObject currentInteractable;
 
+    [Header("View Settings")]
+    public float interactDistance = 4f;
+    [Range(0.5f, 1f)]
+    public float viewDotThreshold = 0.75f;
+
     void Start()
     {
         pickBtn.onClick.AddListener(Pick);
@@ -63,14 +68,18 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (pickBtn == null || dropBtn == null || interactBtn == null) return;
 
-        // Pick: Only show if hand is empty AND there is a target to pick
-        pickBtn.gameObject.SetActive(heldItem == null && currentTarget != null);
+        pickBtn.gameObject.SetActive(
+            heldItem == null &&
+            currentTarget != null &&
+            IsFacingTarget(currentTarget.transform)
+        );
 
-        // Drop: Only show if we are holding something
         dropBtn.gameObject.SetActive(heldItem != null);
 
-        // Interact: Show if an interactable is in range (regardless of holding item or not)
-        interactBtn.gameObject.SetActive(currentInteractable != null);
+        interactBtn.gameObject.SetActive(
+            currentInteractable != null &&
+            IsFacingTarget(currentInteractable.transform)
+        );
     }
 
     // ===== Action Wrappers (To ensure UI updates) =====
@@ -108,6 +117,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         HandleKeyboardInput();
         HandleClickInput();
+        if (currentTarget != null || currentInteractable != null)
+        {
+            UpdateButtons();
+        }
     }
 
     private void HandleKeyboardInput()
@@ -143,5 +156,39 @@ public class PlayerInteraction : MonoBehaviour
         {
             Interact();
         }
+    }
+
+    bool IsFacingTarget(Transform target)
+    {
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
+
+        float distance = Vector3.Distance(transform.position, target.position);
+        if (distance > interactDistance) return false;
+
+        float dot = Vector3.Dot(transform.forward, dirToTarget);
+
+        return dot >= viewDotThreshold;
+    }
+    private void OnDrawGizmosSelected()
+    {
+        // Draw interaction distance sphere
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, interactDistance);
+
+        // Convert dot threshold to angle
+        float angle = Mathf.Acos(viewDotThreshold) * Mathf.Rad2Deg;
+
+        // Draw left boundary
+        Vector3 leftDir = Quaternion.AngleAxis(-angle, Vector3.up) * transform.forward;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(transform.position, leftDir * interactDistance);
+
+        // Draw right boundary
+        Vector3 rightDir = Quaternion.AngleAxis(angle, Vector3.up) * transform.forward;
+        Gizmos.DrawRay(transform.position, rightDir * interactDistance);
+
+        // Draw forward line
+        Gizmos.color = Color.green;
+        Gizmos.DrawRay(transform.position, transform.forward * interactDistance);
     }
 }
