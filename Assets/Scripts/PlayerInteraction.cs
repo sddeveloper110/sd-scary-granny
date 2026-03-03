@@ -44,8 +44,8 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactionLayer))
         {
-            currentTarget = hit.collider.GetComponentInParent<PickableObject>();
-            currentInteractable = hit.collider.GetComponentInParent<InteractableObject>();
+            currentTarget = hit.collider.GetComponent<PickableObject>();
+            currentInteractable = hit.collider.GetComponent<InteractableObject>();
         }
     }
 
@@ -61,8 +61,9 @@ public class PlayerInteraction : MonoBehaviour
         dropBtn.gameObject.SetActive(heldItem != null);
 
         interactBtn.gameObject.SetActive(
-            currentInteractable != null
-        );
+     currentInteractable != null &&
+     !currentInteractable.IsInteracted
+ );
     }
 
     public void Pick()

@@ -51,7 +51,7 @@ public class PickableObject : MonoBehaviour
         // Optional: Add object-specific action here
         if (animator != null)
             animator.SetTrigger(animationTrigger);
-        if (!useAudio)
+        if (useAudio != null)
         {
             SoundManager.PlayThisAudio(useAudio);
         }

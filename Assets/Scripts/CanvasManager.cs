@@ -1,11 +1,11 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using static GameManager;
-using System;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -42,7 +42,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI loadingTxt;
     [SerializeField] Image loadingBar;
     [SerializeField] TextMeshProUGUI popupTxt;
-
+    
     [Header("Button")]
     [SerializeField] Button[] exitGameplayBtn;
     [SerializeField] Button[] retryBtn;
@@ -84,6 +84,7 @@ public class CanvasManager : MonoBehaviour
             PlayerPrefs.SetFloat("Sensitivity", value);
             OnSensetivityChange?.Invoke(value);
         });
+        OnSensetivityChange?.Invoke(PlayerPrefs.GetFloat("Sensitivity"));
 
         // ✅ Sliders auto-update
         for (int i = 0; i < soundVol.Length; i++)
@@ -357,7 +358,7 @@ public class CanvasManager : MonoBehaviour
 
     private static IEnumerator PopupRoutine()
     {
-        Transform popPanel = Instance.popupTxt.transform.parent;
+        Transform popPanel = Instance.popupTxt.transform;
         if (popPanel == null) yield break;
 
         popPanel.transform.localScale = Vector3.zero;
@@ -393,7 +394,7 @@ public class CanvasManager : MonoBehaviour
 
         popPanel.transform.localScale = Vector3.zero;
     }
-
+   
 }
 
 

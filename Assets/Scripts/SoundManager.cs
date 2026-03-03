@@ -87,10 +87,9 @@ public class SoundManager : MonoBehaviour
         if (Instance.musicSource != null) Instance.musicSource.volume = Mathf.Clamp01(volume);
         MusicVol = volume;
     }
-
     public static float MusicVol
     {
-        get => PlayerPrefs.GetFloat(nameof(MusicVol), .5f);
+        get => PlayerPrefs.GetFloat(nameof(MusicVol), .2f);
         set => PlayerPrefs.SetFloat(nameof(MusicVol), value);
     }
     #endregion

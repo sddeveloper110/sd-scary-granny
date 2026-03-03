@@ -11,6 +11,9 @@ public class InteractableObject : MonoBehaviour
     public int interactionRequired = 1;
     private int interactionDone = 0;
 
+    public bool IsInteracted =false;
+    public string INeedThisText;
+
     // GLOBAL EVENT fired when this interactable is fully activated
     public static Action<InteractableObject> OnObjectInteractionDone;
 
@@ -26,6 +29,8 @@ public class InteractableObject : MonoBehaviour
 
         if (heldItem == null && interactionRequired > 0)
         {
+            CanvasManager.ShowPopup(INeedThisText);
+
             return;
         }
 
@@ -50,6 +55,7 @@ public class InteractableObject : MonoBehaviour
         if (anim != null)
             anim.SetTrigger(animationTrigger);
 
+        IsInteracted = true;
 
         // FIRE GLOBAL EVENT
         OnObjectInteractionDone?.Invoke(this);
