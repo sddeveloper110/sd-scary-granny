@@ -25,6 +25,7 @@ public class GhostAi : MonoBehaviour
     [SerializeField] string attackAnimName = "Granny_Attack";
     [SerializeField] float attackAnimDuration = 1.5f;
     [Range(0, 1)][SerializeField] float lookAtWeight = 1.0f;
+    [SerializeField] float walkSpeed;
 
     public static Action OnAttackEnemy;
 
@@ -96,6 +97,7 @@ public class GhostAi : MonoBehaviour
         switch (State)
         {
             case GhostState.Roam:
+                anim.SetFloat("speed", 1);
                 agent.speed = roamSpeed;
                 if (!agent.pathPending && agent.remainingDistance < 0.5f)
                     GoToNextWaypoint();
@@ -122,6 +124,7 @@ public class GhostAi : MonoBehaviour
                 break;
 
             case GhostState.Chase:
+                anim.SetFloat("speed", walkSpeed);
                 agent.speed = chaseSpeed;
                 agent.SetDestination(player.position);
                 shouldPlaySuspense = true;

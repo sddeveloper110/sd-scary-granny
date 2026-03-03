@@ -25643,7 +25643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   waypointParent: {fileID: 1022191552}
   roamSpeed: 0.4
-  chaseSpeed: 0.6
+  chaseSpeed: 1
   startDelay: 20
   suspiciousRadius: 8.35
   chaseRadius: 4.54
@@ -25655,6 +25655,7 @@ MonoBehaviour:
   attackAnimName: Zombie Attack
   attackAnimDuration: 1.5
   lookAtWeight: 1
+  walkSpeed: 2
 --- !u!1001 &644549685
 PrefabInstance:
   m_ObjectHideFlags: 0

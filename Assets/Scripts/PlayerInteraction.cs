@@ -15,6 +15,7 @@ public class PlayerInteraction : MonoBehaviour
     private PickableObject heldItem;
     private InteractableObject currentInteractable;
 
+
     [Header("View Settings")]
     public float interactDistance = 4f;
     [Range(0.5f, 1f)]
@@ -193,5 +194,12 @@ public class PlayerInteraction : MonoBehaviour
         // Draw forward line
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, transform.forward * interactDistance);
+    }
+}
+
+public class Siashfosaifh : PlayerInteraction
+{
+    private void Start()
+    {
     }
 }
