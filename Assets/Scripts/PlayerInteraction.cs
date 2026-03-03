@@ -11,15 +11,13 @@ public class PlayerInteraction : MonoBehaviour
     public Button dropBtn;
     public Button interactBtn;
 
+    [Header("Raycast Settings")]
+    public float interactDistance = 4f;
+    public LayerMask interactionLayer; // Assign in Inspector
+
     private PickableObject currentTarget;
     private PickableObject heldItem;
     private InteractableObject currentInteractable;
-
-
-    [Header("View Settings")]
-    public float interactDistance = 4f;
-    [Range(0.5f, 1f)]
-    public float viewDotThreshold = 0.75f;
 
     void Start()
     {
@@ -30,60 +28,42 @@ public class PlayerInteraction : MonoBehaviour
         UpdateButtons();
     }
 
-    private void OnTriggerEnter(Collider other)
+    void Update()
     {
-        PickableObject pickable = other.GetComponent<PickableObject>();
-        if (pickable != null && !pickable.isPicked)
-        {
-            currentTarget = pickable;
-            currentTarget.OnHighlight();
-        }
-
-        InteractableObject interactable = other.GetComponent<InteractableObject>();
-        if (interactable != null)
-        {
-            currentInteractable = interactable;
-        }
-
+        DetectObject();
+        HandleKeyboardInput();
         UpdateButtons();
     }
 
-    private void OnTriggerExit(Collider other)
+    void DetectObject()
     {
-        if (currentTarget != null && other.GetComponent<PickableObject>() == currentTarget)
-        {
-            currentTarget.OnUnhighlight();
-            currentTarget = null;
-        }
+        currentTarget = null;
+        currentInteractable = null;
 
-        if (currentInteractable != null && other.GetComponent<InteractableObject>() == currentInteractable)
-        {
-            currentInteractable = null;
-        }
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
 
-        UpdateButtons();
+        if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactionLayer))
+        {
+            currentTarget = hit.collider.GetComponentInParent<PickableObject>();
+            currentInteractable = hit.collider.GetComponentInParent<InteractableObject>();
+        }
     }
 
-    // Logic updated per your requirement:
     void UpdateButtons()
     {
         if (pickBtn == null || dropBtn == null || interactBtn == null) return;
 
         pickBtn.gameObject.SetActive(
             heldItem == null &&
-            currentTarget != null &&
-            IsFacingTarget(currentTarget.transform)
+            currentTarget != null
         );
 
         dropBtn.gameObject.SetActive(heldItem != null);
 
         interactBtn.gameObject.SetActive(
-            currentInteractable != null &&
-            IsFacingTarget(currentInteractable.transform)
+            currentInteractable != null
         );
     }
-
-    // ===== Action Wrappers (To ensure UI updates) =====
 
     public void Pick()
     {
@@ -91,7 +71,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             heldItem = currentTarget;
             heldItem.PickUp(hand);
-            UpdateButtons(); // Critical call
         }
     }
 
@@ -101,7 +80,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             heldItem.Throw(hand.forward * throwForce);
             heldItem = null;
-            UpdateButtons(); // Critical call
         }
     }
 
@@ -110,96 +88,22 @@ public class PlayerInteraction : MonoBehaviour
         if (currentInteractable != null)
         {
             currentInteractable.TryInteract(heldItem);
-            UpdateButtons();
         }
     }
 
-    private void Update()
-    {
-        HandleKeyboardInput();
-        HandleClickInput();
-        if (currentTarget != null || currentInteractable != null)
-        {
-            UpdateButtons();
-        }
-    }
-
-    private void HandleKeyboardInput()
+    void HandleKeyboardInput()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            if (heldItem == null && currentTarget != null) Pick();
-            else if (heldItem != null) Drop();
+            if (heldItem == null && currentTarget != null)
+                Pick();
+            else if (heldItem != null)
+                Drop();
         }
 
         if (Input.GetKeyDown(KeyCode.F) && currentInteractable != null)
         {
             Interact();
         }
-    }
-
-    private void HandleClickInput()
-    {
-        if (!Input.GetMouseButtonDown(0)) return;
-
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, 5f)) return;
-
-        // Click pickup
-        if (currentTarget != null && hit.collider.GetComponentInParent<PickableObject>() == currentTarget)
-        {
-            if (heldItem == null) Pick();
-            else if (heldItem == currentTarget) Drop();
-        }
-
-        // Click interact
-        if (currentInteractable != null && hit.collider.GetComponentInParent<InteractableObject>() == currentInteractable)
-        {
-            Interact();
-        }
-    }
-
-    bool IsFacingTarget(Transform target)
-    {
-        Vector3 dirToTarget = (target.position - transform.position).normalized;
-        float distance = Vector3.Distance(transform.position, target.position);
-
-        if (distance > interactDistance)
-            return false;
-
-        float dynamicThreshold = Mathf.Lerp(0.3f, viewDotThreshold, distance / interactDistance);
-
-        float dot = Vector3.Dot(transform.forward, dirToTarget);
-
-        return dot >= dynamicThreshold;
-    }
-    private void OnDrawGizmosSelected()
-    {
-        // Draw interaction distance sphere
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, interactDistance);
-
-        // Convert dot threshold to angle
-        float angle = Mathf.Acos(viewDotThreshold) * Mathf.Rad2Deg;
-
-        // Draw left boundary
-        Vector3 leftDir = Quaternion.AngleAxis(-angle, Vector3.up) * transform.forward;
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawRay(transform.position, leftDir * interactDistance);
-
-        // Draw right boundary
-        Vector3 rightDir = Quaternion.AngleAxis(angle, Vector3.up) * transform.forward;
-        Gizmos.DrawRay(transform.position, rightDir * interactDistance);
-
-        // Draw forward line
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, transform.forward * interactDistance);
-    }
-}
-
-public class Siashfosaifh : PlayerInteraction
-{
-    private void Start()
-    {
     }
 }

@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 112000000, guid: 6d59756c5d7bb9044bf55da48300fd0c, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: ecf6b0273918465448796cc495f781ed, type: 2}
   m_LightingSettings: {fileID: 4890085278179872738, guid: a2c7f330a10b4484989bea46363f33ab, type: 2}
 --- !u!196 &4
 NavMeshSettings:
@@ -7933,7 +7933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &224599059
 Transform:
   m_ObjectHideFlags: 0
@@ -14303,7 +14303,6 @@ GameObject:
   m_Component:
   - component: {fileID: 380430636}
   - component: {fileID: 380430639}
-  - component: {fileID: 380430638}
   - component: {fileID: 380430637}
   m_Layer: 0
   m_Name: Room Door Attic
@@ -14311,7 +14310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &380430636
 Transform:
   m_ObjectHideFlags: 0
@@ -14343,33 +14342,6 @@ MonoBehaviour:
   anim: {fileID: 1023169848}
   animationTrigger: reverse
   interactionRequired: 0
---- !u!54 &380430638
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 380430635}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!65 &380430639
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14389,8 +14361,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.7182922, y: 2.226404, z: 2.1338806}
-  m_Center: {x: 1.2616425, y: 1.42, z: 2.39}
+  m_Size: {x: 1.8404236, y: 2.226404, z: 2.3323069}
+  m_Center: {x: 1.5707245, y: 1.42, z: 2.2907872}
 --- !u!1001 &383262931
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25644,10 +25616,10 @@ MonoBehaviour:
   waypointParent: {fileID: 1022191552}
   roamSpeed: 0.4
   chaseSpeed: 1
-  startDelay: 20
+  startDelay: 15
   suspiciousRadius: 8.35
   chaseRadius: 4.54
-  suspiciousTime: 3
+  suspiciousTime: 2
   attackDistance: 1
   anim: {fileID: 412809878}
   walkAnimName: Walking
@@ -30185,7 +30157,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.35
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -36341,19 +36313,19 @@ MonoBehaviour:
   - taskName: Find the Key
     description: Enter the Mansiom. Find for a key to open door lock. Using Hammer
       will alert the granny
-    hint: Check near the thombstones.
+    hint: Check near entrance door.
     taskSpawnPoint: {fileID: 1271091704}
     interactableToComplete: {fileID: 818260368}
   - taskName: Enter Basement
-    description: Find a flashlight, avoid traps, and reach the basement. A chained
-      door and a diary await.
-    hint: Flashlight may be on the upper floor table or storage box.
+    description: Find a flashlight, avoid traps, and reach the upper floor. A map
+      of information awaits
+    hint: Flashlight may be near dining table or closet.
     taskSpawnPoint: {fileID: 1014294342}
     interactableToComplete: {fileID: 1713292442}
   - taskName: Recover Broken Photograph
     description: The map shows a locked room Granny avoids. Create a distraction,
       enter, and retrieve a broken family photo.
-    hint: "Noise can lure Granny away\uFFFDtry knocking items down."
+    hint: A locked room key will be in ground floor
     taskSpawnPoint: {fileID: 1014294342}
     interactableToComplete: {fileID: 1832006979}
   - taskName: Calm the Ghost
@@ -67982,7 +67954,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0.35
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -80528,6 +80500,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Axe
       objectReference: {fileID: 0}
+    - target: {fileID: 643417986838661644, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941133162031749582, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2158205060861470734, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
       propertyPath: m_LocalPosition.x
       value: 305.519
@@ -80568,6 +80548,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7600982401770114387, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8876311104705000408, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
       propertyPath: useAudio
       value: 
@@ -80576,7 +80560,8 @@ PrefabInstance:
       propertyPath: interactsWith
       value: 
       objectReference: {fileID: 6471652502616847142}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1304108805113189801, guid: 51eca2afa807d7845b2d37c1e6a17644, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -84352,6 +84337,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fence_Gate
       objectReference: {fileID: 0}
+    - target: {fileID: 181085309264357280, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 593043263407295427, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 704963483104328986, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -84391,6 +84384,62 @@ PrefabInstance:
     - target: {fileID: 704963483104328986, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 842800258890139745, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1489530114028835743, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2009442660002477233, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2341106980489949763, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3774723879529294620, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5044276966917092460, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5315502840800193818, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439629049913486175, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730492499122997648, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7076011992109829482, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7269285330871370662, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7457833970057984508, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7561169695496689059, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8259311733106864015, guid: 38c94c4a29bb5034ab5768b01ab6cf48, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -92156,7 +92205,7 @@ GameObject:
   - component: {fileID: 3280396452314687260}
   - component: {fileID: 5442278299599952348}
   - component: {fileID: 6471652502616847142}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Fence Gate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103914,7 +103963,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3193942693083554165, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: dropBtn
@@ -103939,6 +103988,10 @@ PrefabInstance:
     - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: viewDotThreshold
       value: 0.801
+      objectReference: {fileID: 0}
+    - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
+      propertyPath: interactionLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 3929116695420420705, guid: 3d071e6f629bea7459298e0f16ec6af4, type: 3}
       propertyPath: interactableLayer.m_Bits
