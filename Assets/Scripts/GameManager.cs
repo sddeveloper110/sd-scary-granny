@@ -1,4 +1,4 @@
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -62,6 +62,8 @@ public class GameManager : MonoBehaviour
             LoadTasks();
         LoadProgress();
 
+        RestoreCompletedTasks();   // 👈 ADD THIS
+
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ShowCurrentTaskHint);
@@ -73,6 +75,24 @@ public class GameManager : MonoBehaviour
         TaskLoader loader = new TaskLoader { jsonFileName = jsonFileName };
         tasks = loader.LoadTasks();
         AssignSpawnPointsFromScene();
+    }
+
+    private void RestoreCompletedTasks()
+    {
+        // Current task se pehle wale sab tasks completed hain
+        for (int i = 0; i < currentTaskIndex; i++)
+        {
+            if (i < tasks.Count)
+            {
+                InteractableObject interactable = tasks[i].interactableToComplete;
+
+                if (interactable != null && !interactable.IsInteracted)
+                {
+                    Debug.Log($"Restoring Task {i + 1}: {interactable.name}");
+                    interactable.Activate();
+                }
+            }
+        }
     }
 
     private void AssignSpawnPointsFromScene()
