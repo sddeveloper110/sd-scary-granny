@@ -20,6 +20,8 @@ public class InteractableObject : MonoBehaviour
         {
             interactionDone++;
             Activate();
+            return; // 🔥 VERY IMPORTANT
+
         }
 
         if (heldItem == null && interactionRequired > 0)

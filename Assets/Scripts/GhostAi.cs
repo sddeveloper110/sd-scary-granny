@@ -92,8 +92,26 @@ public class GhostAi : MonoBehaviour
 
     private void HandleLogic()
     {
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        Vector3 ghostPos = transform.position;
+        Vector3 playerPos = player.position;
 
+        // Horizontal distance only (ignore height)
+        Vector2 ghostFlat = new Vector2(ghostPos.x, ghostPos.z);
+        Vector2 playerFlat = new Vector2(playerPos.x, playerPos.z);
+
+        float distanceToPlayer = Vector2.Distance(ghostFlat, playerFlat);
+
+        // Height difference check
+        float heightDifference = Mathf.Abs(ghostPos.y - playerPos.y);
+
+        // 🔥 Floor limit (adjust if needed)
+        float maxHeightDifference = 2f;
+
+        // If player is on different floor → ignore detection
+        if (heightDifference > maxHeightDifference)
+        {
+            return;
+        }
         switch (State)
         {
             case GhostState.Roam:
