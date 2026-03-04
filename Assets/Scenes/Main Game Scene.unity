@@ -16116,6 +16116,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 8dead0d99a5137b4f869f374b2ed5fc1, type: 3}
   m_PrefabInstance: {fileID: 412809876}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &414226797 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 685948607121123781, guid: 17081cd0d4eae554f969035750f3dd8e, type: 3}
+  m_PrefabInstance: {fileID: 379871708645212209}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &414268519
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16255,7 +16260,7 @@ MonoBehaviour:
   animationTrigger: Activate
   interactionRequired: 3
   IsInteracted: 0
-  INeedThisText: 
+  INeedThisText: I need my star toy, bear toy and ragdoll.
 --- !u!65 &417530889
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -39503,15 +39508,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071654011}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 271.628, y: 6.693, z: 267.504}
+  m_LocalRotation: {x: 0, y: -0.20022298, z: 0, w: 0.9797504}
+  m_LocalPosition: {x: 266.042, y: 10.688, z: 258.431}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 777052261731983898}
   - {fileID: 604079045}
   m_Father: {fileID: 2003892521}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -23.1, z: 0}
 --- !u!114 &1071654013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39576,7 +39581,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1, z: 3}
+  m_Size: {x: 1, y: 0.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1076360629
 PrefabInstance:
@@ -51585,9 +51590,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1407179064}
-  - component: {fileID: 1407179067}
   - component: {fileID: 1407179066}
   - component: {fileID: 1407179065}
+  - component: {fileID: 1407179067}
   m_Layer: 6
   m_Name: Toy 3
   m_TagString: Untagged
@@ -51603,15 +51608,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1407179063}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 272.71002, y: 7.2946, z: 247.834}
+  m_LocalRotation: {x: 0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 266.169, y: 6.601, z: 264.269}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2249473162017906720}
   - {fileID: 255298239}
   m_Father: {fileID: 2003892521}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -90}
 --- !u!114 &1407179065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51672,12 +51677,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 1, z: 3}
-  m_Center: {x: -0.12, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1409752859
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81746,10 +81751,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bathroom_Water
       objectReference: {fileID: 0}
+    - target: {fileID: 685948607121123781, guid: 17081cd0d4eae554f969035750f3dd8e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 685948607121123781, guid: 17081cd0d4eae554f969035750f3dd8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 543450652665475922}
   m_SourcePrefab: {fileID: 100100000, guid: 17081cd0d4eae554f969035750f3dd8e, type: 3}
 --- !u!4 &382143994822569028 stripped
 Transform:
@@ -82343,6 +82355,28 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 202426907576284031, guid: 17081cd0d4eae554f969035750f3dd8e, type: 3}
   m_PrefabInstance: {fileID: 379871708645212209}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &543450652665475922
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414226797}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9134278327766832917, guid: 2643a5e661426704a8da85c18380b812, type: 3}
 --- !u!4 &543450652722618459 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 715972614192267003, guid: c5c9ed0d80713f94ca3450a6f659e7f0, type: 3}
@@ -107947,7 +107981,6 @@ GameObject:
   - component: {fileID: 4527346393344113756}
   - component: {fileID: 6951281943709459179}
   - component: {fileID: 8253152690223150450}
-  - component: {fileID: 8253152690223150451}
   m_Layer: 6
   m_Name: Toy_03
   m_TagString: Untagged
@@ -107977,27 +108010,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &8253152690223150451
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8253152690223150449}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.024811042, y: 0.04809901, z: 0.04094358}
-  m_Center: {x: 0, y: 0.023963954, z: -0.00000002328307}
 --- !u!4 &8266340060575119568 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7497987584839556978, guid: d0b3a48eb606c2841a1e9700b3bea448, type: 3}

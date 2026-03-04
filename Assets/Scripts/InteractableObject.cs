@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class InteractableObject : MonoBehaviour
 {
@@ -14,8 +15,15 @@ public class InteractableObject : MonoBehaviour
     public bool IsInteracted =false;
     public string INeedThisText;
 
+    private HashSet<PickableObject> usedItems = new HashSet<PickableObject>();
+    
     // GLOBAL EVENT fired when this interactable is fully activated
     public static Action<InteractableObject> OnObjectInteractionDone;
+
+    private void OnEnable()
+    {
+        CanvasManager.OnGameStart += () => { usedItems.Clear(); };
+    }
 
     public void TryInteract(PickableObject heldItem)
     {
@@ -36,6 +44,11 @@ public class InteractableObject : MonoBehaviour
 
         if (heldItem.interactsWith == this)
         {
+            if (interactionRequired > 1 && usedItems.Contains(heldItem))
+            {
+                CanvasManager.ShowPopup("You already used this item.");
+                return;
+            }
             interactionDone++;
             Debug.Log($"Interaction success {interactionDone}/{interactionRequired}: {heldItem.name} -> {name}");
 
