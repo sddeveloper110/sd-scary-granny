@@ -89,7 +89,7 @@ public class SoundManager : MonoBehaviour
     }
     public static float MusicVol
     {
-        get => PlayerPrefs.GetFloat(nameof(MusicVol), .2f);
+        get => PlayerPrefs.GetFloat(nameof(MusicVol), .1f);
         set => PlayerPrefs.SetFloat(nameof(MusicVol), value);
     }
     #endregion
@@ -121,7 +121,7 @@ public class SoundManager : MonoBehaviour
 
     public static float SoundVol
     {
-        get => PlayerPrefs.GetFloat(nameof(SoundVol), .5f);
+        get => PlayerPrefs.GetFloat(nameof(SoundVol), 1);
         set => PlayerPrefs.SetFloat(nameof(SoundVol), value);
     }
     #endregion

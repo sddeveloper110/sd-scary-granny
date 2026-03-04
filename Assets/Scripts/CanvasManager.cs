@@ -79,12 +79,12 @@ public class CanvasManager : MonoBehaviour
         }
         sensetivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 1f);
 
+        OnSensetivityChange?.Invoke(PlayerPrefs.GetFloat("Sensitivity",3f));
         sensetivitySlider.onValueChanged.AddListener((value) =>
         {
             PlayerPrefs.SetFloat("Sensitivity", value);
             OnSensetivityChange?.Invoke(value);
         });
-        OnSensetivityChange?.Invoke(PlayerPrefs.GetFloat("Sensitivity"));
 
         // ✅ Sliders auto-update
         for (int i = 0; i < soundVol.Length; i++)

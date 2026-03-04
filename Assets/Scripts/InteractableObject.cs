@@ -49,8 +49,10 @@ public class InteractableObject : MonoBehaviour
                 CanvasManager.ShowPopup("You already used this item.");
                 return;
             }
+            usedItems.Add(heldItem);
             interactionDone++;
             Debug.Log($"Interaction success {interactionDone}/{interactionRequired}: {heldItem.name} -> {name}");
+
 
             heldItem.Use(heldItem, this);
 
