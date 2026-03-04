@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ShowCurrentTaskHint);
+
+
     }
 
     [Button]
