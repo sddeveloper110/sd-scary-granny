@@ -5,7 +5,6 @@ public class PickableObject : MonoBehaviour
 {
     [Header("Pickable Settings")]
     public InteractableObject interactsWith;
-    public GameObject highlightVFX;
     public Animator animator;
     public string animationTrigger = "Activate";
 
@@ -16,9 +15,11 @@ public class PickableObject : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        OnUnhighlight();
 
     }
 
+    public GameObject highlightVFX;
     // Highlight
     public void OnHighlight() => highlightVFX?.SetActive(true);
     public void OnUnhighlight() => highlightVFX?.SetActive(false);

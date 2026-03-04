@@ -20,9 +20,16 @@ public class InteractableObject : MonoBehaviour
     // GLOBAL EVENT fired when this interactable is fully activated
     public static Action<InteractableObject> OnObjectInteractionDone;
 
+
+    public GameObject highlightVFX;
+    // Highlight
+    public void OnHighlight() => highlightVFX?.SetActive(true);
+    public void OnUnhighlight() => highlightVFX?.SetActive(false);
+
     private void OnEnable()
     {
         CanvasManager.OnGameStart += () => { usedItems.Clear(); };
+        OnUnhighlight();
     }
 
     public void TryInteract(PickableObject heldItem)

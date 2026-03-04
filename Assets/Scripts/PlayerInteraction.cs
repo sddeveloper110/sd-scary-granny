@@ -19,6 +19,9 @@ public class PlayerInteraction : MonoBehaviour
     private PickableObject heldItem;
     private InteractableObject currentInteractable;
 
+    private PickableObject lastHighlightedPickable;
+    private InteractableObject lastHighlightedInteractable;
+
     void Start()
     {
         pickBtn.onClick.AddListener(Pick);
@@ -47,8 +50,46 @@ public class PlayerInteraction : MonoBehaviour
             currentTarget = hit.collider.GetComponent<PickableObject>();
             currentInteractable = hit.collider.GetComponent<InteractableObject>();
         }
+        HandleHighlight();
     }
+    void HandleHighlight()
+    {
+        // Pickable highlight
+        if (lastHighlightedPickable != currentTarget)
+        {
+            if (lastHighlightedPickable != null)
+                lastHighlightedPickable.OnUnhighlight();
 
+            if (currentTarget != null && !currentTarget.isPicked)
+                currentTarget.OnHighlight();
+
+            lastHighlightedPickable = currentTarget;
+        }
+
+        if (currentTarget == null && lastHighlightedPickable != null)
+        {
+            lastHighlightedPickable.OnUnhighlight();
+            lastHighlightedPickable = null;
+        }
+
+        // Interactable highlight
+        if (lastHighlightedInteractable != currentInteractable)
+        {
+            if (lastHighlightedInteractable != null)
+                lastHighlightedInteractable.OnUnhighlight();
+
+            if (currentInteractable != null && !currentInteractable.IsInteracted)
+                currentInteractable.OnHighlight();
+
+            lastHighlightedInteractable = currentInteractable;
+        }
+
+        if (currentInteractable == null && lastHighlightedInteractable != null)
+        {
+            lastHighlightedInteractable.OnUnhighlight();
+            lastHighlightedInteractable = null;
+        }
+    }
     void UpdateButtons()
     {
         if (pickBtn == null || dropBtn == null || interactBtn == null) return;
