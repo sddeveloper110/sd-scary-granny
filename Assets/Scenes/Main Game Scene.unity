@@ -4244,7 +4244,7 @@ Transform:
   m_GameObject: {fileID: 106874029}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.46174863, z: -0, w: 0.8870109}
-  m_LocalPosition: {x: 274.302, y: 6.51, z: 265.553}
+  m_LocalPosition: {x: 274.071, y: 6.229, z: 265.715}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4316,8 +4316,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.15461099, y: 0.06714392, z: 0.23479035}
-  m_Center: {x: -0.0009363219, y: 0.02149868, z: 0.008096129}
+  m_Size: {x: 0.08554331, y: 0.07703781, z: 0.20209445}
+  m_Center: {x: -0.04998239, y: 0.16159272, z: -0.14080867}
 --- !u!1001 &109690687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36962,7 +36962,6 @@ MonoBehaviour:
   missionSpawnPoints: {fileID: 314931580}
   hintButton: {fileID: 8509624275611239881}
   objectiveText: {fileID: 2308413598067220328}
-  finaleTaskIndex: 7
   survivalTime: 120
   tasks:
   - taskName: Break the Chain
@@ -37009,12 +37008,6 @@ MonoBehaviour:
     hint: Each item is protected by traps or sudden scares. Move slowly.
     taskSpawnPoint: {fileID: 881471730}
     interactableToComplete: {fileID: 707821939585889354}
-  - taskName: Final Escape
-    description: The curse breaks and Granny weakens. Repair the exit door, find
-      the final key, and escape before she recovers.
-    hint: "Listen carefully\uFFFDfast footsteps mean she is close."
-    taskSpawnPoint: {fileID: 0}
-    interactableToComplete: {fileID: 0}
   currentTaskIndex: 0
   isGameStarted: 0
 --- !u!4 &985888952
@@ -53153,6 +53146,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3758426101263765009, guid: d4859b848a8383544be34186c64fcb23, type: 3}
   m_PrefabInstance: {fileID: 1441171108}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1441185733 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5553162918401769263, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+  m_PrefabInstance: {fileID: 8978285934572352759}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1441185737
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441185733}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.108175896, y: 2.1553185, z: 1.2446045}
+  m_Center: {x: 0.019570667, y: 1.0776592, z: -0.6177047}
 --- !u!1001 &1442827944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -80935,7 +80954,7 @@ Transform:
   m_GameObject: {fileID: 6838218910199858521}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.05, y: 0.15, z: -0.147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -90528,7 +90547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2994722642826567166
 RectTransform:
   m_ObjectHideFlags: 0
@@ -96990,13 +97009,13 @@ MonoBehaviour:
   m_text: Objective
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76a61a2a40280174f9602acab967b546, type: 2}
-  m_sharedMaterial: {fileID: 5284104201956745573, guid: b7b6cecad8a3ac247ac5e0994b5a7268, type: 2}
+  m_sharedMaterial: {fileID: 7158927235634933390, guid: 76a61a2a40280174f9602acab967b546, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190335
   m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -110329,6 +110348,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: Interior_Door_02
       objectReference: {fileID: 0}
+    - target: {fileID: 2391347323180012580, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352250593675134527, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Size.x
+      value: 0.64019775
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352250593675134527, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Size.z
+      value: 1.4606323
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352250593675134527, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Center.x
+      value: -0.023040771
+      objectReference: {fileID: 0}
+    - target: {fileID: 5352250593675134527, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Center.z
+      value: -0.5873413
+      objectReference: {fileID: 0}
+    - target: {fileID: 5553162918401769263, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6419061043267081605, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 6419061043267081605, guid: b8b3c610511b47c478e4a20189000576, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -110339,6 +110386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7565290088244937173, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+    - {fileID: 2213543497508120783, guid: b8b3c610511b47c478e4a20189000576, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -110348,6 +110396,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2391347323180012580, guid: b8b3c610511b47c478e4a20189000576, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1753633553}
+    - targetCorrespondingSourceObject: {fileID: 5553162918401769263, guid: b8b3c610511b47c478e4a20189000576, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1441185737}
   m_SourcePrefab: {fileID: 100100000, guid: b8b3c610511b47c478e4a20189000576, type: 3}
 --- !u!1001 &8983698743610721299
 PrefabInstance:

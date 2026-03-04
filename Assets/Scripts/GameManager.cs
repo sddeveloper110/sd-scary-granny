@@ -17,22 +17,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TypeWriter objectiveText;
 
     [Header("Finale Settings")]
-    [SerializeField] private int finaleTaskIndex = 9; // Task 10 is index 9
-    [SerializeField] private float survivalTime = 120f; // 2 Minutes
-
-    public static event Action OnSurvivalStarted;
-    public Action OnGameWin;
-
-    private bool isInSurvivalMode = false;
-
-    public List<TaskData> tasks = new List<TaskData>();
-    public int currentTaskIndex = 0;
+    [SerializeField] private float survivalTime = 120f;
 
     public static GameManager Instance;
 
-    public bool isGameStarted = false;
-
     public static event Action OnGameStarted;
+    public static event Action OnSurvivalStarted;
+    public Action OnGameWin;
+
+    public List<TaskData> tasks = new List<TaskData>();
+
+    public int currentTaskIndex = 0;
+
+    public bool isGameStarted = false;
+    private bool isInSurvivalMode = false;
+
+    #region UNITY
 
     private void Awake()
     {
@@ -41,9 +41,9 @@ public class GameManager : MonoBehaviour
 
         isGameStarted = false;
 
-        // Subscribe to global event
         InteractableObject.OnObjectInteractionDone += HandleInteractableActivated;
-        GhostAi.OnAttackEnemy += () => isGameStarted = false;
+        GhostAi.OnAttackEnemy += HandleGhostAttack;
+
         CanvasManager.OnGameExit += ExitGame;
         CanvasManager.OnGameRetry += Retry;
     }
@@ -51,61 +51,49 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         InteractableObject.OnObjectInteractionDone -= HandleInteractableActivated;
-        GhostAi.OnAttackEnemy -= () => isGameStarted = false;
+        GhostAi.OnAttackEnemy -= HandleGhostAttack;
+
         CanvasManager.OnGameExit -= ExitGame;
         CanvasManager.OnGameRetry -= Retry;
     }
 
     private void Start()
     {
-        if (tasks == null)
+        if (tasks == null || tasks.Count == 0)
             LoadTasks();
+
         LoadProgress();
 
-        RestoreCompletedTasks();   // 👈 ADD THIS
-
+        RestoreCompletedTasks();
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ShowCurrentTaskHint);
-
-
     }
+
+    #endregion
+
+
+    #region TASK LOADING
 
     [Button]
     private void LoadTasks()
     {
         TaskLoader loader = new TaskLoader { jsonFileName = jsonFileName };
         tasks = loader.LoadTasks();
+
         AssignSpawnPointsFromScene();
-    }
-
-    private void RestoreCompletedTasks()
-    {
-        // Current task se pehle wale sab tasks completed hain
-        for (int i = 0; i < currentTaskIndex; i++)
-        {
-            if (i < tasks.Count)
-            {
-                InteractableObject interactable = tasks[i].interactableToComplete;
-
-                if (interactable != null && !interactable.IsInteracted)
-                {
-                    Debug.Log($"Restoring Task {i + 1}: {interactable.name}");
-                    interactable.Activate();
-                }
-            }
-        }
     }
 
     private void AssignSpawnPointsFromScene()
     {
         if (missionSpawnPoints == null)
         {
-            Debug.LogWarning("Mission Spawn Points object is not assigned.");
+            Debug.LogWarning("Mission Spawn Points not assigned.");
             return;
         }
 
         Transform[] spawnChildren = missionSpawnPoints.GetComponentsInChildren<Transform>();
+
         List<Transform> childSpawns = new List<Transform>();
 
         foreach (Transform t in spawnChildren)
@@ -123,28 +111,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #region Progression
-
-    public TaskData GetCurrentTask() =>
-        currentTaskIndex < tasks.Count ? tasks[currentTaskIndex] : null;
-
-    public void CompleteCurrentTask()
+    private void RestoreCompletedTasks()
     {
-        if (currentTaskIndex >= tasks.Count - 1)
+        for (int i = 0; i < currentTaskIndex && i < tasks.Count; i++)
         {
-            Debug.Log("All tasks completed.");
-            return;
+            InteractableObject interactable = tasks[i].interactableToComplete;
+
+            if (interactable != null && !interactable.IsInteracted)
+            {
+                interactable.IsInteracted = true;
+                interactable.Activate();
+            }
         }
-        currentTaskIndex++;
-        SaveProgress();
-        UpdateTask();
-
-
     }
 
     #endregion
 
-    #region Game Flow
+
+    #region GAME FLOW
 
     public void StartGame()
     {
@@ -154,18 +138,38 @@ public class GameManager : MonoBehaviour
 
         if (menuCamera != null)
             menuCamera.gameObject.SetActive(false);
-        isGameStarted = true;
+
         OnGameStarted?.Invoke();
+
+        // If all tasks already completed
+        if (currentTaskIndex >= tasks.Count)
+        {
+            StartSurvivalFinale();
+            return;
+        }
+
         UpdateTask();
     }
 
     public void Retry()
     {
-        StopAllCoroutines(); // Stop survival timer if retrying
-        isInSurvivalMode = false;
+        StopAllCoroutines();
+
         isGameStarted = false;
+        isInSurvivalMode = false;
+
         StartGame();
     }
+
+    private void HandleGhostAttack()
+    {
+        isGameStarted = false;
+    }
+
+    #endregion
+
+
+    #region SURVIVAL FINALE
 
     private void StartSurvivalFinale()
     {
@@ -175,12 +179,10 @@ public class GameManager : MonoBehaviour
 
         SoundManager.Instance.PlayGameGrannyMusic();
 
-        // Update UI to let the player know they must survive
         objectiveText.ShowText("SURVIVE UNTIL THE EXIT OPENS! (2:00)");
 
         OnSurvivalStarted?.Invoke();
 
-        // Start the countdown
         StartCoroutine(SurvivalRoutine());
     }
 
@@ -190,76 +192,77 @@ public class GameManager : MonoBehaviour
 
         while (timer > 0)
         {
-            // 1. Check if player died
             if (!isGameStarted)
             {
-                Debug.Log("Survival Failed: Player caught.");
+                Debug.Log("Survival failed");
                 isInSurvivalMode = false;
                 yield break;
             }
 
             timer -= Time.deltaTime;
 
-            // 2. Format time to Minutes:Seconds (e.g., 01:45)
             int minutes = Mathf.FloorToInt(timer / 60);
             int seconds = Mathf.FloorToInt(timer % 60);
+
             string timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-            // 3. Update the Objective Text with the countdown
-            // Hum TypeWriter ko bypass karke direct text set kar sakte hain 
-            // ya phir har second update bhej sakte hain
-            objectiveText.uiText.text = ($"SURVIVE! EXIT OPENS IN: {timeString}");
+            objectiveText.uiText.text = $"SURVIVE! EXIT OPENS IN: {timeString}";
 
             yield return null;
         }
 
-        // Timer complete hone ke baad check
         if (isGameStarted)
         {
             objectiveText.ShowText("EXIT IS OPEN! RUN!");
             WinGame();
         }
     }
+
+    #endregion
+
+
+    #region WIN / LOSE
+
     private void WinGame()
     {
         isInSurvivalMode = false;
-        isGameStarted = false; // Game logic stop kar do kyunke jeet gaye hain
+        isGameStarted = false;
 
-        Debug.Log("Survivor! You won the game.");
+        Debug.Log("Player Won");
+
         OnGameWin?.Invoke();
 
-        // Music change to "Win/Happy" if you have it
         SoundManager.Instance.StopMusic();
 
-        // Trigger Win UI
-        CanvasManager.FadeIn(1.5f, () => {
-            // Aapka Win Panel yahan enable hoga
+        CanvasManager.FadeIn(1.5f, () =>
+        {
             CanvasManager.EnablePanel(PanelType.LevelComplete);
             PlayerPrefs.DeleteAll();
-            // Note: Aapka UI script check kar sakta hai ke agar OnGameWin invoke hua hai 
-            // toh text "YOU ESCAPED" dikhaye bajaye "GAME OVER" ke.
         });
     }
+
     public void GameEnd()
     {
-        CanvasManager.FadeIn(.5f, () => { CanvasManager.EnablePanel(PanelType.GameOver); });
+        CanvasManager.FadeIn(.5f, () =>
+        {
+            CanvasManager.EnablePanel(PanelType.GameOver);
+        });
     }
 
     public void ExitGame()
     {
         SaveProgress();
 
-        // Reset game state
         isGameStarted = false;
 
-        // Optional: enable menu camera again
         if (menuCamera != null)
             menuCamera.gameObject.SetActive(true);
     }
 
     #endregion
 
-    #region Save/Load
+
+    #region SAVE LOAD
 
     private void SaveProgress()
     {
@@ -269,35 +272,34 @@ public class GameManager : MonoBehaviour
     private void LoadProgress()
     {
         currentTaskIndex = PlayerPrefs.GetInt("TaskIndex", 0);
-        if (currentTaskIndex >= tasks.Count)
-            currentTaskIndex = tasks.Count - 1;
 
-        
+        if (currentTaskIndex < 0)
+            currentTaskIndex = 0;
+
+        if (currentTaskIndex > tasks.Count)
+            currentTaskIndex = tasks.Count;
     }
 
     #endregion
 
-    #region UI + Hints
 
-    public void CompleteTaskByName(string taskName)
+    #region TASK SYSTEM
+
+    public TaskData GetCurrentTask()
     {
-        for (int i = 0; i < tasks.Count; i++)
-        {
-            if (tasks[i].taskName.Equals(taskName, StringComparison.OrdinalIgnoreCase))
-            {
-                if (i == currentTaskIndex)
-                {
-                    CompleteCurrentTask();
-                    return;
-                }
-                else
-                {
-                    Debug.Log($"Task '{taskName}' exists but is not the current task.");
-                    return;
-                }
-            }
-        }
-        Debug.LogWarning($"Task '{taskName}' not found in task list.");
+        if (currentTaskIndex < tasks.Count)
+            return tasks[currentTaskIndex];
+
+        return null;
+    }
+
+    private void UpdateTask()
+    {
+        TaskData task = GetCurrentTask();
+
+        if (task == null) return;
+
+        objectiveText.ShowText(task.GetDescription());
     }
 
     private void ShowCurrentTaskHint()
@@ -309,52 +311,47 @@ public class GameManager : MonoBehaviour
         HintSystem.Instance.ShowHint(task.GetHint());
     }
 
-
-
-    private void UpdateTask()
-    {
-        TaskData task = GetCurrentTask();
-        if (task == null) return;
-
-        objectiveText.ShowText(task.GetDescription());
-    }
-
-
     #endregion
 
-    #region Interactable Events
 
-    [Button]
+    #region INTERACTABLE EVENTS
+
     private void HandleInteractableActivated(InteractableObject interactable)
     {
         TaskData current = GetCurrentTask();
+
         if (current == null || isInSurvivalMode) return;
 
-        if (current.interactableToComplete == interactable)
+        if (current.interactableToComplete != interactable)
+            return;
+
+        Debug.Log($"Task completed: {interactable.name}");
+
+        currentTaskIndex++;
+
+        SaveProgress();
+
+        if (currentTaskIndex >= tasks.Count)
         {
-            // CHECK FOR FINALE
-            if (currentTaskIndex >= finaleTaskIndex)
-            {
-                StartSurvivalFinale();
-            }
-            else if (current.interactableToComplete == interactable)
-            {
-                Debug.Log($"Task completed by interactable: {interactable.name}");
-                CompleteCurrentTask();
-            }
-            else
-            {
-                Debug.Log($"Interactable {interactable.name} activated but does NOT belong to current task.");
-            }
+            StartSurvivalFinale();
+            return;
         }
+
+        UpdateTask();
     }
+
     #endregion
 
-        #region Helper
+
+    #region HELPER
 
     public Vector3 GetSpawnPosition
     {
-        get => tasks[currentTaskIndex].taskSpawnPoint.position;
+        get
+        {
+            int index = Mathf.Clamp(currentTaskIndex, 0, tasks.Count - 1);
+            return tasks[index].taskSpawnPoint.position;
+        }
     }
 
     #endregion
