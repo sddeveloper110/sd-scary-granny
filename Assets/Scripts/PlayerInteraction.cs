@@ -21,34 +21,48 @@ public class PlayerInteraction : MonoBehaviour
 
     private PickableObject lastHighlightedPickable;
     private InteractableObject lastHighlightedInteractable;
+    float detectTimer;
+    Camera cam;
 
     void Start()
     {
         pickBtn.onClick.AddListener(Pick);
         dropBtn.onClick.AddListener(Drop);
         interactBtn.onClick.AddListener(Interact);
-
+        cam = Camera.main;
         UpdateButtons();
     }
 
     void Update()
     {
-        DetectObject();
+        detectTimer += Time.deltaTime;
+
+        if (detectTimer > .2f)
+        {
+            DetectObject();
+            detectTimer = 0f;
+        }
         HandleKeyboardInput();
         UpdateButtons();
     }
 
     void DetectObject()
     {
+        if (cam == null || !cam.gameObject.activeInHierarchy)
+        {
+            cam = Camera.main;
+            return;
+        }
+
         currentTarget = null;
         currentInteractable = null;
 
-        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
 
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactionLayer))
         {
-            currentTarget = hit.collider.GetComponent<PickableObject>();
-            currentInteractable = hit.collider.GetComponent<InteractableObject>();
+            hit.collider.TryGetComponent(out currentTarget);
+            hit.collider.TryGetComponent(out currentInteractable);
         }
         HandleHighlight();
     }
@@ -73,22 +87,21 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         // Interactable highlight
-        if (lastHighlightedInteractable != currentInteractable)
+        if(lastHighlightedInteractable != currentInteractable)
         {
-            if (lastHighlightedInteractable != null)
+            if(lastHighlightedInteractable != null)
                 lastHighlightedInteractable.OnUnhighlight();
 
-            if (currentInteractable != null && !currentInteractable.IsInteracted)
+            if(currentInteractable != null && !currentInteractable.IsInteracted)
                 currentInteractable.OnHighlight();
-
             lastHighlightedInteractable = currentInteractable;
         }
-
-        if (currentInteractable == null && lastHighlightedInteractable != null)
+        if(currentInteractable ==  null && lastHighlightedInteractable != null)
         {
-            lastHighlightedInteractable.OnUnhighlight();
+            lastHighlightedInteractable.OnHighlight();
             lastHighlightedInteractable = null;
         }
+     
     }
     void UpdateButtons()
     {

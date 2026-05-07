@@ -23,8 +23,17 @@ public class InteractableObject : MonoBehaviour
 
     public GameObject highlightVFX;
     // Highlight
-    public void OnHighlight() => highlightVFX?.SetActive(true);
-    public void OnUnhighlight() => highlightVFX?.SetActive(false);
+    public void OnHighlight()
+    {
+        if (!highlightVFX) return;
+        highlightVFX.SetActive(true);
+    }
+
+    public void OnUnhighlight()
+    {
+        if (!highlightVFX) return;
+        highlightVFX.SetActive(false);
+    }
 
     private void OnEnable()
     {
