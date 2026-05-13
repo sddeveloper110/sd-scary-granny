@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameManager;
 
@@ -14,6 +15,20 @@ public class CanvasManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+            // Clear static events when the manager is destroyed (scene transition)
+            OnGameStart = null;
+            OnGameExit = null;
+            OnGameRetry = null;
+            OnGameRevive = null;
+            OnSensetivityChange = null;
+        }
     }
 
     
@@ -46,6 +61,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Button")]
     [SerializeField] Button[] exitGameplayBtn;
     [SerializeField] Button[] retryBtn;
+    [SerializeField] Button[] reviveBtn;
     [SerializeField] Button nextLevelBtn;
 
   
@@ -55,6 +71,7 @@ public class CanvasManager : MonoBehaviour
     public static event Action OnGameStart;
     public static event Action OnGameExit;
     public static event Action OnGameRetry;
+    public static event Action OnGameRevive;
     public static event Action<float> OnSensetivityChange;
 
     void Start()
@@ -72,11 +89,14 @@ public class CanvasManager : MonoBehaviour
         for(int i = 0; i < retryBtn.Length;i++)
             retryBtn[i].onClick.AddListener(Retry);
    
+        for(int i = 0; i < reviveBtn.Length;i++)
+            reviveBtn[i].onClick.AddListener(Revive);
 
         for(int i = 0; i < exitGameplayBtn.Length; i++)
         {
-            exitGameplayBtn[i].onClick.AddListener(LoadToMainMenu);
+            exitGameplayBtn[i].onClick.AddListener(() => { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); });
         }
+
         sensetivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 1f);
 
         OnSensetivityChange?.Invoke(PlayerPrefs.GetFloat("Sensitivity",3f));
@@ -209,6 +229,12 @@ public class CanvasManager : MonoBehaviour
         StartCoroutine(Loading(4, () => EnablePanel(PanelType.Gameplay)));
     }
 
+    void Revive()
+    {
+        OnGameRevive?.Invoke();
+        StartCoroutine(Loading(4, () => EnablePanel(PanelType.Gameplay)));
+    }
+
     public static void LoadToMainMenu()
     {
         OnGameExit?.Invoke();
@@ -261,6 +287,7 @@ public class CanvasManager : MonoBehaviour
     public void OnStartButtonPress()
     {
         OnGameStart?.Invoke();
+        GameManager.Instance.NewGame();
     }
 
     public void OpenUrl(string url)

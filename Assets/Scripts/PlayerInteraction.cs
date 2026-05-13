@@ -98,7 +98,7 @@ public class PlayerInteraction : MonoBehaviour
         }
         if(currentInteractable ==  null && lastHighlightedInteractable != null)
         {
-            lastHighlightedInteractable.OnHighlight();
+                        lastHighlightedInteractable.OnUnhighlight();
             lastHighlightedInteractable = null;
         }
      

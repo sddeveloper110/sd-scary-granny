@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c108c5e7c8f45d54aaf3d89b92307a76, type: 3}
+  m_Name: GroundHall
+  m_EditorClassIdentifier: Assembly-CSharp::RoomNodeData
+  roomId: GroundHall
+  floorIndex: 0
+  isHidingSpotRoom: 0
+  isExitRoom: 0
+  isStaircaseRoom: 0
+  connections:
+  - target: {fileID: 11400000, guid: 743ff78bf27bfcd4585e6e3f46b3c2e6, type: 2}
+    traversalCost: 1.41
+    isStaircase: 0
+    isDoorOpen: 1
+  - target: {fileID: 11400000, guid: b65575a8bb50e1d499df59b3186ca4ab, type: 2}
+    traversalCost: 1.58
+    isStaircase: 0
+    isDoorOpen: 1
+  - target: {fileID: 11400000, guid: 1664c25939a2e7a4ab262da34a86c5e7, type: 2}
+    traversalCost: 2.52
+    isStaircase: 1
+    isDoorOpen: 1

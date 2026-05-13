@@ -48,7 +48,7 @@ public class TaskData
     public Transform GetSpawnPoint() => taskSpawnPoint;
 }
 
-public class TaskLoader : MonoBehaviour
+public class TaskLoader
 {
     [Header("JSON Config")]
     [SerializeField] public string jsonFileName = "TasksJson";

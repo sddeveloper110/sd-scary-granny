@@ -9,6 +9,8 @@ public class PickableObject : MonoBehaviour
     public string animationTrigger = "Activate";
 
     public AudioClip useAudio;
+    public AudioClip pickAudio;
+    public AudioClip dropAudio;
     public bool isPicked;
     protected Rigidbody rb;
 
@@ -42,6 +44,10 @@ public class PickableObject : MonoBehaviour
         transform.SetParent(holderObject);
         transform.localPosition = Vector3.zero;
         transform.localRotation = Quaternion.identity;
+
+        if (pickAudio != null)
+            SoundManager.PlayThisAudio(pickAudio);
+
         OnUnhighlight();
 
     }
@@ -52,6 +58,9 @@ public class PickableObject : MonoBehaviour
         isPicked = false;
         transform.SetParent(null);
         if (rb != null) { rb.isKinematic = false; rb.useGravity = true; rb.AddForce(force, ForceMode.Impulse); }
+
+        if (dropAudio != null)
+            SoundManager.PlayThisAudio(dropAudio);
     }
 
     // Action when using item on object

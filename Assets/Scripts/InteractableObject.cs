@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +11,7 @@ public class InteractableObject : MonoBehaviour
     [Header("Interaction Count (For things like breaking chains)")]
     public int interactionRequired = 1;
     private int interactionDone = 0;
+    public AudioClip activationAudio;
 
     public bool IsInteracted =false;
     public string INeedThisText;
@@ -20,6 +21,10 @@ public class InteractableObject : MonoBehaviour
     // GLOBAL EVENT fired when this interactable is fully activated
     public static Action<InteractableObject> OnObjectInteractionDone;
 
+    private void OnDestroy()
+    {
+        OnObjectInteractionDone = null;
+    }
 
     public GameObject highlightVFX;
     // Highlight
@@ -37,8 +42,18 @@ public class InteractableObject : MonoBehaviour
 
     private void OnEnable()
     {
-        CanvasManager.OnGameStart += () => { usedItems.Clear(); };
+        CanvasManager.OnGameStart += ClearUsedItems;
         OnUnhighlight();
+    }
+
+    private void OnDisable()
+    {
+        CanvasManager.OnGameStart -= ClearUsedItems;
+    }
+
+    private void ClearUsedItems()
+    {
+        usedItems.Clear();
     }
 
     public void TryInteract(PickableObject heldItem)
@@ -86,6 +101,9 @@ public class InteractableObject : MonoBehaviour
         if (anim != null)
             anim.SetTrigger(animationTrigger);
 
+        if (activationAudio != null)
+            SoundManager.PlayThisAudio(activationAudio);
+ 
         IsInteracted = true;
 
         // FIRE GLOBAL EVENT

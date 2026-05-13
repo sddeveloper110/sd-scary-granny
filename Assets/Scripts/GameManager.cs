@@ -1,9 +1,10 @@
-﻿using Sirenix.OdinInspector;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TypeWriter objectiveText;
 
     [Header("Finale Settings")]
-    [SerializeField] private float survivalTime = 120f;
+        [SerializeField] private float survivalTime = 180f;
 
     public static GameManager Instance;
 
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour
     public bool isGameStarted = false;
     private bool isInSurvivalMode = false;
 
+    private static bool shouldStartGameOnLoad = false;
+
     #region UNITY
 
     private void Awake()
@@ -42,19 +45,29 @@ public class GameManager : MonoBehaviour
         isGameStarted = false;
 
         InteractableObject.OnObjectInteractionDone += HandleInteractableActivated;
-        GhostAi.OnAttackEnemy += HandleGhostAttack;
+        GrannyAI.OnAttackPlayer += HandleGhostAttack;
 
         CanvasManager.OnGameExit += ExitGame;
         CanvasManager.OnGameRetry += Retry;
+        CanvasManager.OnGameRevive += Revive;
     }
 
     private void OnDestroy()
     {
         InteractableObject.OnObjectInteractionDone -= HandleInteractableActivated;
-        GhostAi.OnAttackEnemy -= HandleGhostAttack;
+                GrannyAI.OnAttackPlayer -= HandleGhostAttack;
 
         CanvasManager.OnGameExit -= ExitGame;
         CanvasManager.OnGameRetry -= Retry;
+        CanvasManager.OnGameRevive -= Revive;
+
+        if (Instance == this)
+        {
+            Instance = null;
+            // Reset static events to prevent leaks across scene reloads
+            OnGameStarted = null;
+            OnSurvivalStarted = null;
+        }
     }
 
     private void Start()
@@ -62,12 +75,18 @@ public class GameManager : MonoBehaviour
         if (tasks == null || tasks.Count == 0)
             LoadTasks();
 
-        LoadProgress();
+        currentTaskIndex = 0;
 
         RestoreCompletedTasks();
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ShowCurrentTaskHint);
+
+        if (shouldStartGameOnLoad)
+        {
+            shouldStartGameOnLoad = false;
+            StartGame();
+        }
     }
 
     #endregion
@@ -161,9 +180,22 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
+    public void Revive()
+    {
+        // Revive does the same as Retry (spawn to last save object point)
+        Retry();
+    }
+
+    public void NewGame()
+    {
+        shouldStartGameOnLoad = true;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     private void HandleGhostAttack()
     {
         isGameStarted = false;
+        GameEnd();
     }
 
     #endregion
@@ -179,7 +211,7 @@ public class GameManager : MonoBehaviour
 
         SoundManager.Instance.PlayGameGrannyMusic();
 
-        objectiveText.ShowText("SURVIVE UNTIL THE EXIT OPENS! (2:00)");
+                objectiveText.ShowText($"SURVIVE UNTIL THE EXIT OPENS! ({Mathf.FloorToInt(survivalTime / 60)}:00)");
 
         OnSurvivalStarted?.Invoke();
 
@@ -251,35 +283,23 @@ public class GameManager : MonoBehaviour
 
     public void ExitGame()
     {
-        SaveProgress();
-
         isGameStarted = false;
 
         if (menuCamera != null)
             menuCamera.gameObject.SetActive(true);
     }
 
+    public void ExitAndClearProgress()
+    {
+        // Just reload the scene to reset everything
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     #endregion
 
 
     #region SAVE LOAD
-
-    private void SaveProgress()
-    {
-        PlayerPrefs.SetInt("TaskIndex", currentTaskIndex);
-    }
-
-    private void LoadProgress()
-    {
-        currentTaskIndex = PlayerPrefs.GetInt("TaskIndex", 0);
-
-        if (currentTaskIndex < 0)
-            currentTaskIndex = 0;
-
-        if (currentTaskIndex > tasks.Count)
-            currentTaskIndex = tasks.Count;
-    }
-
+    // Removed as per request (Start always starts new game)
     #endregion
 
 
@@ -328,8 +348,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Task completed: {interactable.name}");
 
         currentTaskIndex++;
-
-        SaveProgress();
 
         if (currentTaskIndex >= tasks.Count)
         {

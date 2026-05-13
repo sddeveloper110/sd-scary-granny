@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.Instance != null)
             GameManager.OnGameStarted += SetupForGameplay;
-        GhostAi.OnAttackEnemy += HandlePlayerHit;
+        GrannyAI.OnAttackPlayer += HandlePlayerHit;
        
     }
 
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.Instance != null)
             GameManager.OnGameStarted -= SetupForGameplay;
-    GhostAi.OnAttackEnemy -= HandlePlayerHit;
+    GrannyAI.OnAttackPlayer -= HandlePlayerHit;
     }
 
     private void Start()
