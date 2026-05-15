@@ -1,0 +1,1581 @@
+fileFormatVersion: 2
+guid: 4c519ec67182438449a40f9d3fe16c9b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Slicing_0
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 1967
+        width: 1513
+        height: 611
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36d5b00fed810fb4cba7d3a27112d520
+      internalID: 1523940850
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_1
+      rect:
+        serializedVersion: 2
+        x: 1578
+        y: 2350
+        width: 229
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e38f372fefdbaf345a10d872c357327c
+      internalID: 737342213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_2
+      rect:
+        serializedVersion: 2
+        x: 1847
+        y: 2353
+        width: 219
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68eeb9959e9ee6d40b939be6bd6940e9
+      internalID: -806375148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_3
+      rect:
+        serializedVersion: 2
+        x: 2109
+        y: 2353
+        width: 219
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3bd58d9d77a894544999711804a0f409
+      internalID: -1548463580
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_4
+      rect:
+        serializedVersion: 2
+        x: 2379
+        y: 2353
+        width: 218
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c55f4b9133bec14408b0958f43692ac4
+      internalID: 1828506691
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_5
+      rect:
+        serializedVersion: 2
+        x: 2663
+        y: 2353
+        width: 219
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 739ec32e9d56203459a06655eafa5e4d
+      internalID: -1493990947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_6
+      rect:
+        serializedVersion: 2
+        x: 2939
+        y: 2353
+        width: 219
+        height: 218
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf50cf2a54cd7e74090c3b7423ed80d8
+      internalID: -1062542317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_7
+      rect:
+        serializedVersion: 2
+        x: 3360
+        y: 2352
+        width: 219
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5160d48f913a0e041a00f47adc3ddd22
+      internalID: -1769954312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_8
+      rect:
+        serializedVersion: 2
+        x: 3620
+        y: 2352
+        width: 216
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9baf0036012c45c43827a5b9c6df7e48
+      internalID: 1288218278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_9
+      rect:
+        serializedVersion: 2
+        x: 3876
+        y: 2355
+        width: 217
+        height: 214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9a79350c89586f4d9aba6935aaa3f72
+      internalID: 354545043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_10
+      rect:
+        serializedVersion: 2
+        x: 4133
+        y: 2355
+        width: 217
+        height: 214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 090fde9616f79aa478bc8b61d7795281
+      internalID: 1171176015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_11
+      rect:
+        serializedVersion: 2
+        x: 4390
+        y: 2355
+        width: 217
+        height: 214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc8d7ad78e26c7d41b1b9acd2476cbbe
+      internalID: -1273695922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_12
+      rect:
+        serializedVersion: 2
+        x: 4635
+        y: 2350
+        width: 221
+        height: 221
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31151eef76ada3348af441751acdf9c6
+      internalID: -1382852167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_13
+      rect:
+        serializedVersion: 2
+        x: 1578
+        y: 2067
+        width: 218
+        height: 219
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbd8f441afca4d641a28b129a7e94501
+      internalID: 676315546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_14
+      rect:
+        serializedVersion: 2
+        x: 1847
+        y: 2067
+        width: 219
+        height: 219
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3031ec4c915c254ca001d4526c7cfbf
+      internalID: 420884368
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_15
+      rect:
+        serializedVersion: 2
+        x: 2109
+        y: 2067
+        width: 219
+        height: 219
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba83ef088f716da4f93e3cdf98be7afa
+      internalID: -130913811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_16
+      rect:
+        serializedVersion: 2
+        x: 2382
+        y: 2067
+        width: 217
+        height: 219
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e15db34d1172b0d478a5d868435f52fa
+      internalID: -834136184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_17
+      rect:
+        serializedVersion: 2
+        x: 2663
+        y: 2067
+        width: 219
+        height: 219
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 407feec54f1570c439c558868bd578af
+      internalID: 1915153423
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_18
+      rect:
+        serializedVersion: 2
+        x: 2946
+        y: 2214
+        width: 86
+        height: 72
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0091143fe6403fc429d921f8c764c43a
+      internalID: -1555747256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_19
+      rect:
+        serializedVersion: 2
+        x: 3089
+        y: 2250
+        width: 64
+        height: 29
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 151b386ef63222b4388f1ba2270fed3b
+      internalID: 1372232647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_20
+      rect:
+        serializedVersion: 2
+        x: 3203
+        y: 2212
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24c93b70f3a088b4bbc70b611069e158
+      internalID: 2031216211
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_21
+      rect:
+        serializedVersion: 2
+        x: 3363
+        y: 2076
+        width: 216
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa494dd5c827e724986cbf2b0a77281f
+      internalID: 1492185474
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_22
+      rect:
+        serializedVersion: 2
+        x: 3620
+        y: 2076
+        width: 216
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 108c11b40057d17429eb1e8d8e3cbd23
+      internalID: 602992791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_23
+      rect:
+        serializedVersion: 2
+        x: 3876
+        y: 2076
+        width: 217
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdfbed24b390d7b46a371758ccac480e
+      internalID: -721910950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_24
+      rect:
+        serializedVersion: 2
+        x: 4133
+        y: 2076
+        width: 217
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9cf987e5730ebc4bb0a2e0270038e8f
+      internalID: 1259248123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_25
+      rect:
+        serializedVersion: 2
+        x: 4390
+        y: 2076
+        width: 217
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6e35509a58b7f1478eed4c5f96dbb72
+      internalID: 857371978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_26
+      rect:
+        serializedVersion: 2
+        x: 2932
+        y: 2062
+        width: 364
+        height: 114
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 45812f17887f92349a0a59a94b8af3f5
+      internalID: 20943941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_27
+      rect:
+        serializedVersion: 2
+        x: 4673
+        y: 2103
+        width: 129
+        height: 126
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e137ac3a8b5a5514696927432db786d4
+      internalID: 442160418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_28
+      rect:
+        serializedVersion: 2
+        x: 2121
+        y: 1948
+        width: 71
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09829171d7ad8c240af97d27826f053d
+      internalID: 2051512829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_29
+      rect:
+        serializedVersion: 2
+        x: 2354
+        y: 1948
+        width: 119
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 668f788f5d684ba4386d0cc091b16389
+      internalID: 2113532309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_30
+      rect:
+        serializedVersion: 2
+        x: 2651
+        y: 1948
+        width: 91
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7db7488ffe6ddf4479370f163420fc06
+      internalID: -1114079996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_31
+      rect:
+        serializedVersion: 2
+        x: 2826
+        y: 1967
+        width: 51
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f7fa39bd378a9844b933c6b8b14e20a
+      internalID: 1797127273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_32
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 1160
+        width: 466
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9397b4cd0d083644a8bf6e7d6302194b
+      internalID: -1830945463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_33
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 1160
+        width: 464
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0846920ea89976541951181f689b1caa
+      internalID: -413753871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_34
+      rect:
+        serializedVersion: 2
+        x: 1005
+        y: 1160
+        width: 464
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aabaa8f63746ca348820d24fd6bb2862
+      internalID: 1456724092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_35
+      rect:
+        serializedVersion: 2
+        x: 1495
+        y: 1160
+        width: 466
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f2e2b70b6a564c498104d10300cd68f
+      internalID: -67297304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_36
+      rect:
+        serializedVersion: 2
+        x: 1999
+        y: 1160
+        width: 512
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40f1f0bc33656c449a42784fff7c409c
+      internalID: -809106891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_37
+      rect:
+        serializedVersion: 2
+        x: 2532
+        y: 1160
+        width: 514
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09478d9a4a3ae59429ba2d38266ad7b1
+      internalID: -1384342500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_38
+      rect:
+        serializedVersion: 2
+        x: 3068
+        y: 1160
+        width: 511
+        height: 762
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73f51c76c794dc243aec38639bc1d3ae
+      internalID: -1551458447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_39
+      rect:
+        serializedVersion: 2
+        x: 3636
+        y: 1900
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9b48b112771cc348b8325ea23bcb833
+      internalID: 2007004062
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_40
+      rect:
+        serializedVersion: 2
+        x: 3762
+        y: 1786
+        width: 138
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a9fe3438c0e3bf4894c5075686a79ff
+      internalID: -1802576770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_41
+      rect:
+        serializedVersion: 2
+        x: 4181
+        y: 1734
+        width: 192
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3c3abbe033f7a54e959aa38f66f0984
+      internalID: -418733563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_42
+      rect:
+        serializedVersion: 2
+        x: 4466
+        y: 1786
+        width: 138
+        height: 135
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1c71e9ed77333648acaf72599fc24bb
+      internalID: -1855302442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_43
+      rect:
+        serializedVersion: 2
+        x: 3634
+        y: 1841
+        width: 26
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0187a014f8a2ca8418dec4e726b665d2
+      internalID: -1410873656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_44
+      rect:
+        serializedVersion: 2
+        x: 3674
+        y: 1453
+        width: 295
+        height: 285
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c212a6bf536ca54aaf7b4bb64197c33
+      internalID: 1196564922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_45
+      rect:
+        serializedVersion: 2
+        x: 3972
+        y: 1691
+        width: 133
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17173c64b0019464fa4e7a87dd7c0478
+      internalID: 1964940928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_46
+      rect:
+        serializedVersion: 2
+        x: 4110
+        y: 1481
+        width: 192
+        height: 186
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 252b881591ddaa04d9eee87c97afbc43
+      internalID: 26432891
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_47
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 356
+        width: 513
+        height: 761
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37265319721133248a3a1268898fd243
+      internalID: -1187561824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_48
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 356
+        width: 511
+        height: 761
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70e239f632fbae54ebfbc8b995663650
+      internalID: -1660530505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_49
+      rect:
+        serializedVersion: 2
+        x: 1091
+        y: 356
+        width: 514
+        height: 761
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db58bdae53fd2e6499ec29e123774774
+      internalID: -871871021
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_50
+      rect:
+        serializedVersion: 2
+        x: 1655
+        y: 356
+        width: 511
+        height: 761
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 703a14294ccc79a4d8bdea1b84e99a25
+      internalID: 1243128142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_51
+      rect:
+        serializedVersion: 2
+        x: 2187
+        y: 356
+        width: 514
+        height: 761
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 739f13d21c662db4f8f98e85ddddd109
+      internalID: 2110606964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_52
+      rect:
+        serializedVersion: 2
+        x: 2723
+        y: 356
+        width: 511
+        height: 761
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 844a7102552100f4fa809aff83cb5751
+      internalID: 1536260678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_53
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 282
+        width: 990
+        height: 57
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a63f028f23fe4246a2cfa44fdfdaeea
+      internalID: -1813680229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_54
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 200
+        width: 135
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 544725dbc36f8804aa8a58d607dd634e
+      internalID: 489841511
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_55
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 200
+        width: 136
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85332707ab1ba974aa31269a6d99ce8f
+      internalID: 501617510
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_56
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 215
+        width: 607
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04b06168bd5315240b70914d4832708f
+      internalID: -109630169
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_57
+      rect:
+        serializedVersion: 2
+        x: 358
+        y: 149
+        width: 607
+        height: 27
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 248c7e4696a7f69499a8ea304f48bfe3
+      internalID: -841693758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_58
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 87
+        width: 2131
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c08ab86cf73c5f4fb2229a402fbd7b7
+      internalID: 23312704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_59
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 44
+        width: 2131
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc5158efa054011458fb01f43898351a
+      internalID: -977505252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_60
+      rect:
+        serializedVersion: 2
+        x: 3673
+        y: 1146
+        width: 235
+        height: 226
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f037d9432cb28b4880e417792111094
+      internalID: -577770150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_61
+      rect:
+        serializedVersion: 2
+        x: 4389
+        y: 1460
+        width: 248
+        height: 238
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c9ce944290ec894db2c33727d7d54dc
+      internalID: 1327850528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slicing_62
+      rect:
+        serializedVersion: 2
+        x: 4703
+        y: 1692
+        width: 80
+        height: 83
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 187e03e904b4ce24fb31e66d3903e264
+      internalID: -1173432499
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      Slicing_0: 1523940850
+      Slicing_1: 737342213
+      Slicing_10: 1171176015
+      Slicing_11: -1273695922
+      Slicing_12: -1382852167
+      Slicing_13: 676315546
+      Slicing_14: 420884368
+      Slicing_15: -130913811
+      Slicing_16: -834136184
+      Slicing_17: 1915153423
+      Slicing_18: -1555747256
+      Slicing_19: 1372232647
+      Slicing_2: -806375148
+      Slicing_20: 2031216211
+      Slicing_21: 1492185474
+      Slicing_22: 602992791
+      Slicing_23: -721910950
+      Slicing_24: 1259248123
+      Slicing_25: 857371978
+      Slicing_26: 20943941
+      Slicing_27: 442160418
+      Slicing_28: 2051512829
+      Slicing_29: 2113532309
+      Slicing_3: -1548463580
+      Slicing_30: -1114079996
+      Slicing_31: 1797127273
+      Slicing_32: -1830945463
+      Slicing_33: -413753871
+      Slicing_34: 1456724092
+      Slicing_35: -67297304
+      Slicing_36: -809106891
+      Slicing_37: -1384342500
+      Slicing_38: -1551458447
+      Slicing_39: 2007004062
+      Slicing_4: 1828506691
+      Slicing_40: -1802576770
+      Slicing_41: -418733563
+      Slicing_42: -1855302442
+      Slicing_43: -1410873656
+      Slicing_44: 1196564922
+      Slicing_45: 1964940928
+      Slicing_46: 26432891
+      Slicing_47: -1187561824
+      Slicing_48: -1660530505
+      Slicing_49: -871871021
+      Slicing_5: -1493990947
+      Slicing_50: 1243128142
+      Slicing_51: 2110606964
+      Slicing_52: 1536260678
+      Slicing_53: -1813680229
+      Slicing_54: 489841511
+      Slicing_55: 501617510
+      Slicing_56: -109630169
+      Slicing_57: -841693758
+      Slicing_58: 23312704
+      Slicing_59: -977505252
+      Slicing_6: -1062542317
+      Slicing_60: -577770150
+      Slicing_61: 1327850528
+      Slicing_62: -1173432499
+      Slicing_7: -1769954312
+      Slicing_8: 1288218278
+      Slicing_9: 354545043
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

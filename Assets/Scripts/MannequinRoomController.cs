@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 using FirstPersonMobileTools.DynamicFirstPerson;
 
@@ -39,7 +39,7 @@ public class MannequinRoomController : MonoBehaviour
 
     private void Update()
     {
-        if (!playerInside || roomLocked) return;
+        if (!playerInside || roomLocked || Time.timeScale == 0) return;
 
         foreach (var mannequin in mannequins)
         {

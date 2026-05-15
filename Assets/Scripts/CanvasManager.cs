@@ -32,39 +32,34 @@ public class CanvasManager : MonoBehaviour
     }
 
     
-    [System.Serializable]
-    public class Panel
-    {
-        public PanelType type;
-        public Button[] OpenButton;
-        public Button[] CloseButton;
-        public GameObject panelGO;
-        public bool hideOthers = true;  // ✅ new toggle
-    }
     
 
-    [Header("Panels")]
-    [SerializeField] List<Panel> panels = new List<Panel>();
+    [Header("UI")]
     [SerializeField] Image fadeScreen;
-    public GameObject privacyPolicy;
 
     [Header("Volume UI")]
     [SerializeField] Slider[] soundVol;
     [SerializeField] Slider[] musicVol;
     [SerializeField] Slider sensetivitySlider;
 
-    [Header("Text")]
-    [SerializeField] TextMeshProUGUI loadingTxt;
-    [SerializeField] Image loadingBar;
     [SerializeField] TextMeshProUGUI popupTxt;
     
     [Header("Button")]
     [SerializeField] Button[] exitGameplayBtn;
     [SerializeField] Button[] retryBtn;
     [SerializeField] Button[] reviveBtn;
-    [SerializeField] Button nextLevelBtn;
 
   
+    [Header("Avatar & Flag Integration")]
+    [SerializeField] private TextMeshProUGUI playerNameDisplay;
+    [SerializeField] private TextMeshProUGUI playerAgeDisplay;
+
+    [Header("UI Containers")]
+    [SerializeField] private Image avatarContainer;
+    [SerializeField] private Image flagContainer;
+    [SerializeField] private List<Sprite> avatarSprites;
+    [SerializeField] private List<Sprite> flagSprites;
+
     [HideInInspector] public PanelType lastActivePanel;
 
     private Coroutine popupCoroutine;
@@ -77,6 +72,31 @@ public class CanvasManager : MonoBehaviour
     void Start()
     {
         Init();
+    }
+
+
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        UIPanelEnabler.OpenPanel(PanelType.Pause);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        UIPanelEnabler.ClosePanel(PanelType.Pause);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        if (GameManager.Instance != null)
+            GameManager.Instance.NewGame();
     }
 
     #region UI Setup
@@ -119,105 +139,44 @@ public class CanvasManager : MonoBehaviour
             musicVol[i].onValueChanged.AddListener(SoundManager.SetMusicVolume);
         }
 
-        // ✅ Auto assign open/close buttons
-        foreach (var p in panels)
-        {
-            foreach (var btn in p.OpenButton)
-            {
-                btn.onClick.AddListener(() =>
-                {
-                    SoundManager.PlayTapAudio();
-                    EnablePanel(p.type);
-                });
-            }
-
-            foreach (var btn in p.CloseButton)
-            {
-                btn.onClick.AddListener(() =>
-                {
-                    SoundManager.PlayTapAudio();
-                    p.panelGO.SetActive(false);
-                });
-            }
-        }
+        UpdateAvatarAndFlagIntegration();
         LoadToMainMenu();
     }
+
+    private void UpdateAvatarAndFlagIntegration()
+    {
+        int selectedAvatar = PlayerPrefs.GetInt("SelectedAvatar", 0);
+        int selectedFlag = PlayerPrefs.GetInt("SelectedFlag", 0);
+
+        // Update player name display
+        if (playerNameDisplay != null)
+            playerNameDisplay.text = PlayerPrefs.GetString("PlayerName", "Player");
+
+        // Update player age display
+        if (playerAgeDisplay != null)
+            playerAgeDisplay.text = PlayerPrefs.GetString("PlayerAge", "18");
+
+        // Update UI containers with selected sprites
+        if (avatarContainer != null && avatarSprites.Count > selectedAvatar)
+            avatarContainer.sprite = avatarSprites[selectedAvatar];
+
+        if (flagContainer != null && flagSprites.Count > selectedFlag)
+            flagContainer.sprite = flagSprites[selectedFlag];
+    }
+
     #endregion
 
-    #region Panel Control
-    public static void EnablePanel(PanelType type)
-    {
-        Panel openedPanel = Instance.panels.Find(p => p.type == type);
-
-        if (openedPanel == null)
-        {
-            Debug.LogError("Panel not found: " + type);
-            return;
-        }
-
-        if (openedPanel.panelGO.activeSelf)
-            return;
-
-        if(type == PanelType.MainMenu)
-        {
-            SoundManager.Instance.PlayMenuMusic();
-        }
-        else if(type == PanelType.Gameplay)
-        {
-            SoundManager.Instance.PlayGameDefaultMusic();
-        }
-
-            openedPanel.panelGO.SetActive(true);
-
-
-        if (openedPanel.hideOthers)
-        {
-            foreach (var p in Instance.panels)
-            {
-                if (p != openedPanel && p.panelGO != null)
-                    p.panelGO.SetActive(false);
-            }
-        }
-
-    }
-
-    public static void DisableAllPanel()
-    {
-        foreach (var p in Instance.panels)
-        {
-            if (p.panelGO.activeSelf)
-            {
-                Instance.lastActivePanel = p.type;
-                break;
-            }
-        }
-
-        foreach (var p in Instance.panels)
-        {
-                p.panelGO.SetActive(false);
-        }
-    }
-
-    public static bool IsPanelActive(PanelType type)
-    {
-        Panel p = Instance.panels.Find(x => x.type == type);
-        return p != null && p.panelGO.activeSelf;
-    }
-
-
-
-    #endregion
 
     #region Splash + Loading
 
     public static void LoadToGameplay()
     {
-        Instance.StartCoroutine(Instance.Loading(4, () =>
+        UIPanelEnabler.Instance.StartCoroutine(UIPanelEnabler.Instance.Loading(4, () =>
         {
-            EnablePanel(PanelType.Gameplay);
+            UIPanelEnabler.OpenPanel(PanelType.Gameplay);
             if (PlayerPrefs.GetInt("FirstTimePlay", 0) == 0)
             {
-                EnablePanel(PanelType.PrivacyPolicy);
+                UIPanelEnabler.OpenPanel(PanelType.PrivacyPolicy);
                 PlayerPrefs.SetInt("FirstTimePlay", 1);
             }
         }));
@@ -226,59 +185,32 @@ public class CanvasManager : MonoBehaviour
     void Retry()
     {
         OnGameRetry?.Invoke();
-        StartCoroutine(Loading(4, () => EnablePanel(PanelType.Gameplay)));
+        StartCoroutine(UIPanelEnabler.Instance.Loading(4, () => UIPanelEnabler.OpenPanel(PanelType.Gameplay)));
     }
 
     void Revive()
     {
         OnGameRevive?.Invoke();
-        StartCoroutine(Loading(4, () => EnablePanel(PanelType.Gameplay)));
+        StartCoroutine(UIPanelEnabler.Instance.Loading(4, () => UIPanelEnabler.OpenPanel(PanelType.Gameplay)));
     }
 
     public static void LoadToMainMenu()
     {
         OnGameExit?.Invoke();
-        Instance.StartCoroutine(Instance.Loading(3, () =>
+        UIPanelEnabler.Instance.StartCoroutine(UIPanelEnabler.Instance.Loading(3, () =>
         {
-            EnablePanel(PanelType.MainMenu);
+            UIPanelEnabler.OpenPanel(PanelType.MainMenu);
         }));
     }
 
 
     IEnumerator SplashSequence()
     {
-        EnablePanel(PanelType.Splash);
+        UIPanelEnabler.OpenPanel(PanelType.Splash);
 
         yield return new WaitForSeconds(6f);
 
         //LoadToMainMenu();
-    }
-    public IEnumerator Loading(float duration, UnityAction action)
-    {
-        EnablePanel(PanelType.Loading);
-
-        float timer = 0f;
-        float dotTimer = 0f;
-        int dotCount = 0;
-
-        while (timer < duration)
-        {
-            timer += Time.deltaTime;
-            dotTimer += Time.deltaTime;
-
-            if (dotTimer >= 0.5f)
-            {
-                dotTimer = 0f;
-                dotCount = (dotCount + 1) % 4;
-                loadingTxt.text = $"Loading{new string('.', dotCount)}";
-            }
-
-            loadingBar.fillAmount = timer / duration;
-
-            yield return null;
-        }
-
-        action?.Invoke();
     }
 
     #endregion
@@ -424,18 +356,3 @@ public class CanvasManager : MonoBehaviour
    
 }
 
-
-public enum PanelType
-{
-    Splash,
-    Loading,
-    MainMenu,
-    Settings,
-    Gameplay,
-    Pause,
-    LevelComplete,
-    Hint,
-    PrivacyPolicy,
-    RateUs,
-    GameOver
-}

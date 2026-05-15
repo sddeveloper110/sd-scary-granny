@@ -268,7 +268,7 @@ public class GameManager : MonoBehaviour
 
         CanvasManager.FadeIn(1.5f, () =>
         {
-            CanvasManager.EnablePanel(PanelType.LevelComplete);
+            UIPanelEnabler.OpenPanel(PanelType.LevelComplete);
             PlayerPrefs.DeleteAll();
         });
     }
@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
     {
         CanvasManager.FadeIn(.5f, () =>
         {
-            CanvasManager.EnablePanel(PanelType.GameOver);
+            UIPanelEnabler.OpenPanel(PanelType.GameOver);
         });
     }
 
@@ -327,7 +327,7 @@ public class GameManager : MonoBehaviour
         TaskData task = GetCurrentTask();
         if (task == null) return;
 
-        CanvasManager.EnablePanel(PanelType.Hint);
+        UIPanelEnabler.OpenPanel(PanelType.Hint);
         HintSystem.Instance.ShowHint(task.GetHint());
     }
 

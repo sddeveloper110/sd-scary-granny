@@ -220,7 +220,7 @@ public class GrannyAI : MonoBehaviour
 
     private void Update()
     {
-        if (!GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart) return;
+        if (!GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart || Time.timeScale == 0) return;
 
         UpdateGrannyCurrentRoom();
         DecayBelief();
