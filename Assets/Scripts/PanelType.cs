@@ -15,4 +15,8 @@ public enum PanelType
     AvatarSelection,
     FlagSelection,
     NameSelection,
+    CharacterSelection,
+    LocationSelection,
+    ModeSelection,
+    Difficulty,
 }

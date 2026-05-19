@@ -261,10 +261,18 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         private void Handle_Step()
         {
-
             if (m_FootStepSounds.Length == 0) return;
-            if (m_WalkBob.OnStep) PlaySound(m_FootStepSounds[UnityEngine.Random.Range(0, m_FootStepSounds.Length - 1)]);
-
+            if (m_WalkBob.OnStep) 
+            {
+                PlaySound(m_FootStepSounds[UnityEngine.Random.Range(0, m_FootStepSounds.Length - 1)]);
+                
+                // Alert Granny
+                GrannyAI granny = FindFirstObjectByType<GrannyAI>();
+                if (granny != null)
+                {
+                    granny.HearSound(transform.position, false);
+                }
+            }
         }
 
         private void UpdateWalkBob()

@@ -40,7 +40,7 @@ public class GrannyAI : MonoBehaviour
     [Range(0.5f, 4f)]  public float patrolSpeed  = 2.0f;
     [Range(1f,   4f)]  public float curiousSpeed = 3.0f;
     [Range(1f,   5f)]  public float huntSpeed    = 3.8f;
-    [Range(2f,   8f)]  public float chaseSpeed   = 5.5f;
+    [Range(1f,   8f)]  public float chaseSpeed   = 5.5f;
     [Range(0f,  10f)]  public float startDelay   = 4f;
 
     [Header("── Belief Thresholds ───────────────────────────────────")]
@@ -107,7 +107,13 @@ public class GrannyAI : MonoBehaviour
     public string animWalkName    = "Granny_Walk";
     public string animAttackName  = "Granny_Attack";
     public string animReactName   = "Granny_React";
+    public string animCrazyName   = "Granny_Crazy";
     [Range(0f, 1f)] public float lookAtWeight = 0.9f;
+
+    [Header("── Ambient Voices ───────────────────────────────────────")]
+    public AudioSource grannyAudioSource;
+    public AudioClip footstepClip;
+    public List<AudioClip> ambientHorrorVoices = new List<AudioClip>();
 
     #endregion
 
@@ -162,6 +168,7 @@ public class GrannyAI : MonoBehaviour
     private bool  isWaitingAtStart;
     private float nearMissCooldownTimer;
     private float falseScareCooldownTimer;
+    private float crazyCooldownTimer;
     private float fearScore;
 
     // Anchor
@@ -170,6 +177,8 @@ public class GrannyAI : MonoBehaviour
 
     // Music dedup
     private GrannyState _lastMusicState = GrannyState.Idle;
+
+    private RoomNodeMarker[] _cachedMarkers;
 
     // ── Editor-accessible runtime read-outs ──────────────────────────────────
     // (GrannyAIEditor reads these to show live status in Inspector)
@@ -214,12 +223,19 @@ public class GrannyAI : MonoBehaviour
         startPos = transform.position;
         startRot = transform.rotation;
 
+        _cachedMarkers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
+
         InitBeliefMap();
         ResetGranny();
     }
 
     private void Update()
     {
+        if (grannyAudioSource != null)
+        {
+            grannyAudioSource.volume = SoundManager.SoundVol > 0 ? 1f : 0f;
+        }
+
         if (!GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart || Time.timeScale == 0) return;
 
         UpdateGrannyCurrentRoom();
@@ -261,12 +277,13 @@ public class GrannyAI : MonoBehaviour
     /// <summary>Returns the RoomNodeData whose scene marker is closest to worldPos.</summary>
     private RoomNodeData GetRoomForPosition(Vector3 worldPos)
     {
-        // We cache markers once for performance
-        var markers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
+        if (_cachedMarkers == null || _cachedMarkers.Length == 0)
+            _cachedMarkers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
+
         RoomNodeData best  = null;
         float        bestD = float.MaxValue;
 
-        foreach (var m in markers)
+        foreach (var m in _cachedMarkers)
         {
             if (m.data == null) continue;
             float d = Vector3.Distance(worldPos, m.transform.position);
@@ -340,8 +357,10 @@ public class GrannyAI : MonoBehaviour
 
     private Transform GetMarkerTransform(RoomNodeData data)
     {
-        var markers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
-        foreach (var m in markers)
+        if (_cachedMarkers == null)
+            _cachedMarkers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
+
+        foreach (var m in _cachedMarkers)
             if (m.data == data) return m.transform;
         return null;
     }
@@ -409,7 +428,7 @@ public class GrannyAI : MonoBehaviour
             playerLastKnownRoom = pRoom;
         }
 
-        if (State != GrannyState.Chase && State != GrannyState.Attack && State != GrannyState.Survival)
+        if (State != GrannyState.Chase && State != GrannyState.Attack && State != GrannyState.Survival && State != GrannyState.Crazy)
             State = GrannyState.Chase;
     }
 
@@ -431,7 +450,7 @@ public class GrannyAI : MonoBehaviour
     private void EvaluateStateFromBelief()
     {
         if (State == GrannyState.Chase  || State == GrannyState.Attack ||
-            State == GrannyState.Survival || State == GrannyState.NearMiss) return;
+            State == GrannyState.Survival || State == GrannyState.NearMiss || State == GrannyState.Crazy) return;
 
         float max = GetMaxBeliefScore();
         if      (max >= beliefHuntThreshold)    State = GrannyState.Hunt;
@@ -711,6 +730,15 @@ public class GrannyAI : MonoBehaviour
     {
         if (nearMissCooldownTimer   > 0f) nearMissCooldownTimer   -= Time.deltaTime;
         if (falseScareCooldownTimer > 0f) falseScareCooldownTimer -= Time.deltaTime;
+        
+        if (crazyCooldownTimer > 0f && State != GrannyState.Crazy && State != GrannyState.Attack && State != GrannyState.Survival)
+        {
+            crazyCooldownTimer -= Time.deltaTime;
+            if (crazyCooldownTimer <= 0f)
+            {
+                StartCoroutine(CrazyRoutine());
+            }
+        }
     }
 
     #endregion
@@ -725,13 +753,18 @@ public class GrannyAI : MonoBehaviour
 
         switch (State)
         {
-            case GrannyState.Patrol:
-            case GrannyState.Curious:
-                SoundManager.Instance.PlayGameDefaultMusic(); break;
-            case GrannyState.Hunt:
             case GrannyState.Chase:
+            case GrannyState.Hunt:
+                SoundManager.Instance.PlaySuspenseMusic();
+                break;
             case GrannyState.Survival:
                 SoundManager.Instance.PlayGameGrannyMusic(); break;
+            default:
+                if (GameManager.Instance != null && !GameManager.Instance.isInSurvivalMode)
+                {
+                    SoundManager.Instance.PlayNothing();
+                }
+                break;
         }
     }
 
@@ -778,6 +811,7 @@ public class GrannyAI : MonoBehaviour
         InitBeliefMap();
         fearScore = patrolIndex = 0;
         nearMissCooldownTimer = falseScareCooldownTimer = 0f;
+        crazyCooldownTimer = UnityEngine.Random.Range(30f, 60f);
 
         yield return new WaitForSeconds(startDelay);
 
@@ -786,6 +820,36 @@ public class GrannyAI : MonoBehaviour
         State            = GrannyState.Patrol;
 
         if (patrolRoute.Count > 0) NavigateToRoom(patrolRoute[0]);
+
+        StartCoroutine(AmbientVoicesRoutine());
+    }
+
+    private IEnumerator AmbientVoicesRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(UnityEngine.Random.Range(20f, 30f));
+            
+            if (ambientHorrorVoices != null && ambientHorrorVoices.Count > 0 && grannyAudioSource != null)
+            {
+                AudioClip clip = ambientHorrorVoices[UnityEngine.Random.Range(0, ambientHorrorVoices.Count)];
+                grannyAudioSource.PlayOneShot(clip);
+            }
+        }
+    }
+
+    private IEnumerator CrazyRoutine()
+    {
+        var prevState = State;
+        State = GrannyState.Crazy;
+        agent.isStopped = true;
+        anim?.Play(animCrazyName);
+
+        yield return new WaitForSeconds(10f);
+
+        State = (prevState == GrannyState.Attack || prevState == GrannyState.NearMiss) ? GrannyState.Patrol : prevState;
+        if (State != GrannyState.Survival) agent.isStopped = false;
+        crazyCooldownTimer = UnityEngine.Random.Range(30f, 60f);
     }
 
     private void EnterSurvivalMode() => State = GrannyState.Survival;
@@ -904,5 +968,5 @@ public class GrannyAI : MonoBehaviour
 // ─────────────────────────────────────────────────────────────────────────────
 public enum GrannyState
 {
-    Idle, Patrol, Curious, Hunt, Chase, NearMiss, Attack, Survival
+    Idle, Patrol, Curious, Hunt, Chase, NearMiss, Attack, Survival, Crazy
 }

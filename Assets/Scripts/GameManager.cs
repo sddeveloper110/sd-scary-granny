@@ -9,12 +9,12 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Camera menuCamera;
     [SerializeField] private string jsonFileName = "Tasks";
     [SerializeField] private GameObject missionSpawnPoints;
 
     [Header("UI")]
     [SerializeField] private Button hintButton;
+    public Button showHintButton;
     [SerializeField] private TypeWriter objectiveText;
 
     [Header("Finale Settings")]
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     public int currentTaskIndex = 0;
 
     public bool isGameStarted = false;
-    private bool isInSurvivalMode = false;
+    public bool isInSurvivalMode = false;
 
     private static bool shouldStartGameOnLoad = false;
 
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+        Time.timeScale = 1f;
         isGameStarted = false;
 
         InteractableObject.OnObjectInteractionDone += HandleInteractableActivated;
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         InteractableObject.OnObjectInteractionDone -= HandleInteractableActivated;
-                GrannyAI.OnAttackPlayer -= HandleGhostAttack;
+        GrannyAI.OnAttackPlayer -= HandleGhostAttack;
 
         CanvasManager.OnGameExit -= ExitGame;
         CanvasManager.OnGameRetry -= Retry;
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
             // Reset static events to prevent leaks across scene reloads
             OnGameStarted = null;
             OnSurvivalStarted = null;
+            InteractableObject.OnObjectInteractionDone = null;
         }
     }
 
@@ -81,6 +83,9 @@ public class GameManager : MonoBehaviour
 
         if (hintButton != null)
             hintButton.onClick.AddListener(ShowCurrentTaskHint);
+
+        if (showHintButton != null)
+            showHintButton.onClick.AddListener(ShowHint);
 
         if (shouldStartGameOnLoad)
         {
@@ -151,22 +156,23 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        Debug.Log("[GameManager] StartGame requested. isGameStarted=" + isGameStarted);
         if (isGameStarted) return;
 
         isGameStarted = true;
 
-        if (menuCamera != null)
-            menuCamera.gameObject.SetActive(false);
-
+        Debug.Log("[GameManager] Invoking OnGameStarted event...");
         OnGameStarted?.Invoke();
 
         // If all tasks already completed
         if (currentTaskIndex >= tasks.Count)
         {
+            Debug.Log("[GameManager] All tasks completed, starting survival finale.");
             StartSurvivalFinale();
             return;
         }
 
+        Debug.Log("[GameManager] Updating task info.");
         UpdateTask();
     }
 
@@ -188,8 +194,9 @@ public class GameManager : MonoBehaviour
 
     public void NewGame()
     {
-        shouldStartGameOnLoad = true;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("[GameManager] NewGame called");
+        currentTaskIndex = 0;
+        Retry();
     }
 
     private void HandleGhostAttack()
@@ -285,8 +292,7 @@ public class GameManager : MonoBehaviour
     {
         isGameStarted = false;
 
-        if (menuCamera != null)
-            menuCamera.gameObject.SetActive(true);
+      
     }
 
     public void ExitAndClearProgress()
@@ -329,6 +335,90 @@ public class GameManager : MonoBehaviour
 
         UIPanelEnabler.OpenPanel(PanelType.Hint);
         HintSystem.Instance.ShowHint(task.GetHint());
+    }
+
+    public void ShowHint()
+    {
+        TaskData task = GetCurrentTask();
+        if (task == null) return;
+
+        InteractableObject interactable = task.interactableToComplete;
+        if (interactable == null) return;
+
+        PickableObject neededPickable = null;
+        PickableObject[] allPickables = FindObjectsOfType<PickableObject>(true);
+        foreach (var p in allPickables)
+        {
+            if (p.interactsWith == interactable)
+            {
+                neededPickable = p;
+                break;
+            }
+        }
+        AdsManager.Instance.DisplayRewardedAd(() =>
+        {
+
+            if (neededPickable != null && !neededPickable.isPicked)
+            {
+                CanvasManager.ShowPopup("Pickable is highlighted now");
+                if (neededPickable.highlightVFX != null)
+                {
+                    neededPickable.highlightVFX.SetActive(true);
+                    Outline outline = neededPickable.highlightVFX.GetComponent<Outline>();
+                    if (outline != null)
+                    {
+                        StartCoroutine(HighlightOutlineRoutine(outline, neededPickable.highlightVFX));
+                    }
+                }
+                var camLook = FindFirstObjectByType<FirstPersonMobileTools.DynamicFirstPerson.CameraLook>();
+                if (camLook != null) camLook.LookAtTarget(neededPickable.transform.position);
+            }
+            else
+            {
+                CanvasManager.ShowPopup("interactable is highlighted now");
+                if (interactable.highlightVFX != null)
+                {
+                    interactable.highlightVFX.SetActive(true);
+                    Outline outline = interactable.highlightVFX.GetComponent<Outline>();
+                    if (outline != null)
+                    {
+                        StartCoroutine(HighlightOutlineRoutine(outline, interactable.highlightVFX));
+                    }
+                }
+                var camLook = FindFirstObjectByType<FirstPersonMobileTools.DynamicFirstPerson.CameraLook>();
+                if (camLook != null) camLook.LookAtTarget(interactable.transform.position);
+            }
+        });
+    }
+
+    private IEnumerator HighlightOutlineRoutine(Outline outline, GameObject highlightObj)
+    {
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        
+        float timer = 0f;
+        float duration = 20f;
+
+        while (timer < duration)
+        {
+            if (outline != null)
+            {
+                // Ping-pong between 3 and 7
+                outline.OutlineWidth = Mathf.PingPong(timer * 8f, 4f) + 3f;
+            }
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        if (outline != null)
+        {
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
+            outline.OutlineWidth = 2f;
+        }
+
+        if (highlightObj != null)
+        {
+            highlightObj.SetActive(false);
+        }
     }
 
     #endregion

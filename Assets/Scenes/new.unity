@@ -136,7 +136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &37373072
 RectTransform:
   m_ObjectHideFlags: 0
@@ -398,7 +398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 489841511, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
+  m_Sprite: {fileID: 501617510, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -452,7 +452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -100}
+  m_AnchoredPosition: {x: 125, y: -266.3}
   m_SizeDelta: {x: 86.03296, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &104582188
@@ -471,6 +471,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 1
@@ -591,7 +593,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &206688988
 RectTransform:
   m_ObjectHideFlags: 0
@@ -905,7 +907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -80.9}
   m_SizeDelta: {x: 1513.579, y: 611}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &284781346
@@ -924,6 +926,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -1000,7 +1004,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &285248748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1098,7 +1102,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -125}
+  m_AnchoredPosition: {x: 0, y: -104.9}
   m_SizeDelta: {x: 364.13928, y: 114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &305565947
@@ -1157,6 +1161,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 354223261}
+        m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
+        m_MethodName: ShowAdmobInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &305565948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1173,6 +1189,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 1
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 0
@@ -1337,7 +1355,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: dawood iftikhar shurul a
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -1422,6 +1440,7 @@ GameObject:
   - component: {fileID: 354223259}
   - component: {fileID: 354223258}
   - component: {fileID: 354223257}
+  - component: {fileID: 354223261}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1547,6 +1566,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &354223261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354223256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f262dac4f364a24da76722955d8d03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AdsManager
+  ADMOB_ID:
+    ADMOB_BANNER_AD_ID: ca-app-pub-3940256099942544/6300978111
+    ADMOB_BANNER_AD_ID_2: ca-app-pub-3940256099942544/6300978111
+    ADMOB_MEDIUM_BANNER_AD_ID: ca-app-pub-3940256099942544/6300978111
+    ADMOB_INTERTITIAL_AD_ID: ca-app-pub-3940256099942544/1033173712
+    ADMOB_REWARDED_AD_ID: ca-app-pub-3940256099942544/5224354917
+    ADMOB_AppOpen_AD_ID: ca-app-pub-3940256099942544/9257395921
+    ADMOB_AppOpen_AD_ID_2: ca-app-pub-3940256099942544/9257395921
+  isShowBanner: 1
+  isDoubleBannerBanner: 1
+  NoAdLoaded: {fileID: 898566172}
+  loadAdPanel: {fileID: 1394116255}
+  isAdmobBanner: 1
+  isAdmobMedium: 1
+  isAdmobInter: 1
+  isAdmobRewarded: 1
+  isAdmobAppOpen: 1
+  isRemoteAdsEnabled: 1
+  _AdmobBannerPos: 1
+  _AdmobBanner2Pos: 2
+  _AdmobBannerSize: 0
+  _AdmobBanner2Size: 0
+  _AdmobMediumBannerPos: 4
+  adBreakPanel: {fileID: 1872596961}
+  adBreakCountdownTxt: {fileID: 1289343610}
 --- !u!1 &400017473
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,6 +2338,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -2398,6 +2456,7 @@ MonoBehaviour:
   - {fileID: 1763214824}
   - {fileID: 2041670523}
   nameInputField: {fileID: 323643055}
+  ageInputField: {fileID: 1220407770}
 --- !u!114 &546951552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2427,12 +2486,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 2436, y: 1125}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -2743,6 +2802,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -2839,7 +2900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -125}
+  m_AnchoredPosition: {x: 0, y: -89.86}
   m_SizeDelta: {x: 364.13928, y: 114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &565422589
@@ -2902,6 +2963,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 1
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 0
@@ -3018,7 +3081,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 501617510, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
+  m_Sprite: {fileID: 489841511, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3302,6 +3365,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -3474,7 +3539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 501617510, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
+  m_Sprite: {fileID: 489841511, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3696,6 +3761,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 1
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 0
@@ -3742,7 +3809,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -377.4, y: -125}
+  m_AnchoredPosition: {x: -377.4, y: -85.3}
   m_SizeDelta: {x: 364.13928, y: 114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &739584918
@@ -3909,6 +3976,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -4060,7 +4129,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &796679343
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4366,9 +4435,9 @@ RectTransform:
   - {fileID: 1220407769}
   m_Father: {fileID: 809753761}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 756.7895, y: -305.5}
   m_SizeDelta: {x: 1330, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &898566174
@@ -4447,7 +4516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -68.43}
   m_SizeDelta: {x: 1513.579, y: 611}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &923784371
@@ -4504,6 +4573,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -4712,6 +4783,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -4808,7 +4881,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -45.3}
   m_SizeDelta: {x: 1513.579, y: 611}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1001592899
@@ -4827,6 +4900,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -4973,7 +5048,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150.3}
+  m_AnchoredPosition: {x: 0, y: -248}
   m_SizeDelta: {x: 581.77, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1062451898
@@ -4992,6 +5067,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -5150,7 +5227,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -47.3}
   m_SizeDelta: {x: 1513.579, y: 611}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1063015062
@@ -5169,6 +5246,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -5340,6 +5419,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -5511,6 +5592,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -5608,7 +5691,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "dawood iftikhar shurul a\u200B"
+  m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33c968a7d806cab4983b8f30f26a49dc, type: 2}
   m_sharedMaterial: {fileID: -5503305615034024881, guid: 33c968a7d806cab4983b8f30f26a49dc, type: 2}
@@ -5772,7 +5855,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114090563}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -5787,8 +5870,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Enter Age...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8539f543bfd914b4c93b224aa846885e, type: 2}
-  m_sharedMaterial: {fileID: 5855067048776438160, guid: 8539f543bfd914b4c93b224aa846885e, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 33c968a7d806cab4983b8f30f26a49dc, type: 2}
+  m_sharedMaterial: {fileID: -5503305615034024881, guid: 33c968a7d806cab4983b8f30f26a49dc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5812,15 +5895,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 32.53
+  m_fontSizeBase: 32.53
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 2
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -5902,7 +5985,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 377.4, y: -125}
+  m_AnchoredPosition: {x: 377.4, y: -85.3}
   m_SizeDelta: {x: 364.13925, y: 114}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1116008058
@@ -5965,6 +6048,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 1
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 0
@@ -6136,6 +6221,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -6307,6 +6394,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -6478,6 +6567,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -6662,7 +6753,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 99
+  m_Text: 
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -6827,6 +6918,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -6978,7 +7071,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -7210,6 +7303,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -7326,7 +7421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "99\u200B"
+  m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8539f543bfd914b4c93b224aa846885e, type: 2}
   m_sharedMaterial: {fileID: 5855067048776438160, guid: 8539f543bfd914b4c93b224aa846885e, type: 2}
@@ -7518,6 +7613,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -7856,6 +7953,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 1
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -8102,6 +8201,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -8353,7 +8454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -100}
+  m_AnchoredPosition: {x: 125, y: -248}
   m_SizeDelta: {x: 86.03296, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1415467157
@@ -8372,6 +8473,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 1
@@ -8664,6 +8767,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -8835,6 +8940,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -9097,7 +9204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 489841511, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
+  m_Sprite: {fileID: 501617510, guid: 4c519ec67182438449a40f9d3fe16c9b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9150,7 +9257,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150.3}
+  m_AnchoredPosition: {x: 0, y: -266.3}
   m_SizeDelta: {x: 581.77, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1529800333
@@ -9169,6 +9276,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -9326,7 +9435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 125, y: -100}
+  m_AnchoredPosition: {x: 125, y: -248.9}
   m_SizeDelta: {x: 86.03296, y: 72}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1557864452
@@ -9345,6 +9454,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 1
@@ -9560,6 +9671,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -9654,7 +9767,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150.3}
+  m_AnchoredPosition: {x: 0, y: -248.9}
   m_SizeDelta: {x: 581.77, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1587476042
@@ -9673,6 +9786,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -9829,7 +9944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150.3}
+  m_AnchoredPosition: {x: 0, y: -271.2}
   m_SizeDelta: {x: 533.8, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623212815
@@ -9848,6 +9963,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -10156,6 +10273,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -10671,7 +10790,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1774389767}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -10684,7 +10803,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter Name
+  m_text: Enter Name...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 33c968a7d806cab4983b8f30f26a49dc, type: 2}
   m_sharedMaterial: {fileID: -5503305615034024881, guid: 33c968a7d806cab4983b8f30f26a49dc, type: 2}
@@ -10711,14 +10830,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 35.7
+  m_fontSizeBase: 35.7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 2
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -11261,9 +11380,9 @@ RectTransform:
   - {fileID: 323643056}
   m_Father: {fileID: 809753761}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 756.7895, y: -142.95667}
   m_SizeDelta: {x: 1330, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1891644056
@@ -11338,9 +11457,9 @@ RectTransform:
   - {fileID: 1976532968}
   m_Father: {fileID: 809753761}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 756.7895, y: -468.04333}
   m_SizeDelta: {x: 1330, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1939008481
@@ -11493,6 +11612,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0
@@ -11692,7 +11813,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1992789822}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 354223261}
+        m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
+        m_MethodName: ShowAdmobInterstitial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1992789822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11739,6 +11872,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 1
   useShine: 0
+  playSoundOnClick: 0
+  popOnClick: 0
   useRandomImage: 0
   usePopEffect: 0
   useSlideEffect: 0
@@ -12249,6 +12384,8 @@ MonoBehaviour:
   useRotate: 0
   useShake: 0
   useShine: 0
+  playSoundOnClick: 1
+  popOnClick: 1
   useRandomImage: 0
   usePopEffect: 1
   useSlideEffect: 0

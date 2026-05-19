@@ -23,7 +23,7 @@ public class UIPanelEnablerEditor : Editor
         
         if (GUILayout.Button("Add", GUILayout.Width(60)))
         {
-            if (System.CodeDom.Compiler.CodeGenerator.IsValidLanguageIndependentIdentifier(newPanelName))
+            if (IsValidIdentifier(newPanelName))
             {
                 AddNewPanelType(newPanelName);
                 newPanelName = "";
@@ -79,5 +79,16 @@ public class UIPanelEnablerEditor : Editor
         {
             Debug.LogError("[UIPanelEnablerEditor] Could not find closing brace in PanelType.cs");
         }
+    }
+
+    private bool IsValidIdentifier(string name)
+    {
+        if (string.IsNullOrEmpty(name)) return false;
+        if (!char.IsLetter(name[0]) && name[0] != '_') return false;
+        for (int i = 1; i < name.Length; i++)
+        {
+            if (!char.IsLetterOrDigit(name[i]) && name[i] != '_') return false;
+        }
+        return true;
     }
 }

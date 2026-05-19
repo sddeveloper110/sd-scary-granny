@@ -10,8 +10,10 @@ public class MannequinRoomController : MonoBehaviour
     public Transform player;
 
     public float lookThreshold = 0.85f;
+    public float approachCooldown = 10f;
 
     private bool playerInside = false;
+    private float playerEnterTime = 0f;
     private bool roomLocked = false; // 🔥 freeze state
 
     private void OnEnable()
@@ -41,6 +43,9 @@ public class MannequinRoomController : MonoBehaviour
     {
         if (!playerInside || roomLocked || Time.timeScale == 0) return;
 
+        // Cooldown before mannequins start moving
+        if (Time.time < playerEnterTime + approachCooldown) return;
+
         foreach (var mannequin in mannequins)
         {
             if (!IsLookingAtMannequin(mannequin))
@@ -68,7 +73,11 @@ public class MannequinRoomController : MonoBehaviour
     {
         if (other.GetComponent<MovementController>() != null)
         {
-            playerInside = true;
+            if (!playerInside)
+            {
+                playerInside = true;
+                playerEnterTime = Time.time;
+            }
         }
     }
 
@@ -89,7 +98,12 @@ public class MannequinRoomController : MonoBehaviour
             mannequin.StopMoving();
         }
 
-        // Tum yahan apna attack logic call kar sakte ho
+        // Trigger game over via GameManager
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.GameEnd();
+        }
+
         Debug.Log("Player attacked by mannequin");
     }
 

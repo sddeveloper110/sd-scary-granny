@@ -10,8 +10,8 @@ public class SoundManager : MonoBehaviour
 
     [Header("Audio Clip Arrays (Random Selection)")]
     [SerializeField] private AudioClip[] menuMusicTracks;
-    [SerializeField] private AudioClip[] gameMusicTracks;
     [SerializeField] private AudioClip[] horrorMusicTracks;
+    [SerializeField] private AudioClip[] suspenseMusicTracks;
 
     [Header("Single SFX")]
     public AudioClip slapSound;
@@ -30,6 +30,11 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     private void Start()
     {
         PlayMenuMusic();
@@ -39,23 +44,28 @@ public class SoundManager : MonoBehaviour
 
     public void PlayMenuMusic()
     {
-        PlayRandomFromList(menuMusicTracks);
+        PlayRandomFromList(menuMusicTracks, true);
     }
 
-    public void PlayGameDefaultMusic()
+    public void PlayNothing()
     {
-        PlayRandomFromList(gameMusicTracks);
+        musicSource.Stop();
     }
 
     public void PlayGameGrannyMusic()
     {
-        PlayRandomFromList(horrorMusicTracks);
+        PlayRandomFromList(horrorMusicTracks, false);
+    }
+
+    public void PlaySuspenseMusic()
+    {
+        PlayRandomFromList(suspenseMusicTracks, true);
     }
 
     /// <summary>
     /// Picks a random clip from the provided array and plays it.
     /// </summary>
-    private void PlayRandomFromList(AudioClip[] clips)
+    private void PlayRandomFromList(AudioClip[] clips, bool isLoop)
     {
         if (musicSource == null || clips == null || clips.Length == 0) return;
 
@@ -64,15 +74,15 @@ public class SoundManager : MonoBehaviour
         AudioClip selectedClip = clips[randomIndex];
 
         // Only switch if it's a different clip (prevents restarting same song)
-        if (musicSource.clip == selectedClip && musicSource.isPlaying) return;
+        if (musicSource.clip == selectedClip && musicSource.isPlaying && musicSource.loop == isLoop) return;
 
-        UpdateMusicSettings(selectedClip);
+        UpdateMusicSettings(selectedClip, isLoop);
     }
 
-    private void UpdateMusicSettings(AudioClip clip)
+    private void UpdateMusicSettings(AudioClip clip, bool isLoop)
     {
         musicSource.clip = clip;
-        musicSource.loop = true;
+        musicSource.loop = isLoop;
         musicSource.volume = MusicVol;
         musicSource.Play();
     }

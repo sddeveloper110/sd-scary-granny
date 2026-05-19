@@ -34,6 +34,7 @@ public class GrannyAIEditor : Editor
     private bool _showTension       = false;
     private bool _showFalseScares   = false;
     private bool _showAnimations    = false;
+    private bool _showAmbientVoices = false;
     private bool _showValidation    = false;
 
     // ── Validation cache ─────────────────────────────────────────────────────
@@ -217,6 +218,7 @@ public class GrannyAIEditor : Editor
         DrawSection(ref _showTension,     "📈  Tension / Fear",    DrawTension);
         DrawSection(ref _showFalseScares, "👻  False Scares",      DrawFalseScares);
         DrawSection(ref _showAnimations,  "🎭  Animations",        DrawAnimations);
+        DrawSection(ref _showAmbientVoices, "🎧  Ambient Voices",  DrawAmbientVoices);
 
         EditorGUILayout.Space(8);
 
@@ -608,7 +610,18 @@ public class GrannyAIEditor : Editor
         DrawProperty("animWalkName",   "Walk State",   "Animator state name for walking.");
         DrawProperty("animAttackName", "Attack State", "Animator state name for attack.");
         DrawProperty("animReactName",  "React State",  "Animator state name for near-miss / false scare.");
+        DrawProperty("animCrazyName",  "Crazy State",  "Animator state name for mental breakdown.");
         DrawProperty("lookAtWeight",   "Look-At Weight","IK weight for head tracking during Chase/Hunt.");
+    }
+
+    private void DrawAmbientVoices()
+    {
+        EditorGUILayout.HelpBox(
+            "Plays random horror voices every 20-30 seconds during gameplay. Also loops footstep audio.",
+            MessageType.Info);
+        DrawProperty("grannyAudioSource",   "Audio Source",   "Granny's physical AudioSource.");
+        DrawProperty("footstepClip",        "Footstep Clip",  "Footstep sound to play on loop.");
+        DrawProperty("ambientHorrorVoices", "Voice Clips",    "List of horror sounds.");
     }
 
     #endregion

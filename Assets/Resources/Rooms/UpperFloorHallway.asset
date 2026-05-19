@@ -22,10 +22,6 @@ MonoBehaviour:
     traversalCost: 1.58
     isStaircase: 0
     isDoorOpen: 1
-  - target: {fileID: 11400000, guid: 9ecd350a658256f47a2959a2f0400f93, type: 2}
-    traversalCost: 1.88
-    isStaircase: 0
-    isDoorOpen: 1
   - target: {fileID: 11400000, guid: 1664c25939a2e7a4ab262da34a86c5e7, type: 2}
     traversalCost: 2.98
     isStaircase: 1

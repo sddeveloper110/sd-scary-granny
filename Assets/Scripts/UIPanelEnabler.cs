@@ -47,6 +47,11 @@ public class UIPanelEnabler : MonoBehaviour
         Init();
     }
 
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     private void Init()
     {
         foreach (var p in panels)
@@ -119,7 +124,7 @@ public class UIPanelEnabler : MonoBehaviour
 
         // Context-specific music (moved from CanvasManager)
         if (data.type == PanelType.MainMenu) SoundManager.Instance.PlayMenuMusic();
-        else if (data.type == PanelType.Gameplay) SoundManager.Instance.PlayGameDefaultMusic();
+        else if (data.type == PanelType.Gameplay) SoundManager.Instance.PlayNothing();
     }
 
     /// <summary>
@@ -183,8 +188,8 @@ public class UIPanelEnabler : MonoBehaviour
 
         while (timer < duration)
         {
-            timer += Time.deltaTime;
-            dotTimer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
+            dotTimer += Time.unscaledDeltaTime;
 
             if (dotTimer >= 0.5f)
             {

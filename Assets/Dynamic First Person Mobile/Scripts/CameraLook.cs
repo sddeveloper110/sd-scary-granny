@@ -86,8 +86,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
 		private void LateUpdate()
 		{
-            if (!GameManager.Instance.isGameStarted)
-                return;
+       
             m_HorizontalRot = delta.x * m_Sensitivity.x * Time.deltaTime * invertX;
 			m_VerticalRot += delta.y * m_Sensitivity.y * Time.deltaTime * invertY;
 			m_VerticalRot = Mathf.Clamp(m_VerticalRot, -m_BottomClamp, m_TopClamp);
@@ -139,6 +138,26 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 					m_TouchDetectMode = TouchDetectMode.FirstTouch;
 					break;
 			}
+		}
+
+		public void LookAtTarget(Vector3 targetPosition)
+		{
+			Vector3 dir = (targetPosition - transform.position).normalized;
+			if (dir == Vector3.zero) return;
+
+			Quaternion lookRot = Quaternion.LookRotation(dir);
+			
+			// Horizontal rotation applied to the player body
+			transform.rotation = Quaternion.Euler(0f, lookRot.eulerAngles.y, 0f);
+
+			// Vertical rotation applied to the camera
+			float pitch = lookRot.eulerAngles.x;
+			if (pitch > 180f) pitch -= 360f;
+			
+			m_VerticalRot = Mathf.Clamp(pitch, -m_BottomClamp, m_TopClamp);
+			
+			if (m_CameraTransform != null)
+				m_CameraTransform.localRotation = Quaternion.Euler(m_VerticalRot, 0f, 0f);
 		}
 
 	}

@@ -48,6 +48,9 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] Button[] exitGameplayBtn;
     [SerializeField] Button[] retryBtn;
     [SerializeField] Button[] reviveBtn;
+    [SerializeField] Button startNewGameBtn;
+    [SerializeField] Button pauseBtn;
+    [SerializeField] Button resumeBtn;
 
   
     [Header("Avatar & Flag Integration")]
@@ -117,6 +120,10 @@ public class CanvasManager : MonoBehaviour
             exitGameplayBtn[i].onClick.AddListener(() => { SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); });
         }
 
+        if (startNewGameBtn != null) startNewGameBtn.onClick.AddListener(OnStartButtonPress);
+        if (pauseBtn != null) pauseBtn.onClick.AddListener(PauseGame);
+        if (resumeBtn != null) resumeBtn.onClick.AddListener(ResumeGame);
+
         sensetivitySlider.value = PlayerPrefs.GetFloat("Sensitivity", 1f);
 
         OnSensetivityChange?.Invoke(PlayerPrefs.GetFloat("Sensitivity",3f));
@@ -171,15 +178,12 @@ public class CanvasManager : MonoBehaviour
 
     public static void LoadToGameplay()
     {
-        UIPanelEnabler.Instance.StartCoroutine(UIPanelEnabler.Instance.Loading(4, () =>
-        {
             UIPanelEnabler.OpenPanel(PanelType.Gameplay);
             if (PlayerPrefs.GetInt("FirstTimePlay", 0) == 0)
             {
                 UIPanelEnabler.OpenPanel(PanelType.PrivacyPolicy);
                 PlayerPrefs.SetInt("FirstTimePlay", 1);
             }
-        }));
     }
 
     void Retry()
@@ -197,10 +201,7 @@ public class CanvasManager : MonoBehaviour
     public static void LoadToMainMenu()
     {
         OnGameExit?.Invoke();
-        UIPanelEnabler.Instance.StartCoroutine(UIPanelEnabler.Instance.Loading(3, () =>
-        {
             UIPanelEnabler.OpenPanel(PanelType.MainMenu);
-        }));
     }
 
 
@@ -218,7 +219,7 @@ public class CanvasManager : MonoBehaviour
 
     public void OnStartButtonPress()
     {
-        OnGameStart?.Invoke();
+        Debug.Log("[CanvasManager] OnStartButtonPress clicked! Calling GameManager.NewGame()");
         GameManager.Instance.NewGame();
     }
 
@@ -248,7 +249,7 @@ public class CanvasManager : MonoBehaviour
         float timer = 0f;
         while (timer < duration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float alpha = Mathf.Lerp(0, 1, timer / duration);
             fadeScreen.color = new Color(0, 0, 0, alpha);
             yield return null;
@@ -265,7 +266,7 @@ public class CanvasManager : MonoBehaviour
 
         while (timer < fadeOutDuration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float alpha = Mathf.Lerp(1, 0, timer / fadeOutDuration);
             fadeScreen.color = new Color(0, 0, 0, alpha);
             yield return null;
@@ -288,7 +289,7 @@ public class CanvasManager : MonoBehaviour
         fadeScreen.color = new Color(0, 0, 0, 1);
 
         // 🟦 2 — Wait 2 seconds
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSecondsRealtime(3f);
 
         // 🟦 3 — Do your action
         ua?.Invoke();
@@ -297,7 +298,7 @@ public class CanvasManager : MonoBehaviour
         float timer = 0f;
         while (timer < duration)
         {
-            timer += Time.deltaTime;
+            timer += Time.unscaledDeltaTime;
             float alpha = Mathf.Lerp(1, 0, timer / duration);
             fadeScreen.color = new Color(0, 0, 0, alpha);
             yield return null;
@@ -328,7 +329,7 @@ public class CanvasManager : MonoBehaviour
         {
             if (popPanel == null) yield break;
 
-            t += Time.deltaTime * 6f;
+            t += Time.unscaledDeltaTime * 6f;
             float s = Mathf.Lerp(0f, 1f, t);
             popPanel.transform.localScale = Vector3.one * s;
             yield return null;
@@ -337,7 +338,7 @@ public class CanvasManager : MonoBehaviour
         popPanel.transform.localScale = Vector3.one;
 
         // WAIT
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSecondsRealtime(4f);
 
         // POP OUT (1 → 0)
         t = 0f;
@@ -345,7 +346,7 @@ public class CanvasManager : MonoBehaviour
         {
             if (popPanel == null) yield break;
 
-            t += Time.deltaTime * 6f;
+            t += Time.unscaledDeltaTime * 6f;
             float s = Mathf.Lerp(1f, 0f, t);
             popPanel.transform.localScale = Vector3.one * s;
             yield return null;

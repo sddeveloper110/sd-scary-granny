@@ -103,6 +103,9 @@ public class SplashSequence : MonoBehaviour
     public void LoadNextScene()
     {
         // Hide privacy policy panel before starting loading
+        PlayerPrefs.SetInt("PrivacyAccepted", 1);
+        PlayerPrefs.Save();
+
 
         int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         if (nextSceneIndex < SceneManager.sceneCountInBuildSettings)

@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private GameObject movementController;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private GameObject gameplayPanel;
     [SerializeField] AudioClip jumpscare;
@@ -20,27 +19,22 @@ public class PlayerController : MonoBehaviour
     
     private void OnEnable()
     {
-        if (GameManager.Instance != null)
-            GameManager.OnGameStarted += SetupForGameplay;
+        Debug.Log("[PlayerController] Subscribing to OnGameStarted");
+        GameManager.OnGameStarted += SetupForGameplay;
         GrannyAI.OnAttackPlayer += HandlePlayerHit;
-       
     }
 
 
     private void OnDisable()
     {
-        if (GameManager.Instance != null)
-            GameManager.OnGameStarted -= SetupForGameplay;
-    GrannyAI.OnAttackPlayer -= HandlePlayerHit;
+        GameManager.OnGameStarted -= SetupForGameplay;
+        GrannyAI.OnAttackPlayer -= HandlePlayerHit;
     }
 
-    private void Start()
-    {
-        ToggleControls(GameManager.Instance.isGameStarted);
-    }
+   
     private void HandlePlayerHit()
     {
-        SoundManager.PlayThisAudio(jumpscare);
+            SoundManager.PlayThisAudio(jumpscare);
 
         StartCoroutine(HitSequence());
     }
@@ -81,16 +75,10 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        GameManager.Instance.GameEnd();
+        //GameManager.Instance.GameEnd();
         //ToggleControls(false);
     }
-    public void ToggleControls(bool isActive)
-    {
-        if (movementController != null) movementController.SetActive(isActive);
-        if (playerCamera != null) playerCamera.gameObject.SetActive(isActive);
-        if(gameplayPanel !=null) gameplayPanel.gameObject.SetActive(isActive);   
-    }
-
+   
     private void ShowGameplayUI()
     {
         CanvasManager.LoadToGameplay();
@@ -98,18 +86,18 @@ public class PlayerController : MonoBehaviour
 
     public void SetupForGameplay()
     {
+        Debug.Log("[PlayerController] SetupForGameplay called!");
         ResetPlayer(GameManager.Instance.GetSpawnPosition,Quaternion.identity);
-        ToggleControls(true);
+        //ToggleControls(true);
         ShowGameplayUI();
     }
 
     public void ResetPlayer(Vector3 position, Quaternion rotation)
     {
-        ToggleControls(false);
         transform.localPosition = position;
         transform.rotation = rotation;
 
         transform.GetChild(0).localPosition = Vector3.zero;
-        transform.GetChild(0).rotation = Quaternion.Euler(0,90,0);
+        transform.GetChild(0).rotation = Quaternion.Euler(0,-90,0);
     }
 }

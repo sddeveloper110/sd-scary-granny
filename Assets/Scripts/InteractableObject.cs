@@ -21,10 +21,7 @@ public class InteractableObject : MonoBehaviour
     // GLOBAL EVENT fired when this interactable is fully activated
     public static Action<InteractableObject> OnObjectInteractionDone;
 
-    private void OnDestroy()
-    {
-        OnObjectInteractionDone = null;
-    }
+
 
     public GameObject highlightVFX;
     // Highlight
@@ -105,6 +102,12 @@ public class InteractableObject : MonoBehaviour
             SoundManager.PlayThisAudio(activationAudio);
  
         IsInteracted = true;
+
+        GrannyAI granny = FindFirstObjectByType<GrannyAI>();
+        if (granny != null)
+        {
+            granny.HearSound(transform.position, true);
+        }
 
         // FIRE GLOBAL EVENT
         OnObjectInteractionDone?.Invoke(this);

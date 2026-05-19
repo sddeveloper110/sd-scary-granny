@@ -138,6 +138,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    public void ForceClearHeldItem(PickableObject item)
+    {
+        if (heldItem == item)
+        {
+            heldItem = null;
+        }
+    }
+
     public void Interact()
     {
         if (currentInteractable != null)

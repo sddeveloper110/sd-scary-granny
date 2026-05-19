@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 
@@ -13,6 +14,8 @@ public class PickableObject : MonoBehaviour
     public AudioClip dropAudio;
     public bool isPicked;
     protected Rigidbody rb;
+    
+    public static event Action<PickableObject> OnObjectInteractionDone;
 
     private void Awake()
     {
@@ -73,6 +76,22 @@ public class PickableObject : MonoBehaviour
         if (useAudio != null)
         {
             SoundManager.PlayThisAudio(useAudio);
+        }
+
+        OnObjectInteractionDone?.Invoke(this);
+    }
+
+    // Call this via UnityEvents when you want the object to vanish after being used
+    public void Consume()
+    {
+        isPicked = false;
+        transform.SetParent(null);
+        gameObject.SetActive(false);
+
+        PlayerInteraction playerInteraction = FindFirstObjectByType<PlayerInteraction>();
+        if (playerInteraction != null)
+        {
+            playerInteraction.ForceClearHeldItem(this);
         }
     }
 }

@@ -28,7 +28,7 @@ Material:
   m_InvalidKeywords:
   - _FLIPBOOKBLENDING_OFF
   - _METALLICGLOSSMAP
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
