@@ -506,13 +506,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slicing_18
+      name: Slicing_
       rect:
         serializedVersion: 2
-        x: 3
-        y: 2671
-        width: 464
-        height: 760
+        x: 2119
+        y: 814
+        width: 201
+        height: 166
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -685,10 +685,10 @@ TextureImporter:
       name: Slicing_26
       rect:
         serializedVersion: 2
-        x: 3741
-        y: 3297
-        width: 138
-        height: 135
+        x: 1020
+        y: 1209
+        width: 675
+        height: 207
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -729,10 +729,10 @@ TextureImporter:
       name: Slicing_28
       rect:
         serializedVersion: 2
-        x: 3653
-        y: 2963
-        width: 294
-        height: 286
+        x: 1707
+        y: 370
+        width: 173
+        height: 229
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -751,10 +751,10 @@ TextureImporter:
       name: Slicing_29
       rect:
         serializedVersion: 2
-        x: 3951
-        y: 3200
-        width: 132
-        height: 129
+        x: 1071
+        y: 353
+        width: 347
+        height: 269
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -773,10 +773,10 @@ TextureImporter:
       name: Slicing_30
       rect:
         serializedVersion: 2
-        x: 3649
-        y: 2655
-        width: 240
-        height: 228
+        x: 1114
+        y: 765
+        width: 239
+        height: 249
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -927,10 +927,10 @@ TextureImporter:
       name: Slicing_37
       rect:
         serializedVersion: 2
-        x: 5
-        y: 1793
-        width: 988
-        height: 54
+        x: 1695
+        y: 788
+        width: 174
+        height: 226
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -972,9 +972,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3
-        y: 1711
-        width: 132
-        height: 58
+        y: 2671
+        width: 463
+        height: 760
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -993,10 +993,10 @@ TextureImporter:
       name: Slicing_40
       rect:
         serializedVersion: 2
-        x: 183
-        y: 1711
-        width: 134
-        height: 58
+        x: 130
+        y: 617
+        width: 188
+        height: 186
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1059,10 +1059,10 @@ TextureImporter:
       name: Slicing_43
       rect:
         serializedVersion: 2
-        x: 5
-        y: 1597
-        width: 2131
-        height: 14
+        x: 651
+        y: 575
+        width: 82
+        height: 83
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1081,10 +1081,10 @@ TextureImporter:
       name: Slicing_44
       rect:
         serializedVersion: 2
-        x: 5
-        y: 1553
-        width: 2131
-        height: 15
+        x: 2797
+        y: 2004
+        width: 348
+        height: 270
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1169,10 +1169,10 @@ TextureImporter:
       name: Slicing_48
       rect:
         serializedVersion: 2
-        x: 1021
-        y: 1209
-        width: 676
-        height: 210
+        x: 3743
+        y: 3297
+        width: 133
+        height: 133
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1257,10 +1257,10 @@ TextureImporter:
       name: Slicing_52
       rect:
         serializedVersion: 2
-        x: 1113
-        y: 763
-        width: 240
-        height: 252
+        x: 3651
+        y: 2638
+        width: 238
+        height: 245
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1279,10 +1279,10 @@ TextureImporter:
       name: Slicing_53
       rect:
         serializedVersion: 2
-        x: 1693
-        y: 787
-        width: 179
-        height: 229
+        x: 6
+        y: 1793
+        width: 988
+        height: 54
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1298,13 +1298,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slicing_54
+      name: Slicing_18
       rect:
         serializedVersion: 2
-        x: 2119
-        y: 813
-        width: 202
-        height: 168
+        x: 3
+        y: 1711
+        width: 132
+        height: 58
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1323,10 +1323,10 @@ TextureImporter:
       name: Slicing_55
       rect:
         serializedVersion: 2
-        x: 129
-        y: 617
-        width: 190
-        height: 191
+        x: 186
+        y: 1713
+        width: 129
+        height: 54
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1389,10 +1389,10 @@ TextureImporter:
       name: Slicing_58
       rect:
         serializedVersion: 2
-        x: 651
-        y: 573
-        width: 82
-        height: 84
+        x: 6
+        y: 1597
+        width: 2127
+        height: 13
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1411,10 +1411,10 @@ TextureImporter:
       name: Slicing_59
       rect:
         serializedVersion: 2
-        x: 1069
-        y: 399
-        width: 182
-        height: 224
+        x: 6
+        y: 1555
+        width: 2127
+        height: 11
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1430,35 +1430,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Slicing_60
-      rect:
-        serializedVersion: 2
-        x: 1197
-        y: 353
-        width: 224
-        height: 222
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0f037d9432cb28b4880e417792111094
-      internalID: -577770150
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Slicing_61
       rect:
         serializedVersion: 2
-        x: 1707
-        y: 367
-        width: 174
-        height: 232
+        x: 3660
+        y: 2966
+        width: 286
+        height: 281
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -1533,6 +1511,7 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
+      Slicing_: -1555747256
       Slicing_0: 1523940850
       Slicing_1: 737342213
       Slicing_10: 1171176015
@@ -1543,7 +1522,7 @@ TextureImporter:
       Slicing_15: -130913811
       Slicing_16: -834136184
       Slicing_17: 1915153423
-      Slicing_18: -1555747256
+      Slicing_18: 489841511
       Slicing_19: 1372232647
       Slicing_2: -806375148
       Slicing_20: 2031216211
@@ -1583,7 +1562,7 @@ TextureImporter:
       Slicing_51: 2110606964
       Slicing_52: 1536260678
       Slicing_53: -1813680229
-      Slicing_54: 489841511
+      Slicing_54: -1876841658
       Slicing_55: 501617510
       Slicing_56: -109630169
       Slicing_57: -841693758
