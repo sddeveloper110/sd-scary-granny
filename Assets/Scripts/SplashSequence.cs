@@ -19,11 +19,7 @@ public class SplashSequence : MonoBehaviour
 
     void Start()
     {
-        // Ensure initial state
-        if (nameInputField != null)
-            nameInputField.text = PlayerPrefs.GetString("PlayerName", "Player");
-        if (ageInputField != null)
-            ageInputField.text = PlayerPrefs.GetString("PlayerAge", "18");
+        
 
         UpdateFills();
         StartCoroutine(ShowPrivacyPolicyAfterDelay());

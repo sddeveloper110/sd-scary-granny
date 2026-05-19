@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameManager;
@@ -15,6 +16,10 @@ public class CanvasManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        if (popupTxt != null)
+        {
+            popupTxt.gameObject.SetActive(false);
+        }
     }
 
     private void OnDestroy()
@@ -91,8 +96,22 @@ public class CanvasManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         UIPanelEnabler.ClosePanel(PanelType.Pause);
-        Cursor.lockState = CursorLockMode.Locked;
+
+        // Never lock cursor on mobile — locked cursor freezes EventData.position
+        // causing the joystick knob to snap to first touch and never update during drag.
+        Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
+
+        // The Resume button click leaves a stale pointer in the EventSystem.
+        // Clear it one frame later so the joystick receives clean drag events.
+        StartCoroutine(ClearEventSystemSelection());
+    }
+
+    private IEnumerator ClearEventSystemSelection()
+    {
+        yield return null; // wait one frame for button click to fully process
+        if (EventSystem.current != null)
+            EventSystem.current.SetSelectedGameObject(null);
     }
 
     public void RestartGame()
@@ -310,16 +329,21 @@ public class CanvasManager : MonoBehaviour
     }
     public static void ShowPopup(string msg)
     {
-        Instance.popupTxt.text = msg;
-        //Instance.popupTxt.transform.localScale = Vector3.zero;
+        if (Instance.popupTxt == null) return;
 
-        Instance.popupTxt.StartCoroutine(PopupRoutine());
+        GameObject clone = Instantiate(Instance.popupTxt.gameObject, Instance.popupTxt.transform.parent);
+        clone.SetActive(true);
+
+        TextMeshProUGUI cloneText = clone.GetComponent<TextMeshProUGUI>();
+        cloneText.text = msg;
+
+        Instance.StartCoroutine(PopupRoutine(clone));
     }
 
-    private static IEnumerator PopupRoutine()
+    private static IEnumerator PopupRoutine(GameObject clone)
     {
-        Transform popPanel = Instance.popupTxt.transform;
-        if (popPanel == null) yield break;
+        if (clone == null) yield break;
+        Transform popPanel = clone.transform;
 
         popPanel.transform.localScale = Vector3.zero;
 
@@ -337,22 +361,27 @@ public class CanvasManager : MonoBehaviour
 
         popPanel.transform.localScale = Vector3.one;
 
-        // WAIT
-        yield return new WaitForSecondsRealtime(4f);
+        // WAIT 3 seconds
+        yield return new WaitForSecondsRealtime(3f);
 
-        // POP OUT (1 → 0)
-        t = 0f;
-        while (t < 1f)
+        // POP OUT (1 → 0) and slide down slightly over 2 seconds
+        Vector3 startPos = popPanel.localPosition;
+        Vector3 targetPos = startPos + Vector3.down * 50f; // Shift down by 50 units
+        float popOutDuration = 2f;
+        float elapsed = 0f;
+        while (elapsed < popOutDuration)
         {
             if (popPanel == null) yield break;
 
-            t += Time.unscaledDeltaTime * 6f;
-            float s = Mathf.Lerp(1f, 0f, t);
+            elapsed += Time.unscaledDeltaTime;
+            float normalizedTime = Mathf.Clamp01(elapsed / popOutDuration);
+            float s = Mathf.Lerp(1f, 0f, normalizedTime);
             popPanel.transform.localScale = Vector3.one * s;
+            popPanel.localPosition = Vector3.Lerp(startPos, targetPos, normalizedTime);
             yield return null;
         }
 
-        popPanel.transform.localScale = Vector3.zero;
+        Destroy(clone);
     }
    
 }

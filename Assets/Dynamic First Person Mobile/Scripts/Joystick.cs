@@ -38,6 +38,13 @@ namespace FirstPersonMobileTools
         [HideInInspector] public float Vertical { get; private set; }
         [HideInInspector] public Vector2 InputLocalPosition;
 
+        private void OnDisable()
+        {
+            // Reset joystick state when panel is disabled (e.g. pause)
+            // so input values and handle position don't remain stuck
+            OnPointerUp(null);
+        }
+
         private void Start()
         {
 

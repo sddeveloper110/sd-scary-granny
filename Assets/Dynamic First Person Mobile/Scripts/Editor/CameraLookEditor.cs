@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using FirstPersonMobileTools.DynamicFirstPerson;
 
@@ -32,3 +33,4 @@ public class CameraLookEditor : Editor {
     }
 
 }
+#endif

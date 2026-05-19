@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using FirstPersonMobileTools;
 
@@ -33,3 +34,4 @@ public class JoystickEditor : Editor {
     }
     
 }
+#endif

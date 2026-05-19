@@ -905,8 +905,8 @@ TextureImporter:
       name: Slicing_36
       rect:
         serializedVersion: 2
-        x: 2701
-        y: 1867
+        x: 2702
+        y: 1871
         width: 512
         height: 760
       alignment: 0
@@ -1081,10 +1081,10 @@ TextureImporter:
       name: Slicing_44
       rect:
         serializedVersion: 2
-        x: 2797
-        y: 2004
-        width: 348
-        height: 270
+        x: 3954
+        y: 3202
+        width: 127
+        height: 124
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
