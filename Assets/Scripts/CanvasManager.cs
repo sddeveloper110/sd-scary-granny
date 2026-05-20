@@ -383,6 +383,85 @@ public class CanvasManager : MonoBehaviour
 
         Destroy(clone);
     }
-   
+
+    public void ShowPopupOnButton(Button button)
+    {
+        if (button == null) return;
+        ShowPopupOnButton(button.transform, "Coming Soon!");
+    }
+
+    public static void ShowPopupOnButton(Transform buttonTransform, string msg)
+    {
+        if (Instance == null || Instance.popupTxt == null || buttonTransform == null) return;
+
+        GameObject clone = Instantiate(Instance.popupTxt.gameObject, Instance.popupTxt.transform.parent);
+        clone.SetActive(true);
+
+        // Position the clone at the button's position
+        clone.transform.position = buttonTransform.position;
+
+        TextMeshProUGUI cloneText = clone.GetComponent<TextMeshProUGUI>();
+        if (cloneText != null)
+        {
+            cloneText.text = msg;
+        }
+
+        Instance.StartCoroutine(PopupOnButtonRoutine(clone));
+    }
+
+    private static IEnumerator PopupOnButtonRoutine(GameObject clone)
+    {
+        if (clone == null) yield break;
+        Transform popPanel = clone.transform;
+
+        // Set to full scale instantly
+        popPanel.localScale = Vector3.one;
+
+        Vector3 startPos = popPanel.localPosition;
+        // Go up by 80 units
+        Vector3 targetPos = startPos + Vector3.up * 80f;
+
+        float duration = 2f;
+        float elapsed = 0f;
+
+        TextMeshProUGUI cloneText = clone.GetComponent<TextMeshProUGUI>();
+        Color startColor = cloneText != null ? cloneText.color : Color.white;
+
+        while (elapsed < duration)
+        {
+            if (popPanel == null) yield break;
+
+            elapsed += Time.unscaledDeltaTime;
+            float normalizedTime = Mathf.Clamp01(elapsed / duration);
+
+            // Move up
+            popPanel.localPosition = Vector3.Lerp(startPos, targetPos, normalizedTime);
+
+            // In the last 0.5s (normalizedTime > 0.75f), vanish (scale down and fade text out)
+            if (normalizedTime > 0.75f)
+            {
+                float fadeT = (normalizedTime - 0.75f) / 0.25f;
+                float s = Mathf.Lerp(1f, 0f, fadeT);
+                popPanel.localScale = Vector3.one * s;
+
+                if (cloneText != null)
+                {
+                    cloneText.color = new Color(startColor.r, startColor.g, startColor.b, 1f - fadeT);
+                }
+            }
+            else
+            {
+                popPanel.localScale = Vector3.one;
+                if (cloneText != null)
+                {
+                    cloneText.color = startColor;
+                }
+            }
+
+            yield return null;
+        }
+
+        Destroy(clone);
+    }
 }
 

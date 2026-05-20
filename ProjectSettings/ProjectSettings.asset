@@ -167,7 +167,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Android: com.DefaultCompany.ScaryGranny
+    Android: com.SoftwareDistrict.ScaryGrannyHorrorGame3D
   buildNumber:
     Standalone: 0
     VisionOS: 0
@@ -299,7 +299,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 94fbb55ac30e9894ca07b24c9e987dd6, type: 3}
+      m_Icon: {fileID: 2800000, guid: 3ec063e8dd9079e4daddcf6fbdbae735, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -500,7 +500,10 @@ PlayerSettings:
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
-  m_BuildTargetGraphicsAPIs: []
+  m_BuildTargetGraphicsAPIs:
+  - m_BuildTarget: AndroidPlayer
+    m_APIs: 0b000000
+    m_Automatic: 0
   m_BuildTargetVRSettings: []
   m_DefaultShaderChunkSizeInMB: 16
   m_DefaultShaderChunkCount: 0
