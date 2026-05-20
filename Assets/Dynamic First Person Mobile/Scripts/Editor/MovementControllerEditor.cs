@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using FirstPersonMobileTools.DynamicFirstPerson;
 
@@ -49,3 +50,4 @@ public class MovementControllerEditor : Editor {
     }
 
 }
+#endif

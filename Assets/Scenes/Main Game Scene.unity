@@ -48296,7 +48296,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000034332275
+      value: -0.000015258789
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -127837,10 +127837,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3456079687541223525, guid: d13b1ac24e1dd44438e2e34a213e02d2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1485611871}
+    - targetCorrespondingSourceObject: {fileID: 1975352242661417592, guid: d13b1ac24e1dd44438e2e34a213e02d2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2051827516581989120}
   m_SourcePrefab: {fileID: 100100000, guid: d13b1ac24e1dd44438e2e34a213e02d2, type: 3}
 --- !u!4 &2051827516581989116 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2720190706042845598, guid: d13b1ac24e1dd44438e2e34a213e02d2, type: 3}
+  m_PrefabInstance: {fileID: 2051827516581989115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2051827516581989117 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1975352242661417592, guid: d13b1ac24e1dd44438e2e34a213e02d2, type: 3}
   m_PrefabInstance: {fileID: 2051827516581989115}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2051827516581989118 stripped
@@ -127870,6 +127878,27 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!65 &2051827516581989120
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051827516581989117}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.13568115, y: 2.4233775, z: 1.3252258}
+  m_Center: {x: -0.0011291504, y: 1.19749, z: -2.6345367}
 --- !u!1001 &2069103783358524773
 PrefabInstance:
   m_ObjectHideFlags: 0

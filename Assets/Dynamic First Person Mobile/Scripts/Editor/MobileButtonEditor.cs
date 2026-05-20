@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using FirstPersonMobileTools;
 
@@ -53,3 +54,4 @@ public class MobileButtonEditor : Editor {
         
     }
 }
+#endif
