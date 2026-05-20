@@ -62,6 +62,47 @@ public class AdsManager : MonoBehaviour
 {
     public static AdsManager Instance;
     [Space]
+
+    private readonly Queue<Action> _mainThreadQueue = new Queue<Action>();
+    private readonly object _queueLock = new object();
+
+    public void RunOnMainThread(Action action)
+    {
+        if (action == null) return;
+        lock (_queueLock)
+        {
+            _mainThreadQueue.Enqueue(action);
+        }
+    }
+
+    private void Update()
+    {
+        List<Action> actionsToRun = null;
+        lock (_queueLock)
+        {
+            if (_mainThreadQueue.Count > 0)
+            {
+                actionsToRun = new List<Action>(_mainThreadQueue);
+                _mainThreadQueue.Clear();
+            }
+        }
+
+        if (actionsToRun != null)
+        {
+            foreach (var action in actionsToRun)
+            {
+                try
+                {
+                    action?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("Error executing main thread action: " + ex);
+                }
+            }
+        }
+    }
+
     [Header("Google Admob Network Setting")]
     public AdmobId ADMOB_ID = new AdmobId();
     [Space]
@@ -1276,7 +1317,7 @@ public class AdsManager : MonoBehaviour
         {
             //PrintStatus(" Rewarded Ad granted a reward: " + reward.Amount);
             Debug.Log("give reward to user after watching Rewarded Ad");
-            NotifyReward();
+            RunOnMainThread(() => NotifyReward?.Invoke());
         });
     }
 
