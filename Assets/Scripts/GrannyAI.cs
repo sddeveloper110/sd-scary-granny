@@ -115,6 +115,10 @@ public class GrannyAI : MonoBehaviour
     public AudioClip footstepClip;
     public List<AudioClip> ambientHorrorVoices = new List<AudioClip>();
 
+    [Header("── Mental Breakdown Settings ────────────────────────────")]
+    public AudioClip grannyMentalBreakdown;
+    public GameObject mentalBreakDownAlert;
+
     #endregion
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -147,6 +151,11 @@ public class GrannyAI : MonoBehaviour
             _state   = value;
             OnStateChanged?.Invoke(_state);
             HandleStateTransition(prev, _state);
+
+            if (mentalBreakDownAlert != null)
+            {
+                mentalBreakDownAlert.SetActive(_state == GrannyState.Crazy);
+            }
         }
     }
 
@@ -212,6 +221,11 @@ public class GrannyAI : MonoBehaviour
         GameManager.OnGameStarted     -= ResetGranny;
         CanvasManager.OnGameRetry     -= ResetGranny;
         GameManager.OnSurvivalStarted -= EnterSurvivalMode;
+
+        if (mentalBreakDownAlert != null)
+        {
+            mentalBreakDownAlert.SetActive(false);
+        }
     }
 
     private void Start()
@@ -224,6 +238,11 @@ public class GrannyAI : MonoBehaviour
         startRot = transform.rotation;
 
         _cachedMarkers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
+
+        if (mentalBreakDownAlert != null)
+        {
+            mentalBreakDownAlert.SetActive(false);
+        }
 
         InitBeliefMap();
         ResetGranny();
@@ -796,6 +815,11 @@ public class GrannyAI : MonoBehaviour
     public void ResetGranny()
     {
         StopAllCoroutines();
+        _state = GrannyState.Idle;
+        if (mentalBreakDownAlert != null)
+        {
+            mentalBreakDownAlert.SetActive(false);
+        }
         StartCoroutine(StartDelayRoutine());
     }
 
@@ -844,6 +868,11 @@ public class GrannyAI : MonoBehaviour
         State = GrannyState.Crazy;
         agent.isStopped = true;
         anim?.Play(animCrazyName);
+
+        if (grannyAudioSource != null && grannyMentalBreakdown != null)
+        {
+            grannyAudioSource.PlayOneShot(grannyMentalBreakdown);
+        }
 
         yield return new WaitForSeconds(10f);
 

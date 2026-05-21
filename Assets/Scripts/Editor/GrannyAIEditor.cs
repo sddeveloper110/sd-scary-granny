@@ -622,6 +622,11 @@ public class GrannyAIEditor : Editor
         DrawProperty("grannyAudioSource",   "Audio Source",   "Granny's physical AudioSource.");
         DrawProperty("footstepClip",        "Footstep Clip",  "Footstep sound to play on loop.");
         DrawProperty("ambientHorrorVoices", "Voice Clips",    "List of horror sounds.");
+
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Mental Breakdown Settings", EditorStyles.boldLabel);
+        DrawProperty("grannyMentalBreakdown", "Breakdown Sound", "Audio clip played when mental breakdown starts.");
+        DrawProperty("mentalBreakDownAlert",  "Breakdown UI Alert", "UI GameObject activated during mental breakdown.");
     }
 
     #endregion
