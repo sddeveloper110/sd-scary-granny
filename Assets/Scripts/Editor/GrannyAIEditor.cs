@@ -29,6 +29,7 @@ public class GrannyAIEditor : Editor
     private bool _showBelief        = false;
     private bool _showSound         = false;
     private bool _showVision        = false;
+    private bool _showProximity     = false;
     private bool _showAttack        = false;
     private bool _showNearMiss      = false;
     private bool _showTension       = false;
@@ -213,6 +214,7 @@ public class GrannyAIEditor : Editor
         DrawSection(ref _showBelief,      "🧠  Belief System",     DrawBelief);
         DrawSection(ref _showSound,       "🔊  Sound Perception",  DrawSound);
         DrawSection(ref _showVision,      "👁   Vision",           DrawVision);
+        DrawSection(ref _showProximity,   "⭕  Proximity Detection", DrawProximity);
         DrawSection(ref _showAttack,      "⚔️   Attack",           DrawAttack);
         DrawSection(ref _showNearMiss,    "😱  Near Miss Horror",  DrawNearMiss);
         DrawSection(ref _showTension,     "📈  Tension / Fear",    DrawTension);
@@ -558,6 +560,16 @@ public class GrannyAIEditor : Editor
         DrawProperty("visionAngle",     "Angle (°)",      "Total cone width.");
         DrawProperty("visionRange",     "Range (m)",      "Max vision distance.");
         DrawProperty("visionBlockMask", "Block Mask",     "Layers that occlude sight (walls, closed doors).");
+    }
+
+    private void DrawProximity()
+    {
+        EditorGUILayout.HelpBox(
+            "Proximity Detection allows Granny to sense the player even if they are behind her.\n" +
+            "It checks X and Z axes only (2D distance), using a max height difference to prevent floor-crossing triggers.",
+            MessageType.Info);
+        DrawProperty("proximityDetectionRadius", "Detection Radius (m)", "Radius of detection circle on X-Z plane.");
+        DrawProperty("proximityMaxYDifference", "Max Height Diff (m)", "Maximum Y height difference allowed for detection.");
     }
 
     private void DrawAttack()

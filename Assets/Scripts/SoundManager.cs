@@ -49,16 +49,26 @@ public class SoundManager : MonoBehaviour
 
     public void PlayNothing()
     {
-        musicSource.Stop();
+        if (musicSource != null)
+        {
+            Debug.Log($"[SoundManager] PlayNothing() called. Stopping musicSource (was playing: '{(musicSource.clip != null ? musicSource.clip.name : "null")}', isPlaying: {musicSource.isPlaying})");
+            musicSource.Stop();
+        }
+        else
+        {
+            Debug.LogWarning("[SoundManager] PlayNothing() called but musicSource is null!");
+        }
     }
 
     public void PlayGameGrannyMusic()
     {
+        Debug.Log("[SoundManager] PlayGameGrannyMusic() called.");
         PlayRandomFromList(horrorMusicTracks, false);
     }
 
     public void PlaySuspenseMusic()
     {
+        Debug.Log("[SoundManager] PlaySuspenseMusic() called.");
         PlayRandomFromList(suspenseMusicTracks, true);
     }
 
@@ -67,24 +77,44 @@ public class SoundManager : MonoBehaviour
     /// </summary>
     private void PlayRandomFromList(AudioClip[] clips, bool isLoop)
     {
-        if (musicSource == null || clips == null || clips.Length == 0) return;
+        if (musicSource == null)
+        {
+            Debug.LogWarning("[SoundManager] musicSource is null! Cannot play music.");
+            return;
+        }
+        if (clips == null || clips.Length == 0)
+        {
+            Debug.LogWarning("[SoundManager] clips array is null or empty! Cannot play music.");
+            return;
+        }
 
         // Pick a random index
         int randomIndex = Random.Range(0, clips.Length);
         AudioClip selectedClip = clips[randomIndex];
 
         // Only switch if it's a different clip (prevents restarting same song)
-        if (musicSource.clip == selectedClip && musicSource.isPlaying && musicSource.loop == isLoop) return;
+        if (musicSource.clip == selectedClip && musicSource.isPlaying && musicSource.loop == isLoop)
+        {
+            Debug.Log($"[SoundManager] Already playing '{selectedClip.name}' on '{musicSource.name}' (Loop: {isLoop}, Vol: {musicSource.volume}). Skipping update.");
+            return;
+        }
 
+        Debug.Log($"[SoundManager] Selecting random track '{selectedClip.name}' (Loop: {isLoop}) from array of size {clips.Length}.");
         UpdateMusicSettings(selectedClip, isLoop);
     }
 
     private void UpdateMusicSettings(AudioClip clip, bool isLoop)
     {
+        if (clip == null)
+        {
+            Debug.LogWarning("[SoundManager] Attempted to UpdateMusicSettings with a null clip!");
+            return;
+        }
         musicSource.clip = clip;
         musicSource.loop = isLoop;
         musicSource.volume = MusicVol;
         musicSource.Play();
+        Debug.Log($"[SoundManager] Started playing clip '{clip.name}' on AudioSource '{musicSource.name}'. Loop={isLoop}, Vol={musicSource.volume}, IsPlaying={musicSource.isPlaying}");
     }
 
     public void StopMusic()

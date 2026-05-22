@@ -124,6 +124,7 @@ public class CanvasManager : MonoBehaviour
     #region UI Setup
     void Init()
     {
+        currentActivePopupOnButton = null;
         //StartCoroutine(SplashSequence());
 
         //nextLevelBtn.onClick.AddListener(LoadNextLevel);
@@ -390,12 +391,20 @@ public class CanvasManager : MonoBehaviour
         ShowPopupOnButton(button.transform, "Coming Soon!");
     }
 
+    private static GameObject currentActivePopupOnButton;
+
     public static void ShowPopupOnButton(Transform buttonTransform, string msg)
     {
         if (Instance == null || Instance.popupTxt == null || buttonTransform == null) return;
 
+        if (currentActivePopupOnButton != null)
+        {
+            Destroy(currentActivePopupOnButton);
+        }
+
         GameObject clone = Instantiate(Instance.popupTxt.gameObject, Instance.popupTxt.transform.parent);
         clone.SetActive(true);
+        currentActivePopupOnButton = clone;
 
         // Position the clone at the button's position
         clone.transform.position = buttonTransform.position;
@@ -461,6 +470,10 @@ public class CanvasManager : MonoBehaviour
             yield return null;
         }
 
+        if (currentActivePopupOnButton == clone)
+        {
+            currentActivePopupOnButton = null;
+        }
         Destroy(clone);
     }
 }

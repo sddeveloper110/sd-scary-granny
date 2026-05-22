@@ -72,6 +72,12 @@ public class GrannyAI : MonoBehaviour
     [Tooltip("Physics layers that block Granny's line-of-sight (walls, closed doors).")]
     public LayerMask visionBlockMask;
 
+    [Header("── Proximity Detection ─────────────────────────────────")]
+    [Tooltip("If the player enters this circle radius (X and Z axes only), Granny starts chasing instantly.")]
+    [Range(0.5f, 10f)]     public float proximityDetectionRadius = 3f;
+    [Tooltip("Maximum allowed Y height difference to prevent triggers across floors.")]
+    [Range(0.5f, 5f)]      public float proximityMaxYDifference  = 1.5f;
+
     [Header("── Attack ───────────────────────────────────────────────")]
     [Range(0.5f, 4f)]      public float attackDistance        = 1.8f;
     [Range(0.5f, 4f)]      public float attackAnimDuration    = 1.5f;
@@ -252,10 +258,26 @@ public class GrannyAI : MonoBehaviour
     {
         if (grannyAudioSource != null)
         {
-            grannyAudioSource.volume = SoundManager.SoundVol > 0 ? 1f : 0f;
+            bool isGameActive = GameManager.Instance != null && GameManager.Instance.isGameStarted && Time.timeScale > 0;
+            grannyAudioSource.volume = (SoundManager.SoundVol > 0 && isGameActive) ? 1f : 0f;
+
+            if (!isGameActive)
+            {
+                if (grannyAudioSource.isPlaying)
+                {
+                    grannyAudioSource.Pause();
+                }
+            }
+            else
+            {
+                if (!grannyAudioSource.isPlaying)
+                {
+                    grannyAudioSource.UnPause();
+                }
+            }
         }
 
-        if (!GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart || Time.timeScale == 0) return;
+        if (GameManager.Instance == null || !GameManager.Instance.isGameStarted || isAttacking || isWaitingAtStart || Time.timeScale == 0) return;
 
         UpdateGrannyCurrentRoom();
         DecayBelief();
@@ -436,19 +458,42 @@ public class GrannyAI : MonoBehaviour
 
     private void CheckVision()
     {
-        if (!HasVisualOnPlayer()) return;
+        bool detected = false;
 
-        RoomNodeData pRoom = GetRoomForPosition(player.position);
-        if (pRoom != null)
+        // Proximity detection (X and Z axes only, within Y difference limit)
+        if (player != null)
         {
-            pRoom.beliefScore   = 1f;
-            pRoom.grudgeHeat    = Mathf.Min(1f, pRoom.grudgeHeat + 0.5f);
-            pRoom.lastHeardTime = Time.time;
-            playerLastKnownRoom = pRoom;
+            Vector3 grannyPos = transform.position;
+            Vector3 playerPos = player.position;
+            float distXZ = Vector2.Distance(new Vector2(grannyPos.x, grannyPos.z), new Vector2(playerPos.x, playerPos.z));
+            float distY = Mathf.Abs(grannyPos.y - playerPos.y);
+
+            if (distXZ <= proximityDetectionRadius && distY <= proximityMaxYDifference)
+            {
+                detected = true;
+            }
         }
 
-        if (State != GrannyState.Chase && State != GrannyState.Attack && State != GrannyState.Survival && State != GrannyState.Crazy)
-            State = GrannyState.Chase;
+        // Vision detection (angle, range, line of sight)
+        if (!detected && HasVisualOnPlayer())
+        {
+            detected = true;
+        }
+
+        if (detected)
+        {
+            RoomNodeData pRoom = GetRoomForPosition(player.position);
+            if (pRoom != null)
+            {
+                pRoom.beliefScore   = 1f;
+                pRoom.grudgeHeat    = Mathf.Min(1f, pRoom.grudgeHeat + 0.5f);
+                pRoom.lastHeardTime = Time.time;
+                playerLastKnownRoom = pRoom;
+            }
+
+            if (State != GrannyState.Chase && State != GrannyState.Attack && State != GrannyState.Survival && State != GrannyState.Crazy)
+                State = GrannyState.Chase;
+        }
     }
 
     #endregion
@@ -768,19 +813,23 @@ public class GrannyAI : MonoBehaviour
     private void HandleMusicTransitions()
     {
         if (State == _lastMusicState) return;
+        Debug.Log($"[GrannyAI] Music transition: State changed from {_lastMusicState} to {State}");
         _lastMusicState = State;
 
         switch (State)
         {
             case GrannyState.Chase:
             case GrannyState.Hunt:
+                Debug.Log("[GrannyAI] Triggering SoundManager.Instance.PlaySuspenseMusic()");
                 SoundManager.Instance.PlaySuspenseMusic();
                 break;
             case GrannyState.Survival:
+                Debug.Log("[GrannyAI] Triggering SoundManager.Instance.PlayGameGrannyMusic()");
                 SoundManager.Instance.PlayGameGrannyMusic(); break;
             default:
                 if (GameManager.Instance != null && !GameManager.Instance.isInSurvivalMode)
                 {
+                    Debug.Log("[GrannyAI] Triggering SoundManager.Instance.PlayNothing()");
                     SoundManager.Instance.PlayNothing();
                 }
                 break;
@@ -961,6 +1010,12 @@ public class GrannyAI : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
 #if UNITY_EDITOR
+        // Proximity detection circle (Yellow)
+        UnityEditor.Handles.color = new Color(1f, 0.92f, 0.016f, 0.08f);
+        UnityEditor.Handles.DrawSolidDisc(transform.position, Vector3.up, proximityDetectionRadius);
+        UnityEditor.Handles.color = new Color(1f, 0.92f, 0.016f, 0.6f);
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, proximityDetectionRadius);
+
         // Vision cone — filled arc
         UnityEditor.Handles.color = new Color(0f, 1f, 1f, 0.12f);
         UnityEditor.Handles.DrawSolidArc(transform.position + Vector3.up * 1.4f,
