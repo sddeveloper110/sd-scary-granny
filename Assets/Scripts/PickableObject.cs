@@ -1,3 +1,4 @@
+using MobileHapticsProFreeEdition;
 using System;
 using UnityEngine;
 
@@ -50,6 +51,7 @@ public class PickableObject : MonoBehaviour
 
         if (pickAudio != null)
             SoundManager.PlayThisAudio(pickAudio);
+        GameHaptics.Instance.LightHaptic();
 
         OnUnhighlight();
 
@@ -61,6 +63,7 @@ public class PickableObject : MonoBehaviour
         isPicked = false;
         transform.SetParent(null);
         if (rb != null) { rb.isKinematic = false; rb.useGravity = true; rb.AddForce(force, ForceMode.Impulse); }
+        GameHaptics.Instance.LightHaptic();
 
         if (dropAudio != null)
             SoundManager.PlayThisAudio(dropAudio);

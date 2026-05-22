@@ -1,7 +1,8 @@
+using FirstPersonMobileTools.DynamicFirstPerson;
+using MobileHapticsProFreeEdition;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FirstPersonMobileTools.DynamicFirstPerson;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -874,6 +875,7 @@ public class GrannyAI : MonoBehaviour
         if (isAttacking) yield break;
         isAttacking     = true;
         agent.isStopped = true;
+        GameHaptics.Instance.FailureHaptic();
 
         transform.position = player.position + player.forward * 0.8f;
         transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));

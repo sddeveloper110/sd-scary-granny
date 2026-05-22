@@ -1,3 +1,4 @@
+using MobileHapticsProFreeEdition;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -100,7 +101,7 @@ public class InteractableObject : MonoBehaviour
 
         if (activationAudio != null)
             SoundManager.PlayThisAudio(activationAudio);
- 
+        
         IsInteracted = true;
 
         GrannyAI granny = FindFirstObjectByType<GrannyAI>();
@@ -108,7 +109,7 @@ public class InteractableObject : MonoBehaviour
         {
             granny.HearSound(transform.position, true);
         }
-
+        GameHaptics.Instance.MediumHaptic();
         // FIRE GLOBAL EVENT
         OnObjectInteractionDone?.Invoke(this);
     }
