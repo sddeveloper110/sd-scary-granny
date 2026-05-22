@@ -1,4 +1,4 @@
-﻿//
+//
 //  Outline.cs
 //  QuickOutline
 //
@@ -220,11 +220,21 @@ public class Outline : MonoBehaviour {
 
   List<Vector3> SmoothNormals(Mesh mesh) {
 
+    // Guard: mesh has no normals baked (e.g. door mesh imported without normals)
+    if (mesh == null || mesh.normals == null || mesh.normals.Length == 0) {
+      return new List<Vector3>(new Vector3[mesh != null ? mesh.vertexCount : 0]);
+    }
+
     // Group vertices by location
     var groups = mesh.vertices.Select((vertex, index) => new KeyValuePair<Vector3, int>(vertex, index)).GroupBy(pair => pair.Key);
 
     // Copy normals to a new list
     var smoothNormals = new List<Vector3>(mesh.normals);
+
+    // Guard: normals count must match vertex count, otherwise skip smoothing
+    if (smoothNormals.Count != mesh.vertexCount) {
+      return smoothNormals;
+    }
 
     // Average normals for grouped vertices
     foreach (var group in groups) {

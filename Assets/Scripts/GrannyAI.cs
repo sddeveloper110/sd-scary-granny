@@ -223,11 +223,15 @@ public class GrannyAI : MonoBehaviour
         OnStateChanged = null;
     }
 
+    // Tracks whether the game has ended (fail or win) so audio is silenced
+    private bool _isGameEnded = false;
+
     private void OnEnable()
     {
         GameManager.OnGameStarted     += ResetGranny;
         CanvasManager.OnGameRetry     += ResetGranny;
         GameManager.OnSurvivalStarted += EnterSurvivalMode;
+        GameManager.OnGameEnd         += OnGameEnded;
     }
 
     private void OnDisable()
@@ -235,10 +239,21 @@ public class GrannyAI : MonoBehaviour
         GameManager.OnGameStarted     -= ResetGranny;
         CanvasManager.OnGameRetry     -= ResetGranny;
         GameManager.OnSurvivalStarted -= EnterSurvivalMode;
+        GameManager.OnGameEnd         -= OnGameEnded;
 
         if (mentalBreakDownAlert != null)
-        {
             mentalBreakDownAlert.SetActive(false);
+    }
+
+    /// <summary>Called on both win and fail. Immediately silences all Granny audio.</summary>
+    private void OnGameEnded()
+    {
+        _isGameEnded = true;
+
+        if (grannyAudioSource != null)
+        {
+            grannyAudioSource.Stop();
+            grannyAudioSource.volume = 0f;
         }
     }
 
@@ -266,22 +281,23 @@ public class GrannyAI : MonoBehaviour
     {
         if (grannyAudioSource != null)
         {
-            bool isGameActive = GameManager.Instance != null && GameManager.Instance.isGameStarted && Time.timeScale > 0;
+            // Active = game running, not paused, not ended (fail or win)
+            bool isGameActive = !_isGameEnded &&
+                                GameManager.Instance != null &&
+                                GameManager.Instance.isGameStarted &&
+                                Time.timeScale > 0;
+
             grannyAudioSource.volume = (SoundManager.SoundVol > 0 && isGameActive) ? 1f : 0f;
 
             if (!isGameActive)
             {
                 if (grannyAudioSource.isPlaying)
-                {
                     grannyAudioSource.Pause();
-                }
             }
             else
             {
                 if (!grannyAudioSource.isPlaying)
-                {
                     grannyAudioSource.UnPause();
-                }
             }
         }
 
@@ -906,6 +922,7 @@ public class GrannyAI : MonoBehaviour
 
         if (patrolRoute.Count > 0) NavigateToRoom(patrolRoute[0]);
 
+        _isGameEnded = false;  // clear on reset so a retry works
         StartCoroutine(AmbientVoicesRoutine());
     }
 
@@ -924,7 +941,13 @@ public class GrannyAI : MonoBehaviour
 
             yield return new WaitForSeconds(waitTime);
 
-            if (ambientHorrorVoices != null && ambientHorrorVoices.Count > 0 && grannyAudioSource != null)
+            // Don't play ambient voices during pause, fail, or win
+            bool canPlay = !_isGameEnded &&
+                           GameManager.Instance != null &&
+                           GameManager.Instance.isGameStarted &&
+                           Time.timeScale > 0;
+
+            if (canPlay && ambientHorrorVoices != null && ambientHorrorVoices.Count > 0 && grannyAudioSource != null)
             {
                 AudioClip clip = ambientHorrorVoices[UnityEngine.Random.Range(0, ambientHorrorVoices.Count)];
                 grannyAudioSource.PlayOneShot(clip);
