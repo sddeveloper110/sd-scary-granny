@@ -108,18 +108,26 @@ public class GrannyAI : MonoBehaviour
 
     [Header("── Animations ──────────────────────────────────────────")]
     public Animator anim;
-    public string animParamSpeed  = "speed";
     public string animIdleName    = "Granny_Idle";
     public string animWalkName    = "Granny_Walk";
     public string animAttackName  = "Granny_Attack";
     public string animReactName   = "Granny_React";
     public string animCrazyName   = "Granny_Crazy";
-    [Range(0f, 1f)] public float lookAtWeight = 0.9f;
 
     [Header("── Ambient Voices ───────────────────────────────────────")]
     public AudioSource grannyAudioSource;
     public AudioClip footstepClip;
     public List<AudioClip> ambientHorrorVoices = new List<AudioClip>();
+    [Tooltip("Random voice interval when player is FAR from Granny (seconds).")]
+    [Range(1f, 20f)] public float ambientVoiceIntervalFarMin  = 5f;
+    [Range(1f, 30f)] public float ambientVoiceIntervalFarMax  = 10f;
+    [Tooltip("Random voice interval when player is NEAR Granny (seconds).")]
+    [Range(1f, 10f)] public float ambientVoiceIntervalNearMin = 2f;
+    [Range(1f, 15f)] public float ambientVoiceIntervalNearMax = 5f;
+    [Tooltip("Distance threshold (metres) that switches near vs far voice intervals.")]
+    [Range(2f, 20f)] public float ambientVoiceNearDistance    = 8f;
+    [Tooltip("Audio clip played the moment Granny sees the player.")]
+    public AudioClip onSeePlayerAudio;
 
     [Header("── Mental Breakdown Settings ────────────────────────────")]
     public AudioClip grannyMentalBreakdown;
@@ -190,8 +198,8 @@ public class GrannyAI : MonoBehaviour
     private Vector3    startPos;
     private Quaternion startRot;
 
-    // Music dedup
-    private GrannyState _lastMusicState = GrannyState.Idle;
+    // Music — fear-score driven
+    private bool _suspensePlaying = false;
 
     private RoomNodeMarker[] _cachedMarkers;
 
@@ -289,15 +297,7 @@ public class GrannyAI : MonoBehaviour
         PushEditorReadouts();
     }
 
-    private void OnAnimatorIK(int layerIndex)
-    {
-        if (anim == null) return;
-        bool shouldLook = (State == GrannyState.Chase || State == GrannyState.Hunt ||
-                           State == GrannyState.Survival) && !isAttacking;
-        anim.SetLookAtWeight(shouldLook ? lookAtWeight : 0f, 0.1f, 0.9f, 1.0f, 0.5f);
-        if (shouldLook)
-            anim.SetLookAtPosition(player.position + Vector3.up * 1.3f);
-    }
+    // LookAt IK removed — was not working correctly.
 
     #endregion
 
@@ -456,6 +456,9 @@ public class GrannyAI : MonoBehaviour
                                 toPlayer, visionRange, visionBlockMask);
     }
 
+    // Tracks whether Granny already played the see-player audio this detection event
+    private bool _seePlayerAudioPlayed = false;
+
     private void CheckVision()
     {
         bool detected = false;
@@ -469,19 +472,22 @@ public class GrannyAI : MonoBehaviour
             float distY = Mathf.Abs(grannyPos.y - playerPos.y);
 
             if (distXZ <= proximityDetectionRadius && distY <= proximityMaxYDifference)
-            {
                 detected = true;
-            }
         }
 
         // Vision detection (angle, range, line of sight)
         if (!detected && HasVisualOnPlayer())
-        {
             detected = true;
-        }
 
         if (detected)
         {
+            // Play "see player" audio once per chase event
+            if (!_seePlayerAudioPlayed && onSeePlayerAudio != null && grannyAudioSource != null)
+            {
+                grannyAudioSource.PlayOneShot(onSeePlayerAudio);
+                _seePlayerAudioPlayed = true;
+            }
+
             RoomNodeData pRoom = GetRoomForPosition(player.position);
             if (pRoom != null)
             {
@@ -493,6 +499,11 @@ public class GrannyAI : MonoBehaviour
 
             if (State != GrannyState.Chase && State != GrannyState.Attack && State != GrannyState.Survival && State != GrannyState.Crazy)
                 State = GrannyState.Chase;
+        }
+        else
+        {
+            // Reset so the audio plays again next time she spots the player
+            _seePlayerAudioPlayed = false;
         }
     }
 
@@ -555,7 +566,6 @@ public class GrannyAI : MonoBehaviour
     private void TickPatrol()
     {
         agent.speed = patrolSpeed;
-        anim?.SetFloat(animParamSpeed, 0.5f);
         if (!isWaitingAtWaypoint && patrolRoute.Count > 0 &&
             !agent.pathPending && agent.remainingDistance < 0.6f)
             StartCoroutine(PatrolWaitThenAdvance());
@@ -593,7 +603,6 @@ public class GrannyAI : MonoBehaviour
     private void TickCurious()
     {
         agent.speed = curiousSpeed;
-        anim?.SetFloat(animParamSpeed, 0.75f);
 
         RoomNodeData target = GetHighestBeliefRoom();
         if (target == null) { State = GrannyState.Patrol; return; }
@@ -609,7 +618,6 @@ public class GrannyAI : MonoBehaviour
     private void TickHunt()
     {
         agent.speed = huntSpeed;
-        anim?.SetFloat(animParamSpeed, 0.9f);
 
         RoomNodeData target = GetHighestBeliefRoom();
         if (target == null) { State = GrannyState.Curious; return; }
@@ -626,7 +634,6 @@ public class GrannyAI : MonoBehaviour
     private void TickChase()
     {
         agent.speed = chaseSpeed;
-        anim?.SetFloat(animParamSpeed, 1.4f);
         agent.SetDestination(PredictPlayerPosition());
 
         if (Vector3.Distance(transform.position, player.position) <= attackDistance)
@@ -640,7 +647,6 @@ public class GrannyAI : MonoBehaviour
     private void TickSurvival()
     {
         agent.speed = chaseSpeed;
-        anim?.SetFloat(animParamSpeed, 1.4f);
         agent.SetDestination(player.position);
 
         if (Vector3.Distance(transform.position, player.position) <= attackDistance)
@@ -812,27 +818,33 @@ public class GrannyAI : MonoBehaviour
 
     private void HandleMusicTransitions()
     {
-        if (State == _lastMusicState) return;
-        Debug.Log($"[GrannyAI] Music transition: State changed from {_lastMusicState} to {State}");
-        _lastMusicState = State;
+        // Granny is "running" (actively chasing the player)
+        bool isRunning = State == GrannyState.Chase ||
+                         State == GrannyState.Hunt  ||
+                         State == GrannyState.Survival;
 
-        switch (State)
+        if (isRunning && !_suspensePlaying)
         {
-            case GrannyState.Chase:
-            case GrannyState.Hunt:
-                Debug.Log("[GrannyAI] Triggering SoundManager.Instance.PlaySuspenseMusic()");
+            if (State == GrannyState.Survival)
+            {
+                Debug.Log("[GrannyAI] Granny running (Survival) — PlayGameGrannyMusic()");
+                SoundManager.Instance.PlayGameGrannyMusic();
+            }
+            else
+            {
+                Debug.Log($"[GrannyAI] Granny running ({State}) — PlaySuspenseMusic()");
                 SoundManager.Instance.PlaySuspenseMusic();
-                break;
-            case GrannyState.Survival:
-                Debug.Log("[GrannyAI] Triggering SoundManager.Instance.PlayGameGrannyMusic()");
-                SoundManager.Instance.PlayGameGrannyMusic(); break;
-            default:
-                if (GameManager.Instance != null && !GameManager.Instance.isInSurvivalMode)
-                {
-                    Debug.Log("[GrannyAI] Triggering SoundManager.Instance.PlayNothing()");
-                    SoundManager.Instance.PlayNothing();
-                }
-                break;
+            }
+            _suspensePlaying = true;
+        }
+        else if (!isRunning && _suspensePlaying)
+        {
+            if (GameManager.Instance != null && !GameManager.Instance.isInSurvivalMode)
+            {
+                Debug.Log($"[GrannyAI] Granny stopped running ({State}) — PlayNothing()");
+                SoundManager.Instance.PlayNothing();
+            }
+            _suspensePlaying = false;
         }
     }
 
@@ -901,8 +913,17 @@ public class GrannyAI : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(UnityEngine.Random.Range(20f, 30f));
-            
+            // Choose interval based on how close the player is
+            float dist = player != null
+                ? Vector3.Distance(transform.position, player.position)
+                : float.MaxValue;
+
+            float waitTime = dist <= ambientVoiceNearDistance
+                ? UnityEngine.Random.Range(ambientVoiceIntervalNearMin, ambientVoiceIntervalNearMax)
+                : UnityEngine.Random.Range(ambientVoiceIntervalFarMin,  ambientVoiceIntervalFarMax);
+
+            yield return new WaitForSeconds(waitTime);
+
             if (ambientHorrorVoices != null && ambientHorrorVoices.Count > 0 && grannyAudioSource != null)
             {
                 AudioClip clip = ambientHorrorVoices[UnityEngine.Random.Range(0, ambientHorrorVoices.Count)];

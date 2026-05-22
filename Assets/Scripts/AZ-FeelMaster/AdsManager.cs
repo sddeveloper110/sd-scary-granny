@@ -281,10 +281,12 @@ public class AdsManager : MonoBehaviour
         Initialize_Admob_Ads();
 
         GameManager.OnGameStarted += StartAdBreakRoutine;
+        GameManager.OnGameEnd += StopAdBreakRoutine;
     }
 
     private void OnDestroy()
     {
+        GameManager.OnGameEnd -= StopAdBreakRoutine;
         GameManager.OnGameStarted -= StartAdBreakRoutine;
     }
 

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public static event Action OnGameStarted;
+    public static event Action OnGameEnd;
     public static event Action OnSurvivalStarted;
     public Action OnGameWin;
 
@@ -245,7 +246,7 @@ public class GameManager : MonoBehaviour
 
             string timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-            objectiveText.uiText.text = $"SURVIVE! EXIT OPENS IN: {timeString}";
+            objectiveText.uiText.text = $"SURVIVE! GRANNY ABOUT TO DIE IN {timeString}";
 
             yield return null;
         }
@@ -270,7 +271,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Player Won");
 
         OnGameWin?.Invoke();
-
+        OnGameEnd?.Invoke();
         SoundManager.Instance.StopMusic();
 
         CanvasManager.FadeIn(1.5f, () =>
@@ -282,6 +283,8 @@ public class GameManager : MonoBehaviour
 
     public void GameEnd()
     {
+        OnGameEnd?.Invoke();
+
         CanvasManager.FadeIn(.5f, () =>
         {
             UIPanelEnabler.OpenPanel(PanelType.GameOver);
