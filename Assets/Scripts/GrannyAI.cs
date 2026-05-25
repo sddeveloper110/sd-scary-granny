@@ -34,105 +34,111 @@ public class GrannyAI : MonoBehaviour
     [Tooltip("Ordered list of rooms Granny visits during idle patrol. " +
              "Assign 4–8 rooms for natural coverage.")]
     public List<RoomNodeData> patrolRoute = new();
-    [Range(0.5f, 5f)]  public float patrolWaitMin = 1f;
-    [Range(0.5f, 8f)]  public float patrolWaitMax = 3f;
+    [Range(0.5f, 5f)] public float patrolWaitMin = 1f;
+    [Range(0.5f, 8f)] public float patrolWaitMax = 3f;
 
     [Header("── Movement ────────────────────────────────────────────")]
-    [Range(0.5f, 4f)]  public float patrolSpeed  = 2.0f;
-    [Range(1f,   4f)]  public float curiousSpeed = 3.0f;
-    [Range(1f,   5f)]  public float huntSpeed    = 3.8f;
-    [Range(1f,   8f)]  public float chaseSpeed   = 5.5f;
-    [Range(0f,  10f)]  public float startDelay   = 4f;
+    [Range(0.5f, 4f)] public float patrolSpeed = 2.0f;
+    [Range(1f, 4f)] public float curiousSpeed = 3.0f;
+    [Range(1f, 5f)] public float huntSpeed = 3.8f;
+    [Range(1f, 8f)] public float chaseSpeed = 5.5f;
+    [Range(0f, 10f)] public float startDelay = 4f;
 
     [Header("── Belief Thresholds ───────────────────────────────────")]
     [Tooltip("Belief ≥ this → Curious state.")]
-    [Range(0.05f, 0.5f)]  public float beliefCuriousThreshold = 0.30f;
+    [Range(0.05f, 0.5f)] public float beliefCuriousThreshold = 0.30f;
     [Tooltip("Belief ≥ this → Hunt state.")]
-    [Range(0.3f,  0.95f)] public float beliefHuntThreshold    = 0.65f;
+    [Range(0.3f, 0.95f)] public float beliefHuntThreshold = 0.65f;
     [Tooltip("Cross-floor belief gate: Granny won't use stairs unless a cross-floor room " +
              "reaches this belief.")]
-    [Range(0.5f, 1f)]     public float crossFloorBeliefGate   = 0.75f;
+    [Range(0.5f, 1f)] public float crossFloorBeliefGate = 0.75f;
     [Tooltip("Belief decay per second (no cues arriving).")]
-    [Range(0.005f, 0.2f)] public float beliefDecayRate        = 0.04f;
+    [Range(0.005f, 0.2f)] public float beliefDecayRate = 0.04f;
     [Tooltip("Grudge heat decay per second (10× slower than belief).")]
-    [Range(0.001f, 0.05f)]public float grudgeDecayRate        = 0.005f;
+    [Range(0.001f, 0.05f)] public float grudgeDecayRate = 0.005f;
 
     [Header("── Sound Perception ────────────────────────────────────")]
     [Tooltip("Max room-hops sound travels from source.")]
-    [Range(1, 5)]          public int   soundPropagationHops  = 2;
-    [Range(0.3f, 1f)]      public float soundBeliefLoud       = 0.85f;
-    [Range(0.1f, 0.8f)]    public float soundBeliefQuiet      = 0.45f;
+    [Range(1, 5)] public int soundPropagationHops = 2;
+    [Range(0.3f, 1f)] public float soundBeliefLoud = 0.85f;
+    [Range(0.1f, 0.8f)] public float soundBeliefQuiet = 0.45f;
     [Tooltip("Belief multiplier applied per hop (< 1 = attenuates with distance).")]
-    [Range(0.1f, 0.9f)]    public float soundHopAttenuation   = 0.45f;
+    [Range(0.1f, 0.9f)] public float soundHopAttenuation = 0.45f;
     [Tooltip("Extra attenuation when a door is closed on a connection.")]
-    [Range(0.05f, 0.9f)]   public float closedDoorAttenuation = 0.30f;
+    [Range(0.05f, 0.9f)] public float closedDoorAttenuation = 0.30f;
 
     [Header("── Vision ───────────────────────────────────────────────")]
-    [Range(20f, 120f)]     public float visionAngle           = 60f;
-    [Range(2f,  20f)]      public float visionRange           = 10f;
+    [Range(20f, 120f)] public float visionAngle = 60f;
+    [Range(2f, 20f)] public float visionRange = 10f;
     [Tooltip("Physics layers that block Granny's line-of-sight (walls, closed doors).")]
     public LayerMask visionBlockMask;
 
     [Header("── Proximity Detection ─────────────────────────────────")]
     [Tooltip("If the player enters this circle radius (X and Z axes only), Granny starts chasing instantly.")]
-    [Range(0.5f, 10f)]     public float proximityDetectionRadius = 3f;
+    [Range(0.5f, 10f)] public float proximityDetectionRadius = 3f;
     [Tooltip("Maximum allowed Y height difference to prevent triggers across floors.")]
-    [Range(0.5f, 5f)]      public float proximityMaxYDifference  = 1.5f;
+    [Range(0.5f, 5f)] public float proximityMaxYDifference = 1.5f;
 
     [Header("── Attack ───────────────────────────────────────────────")]
-    [Range(0.5f, 4f)]      public float attackDistance        = 1.8f;
-    [Range(0.5f, 4f)]      public float attackAnimDuration    = 1.5f;
+    [Range(0.5f, 4f)] public float attackDistance = 1.8f;
+    [Range(0.5f, 4f)] public float attackAnimDuration = 1.5f;
 
     [Header("── Horror: Near Miss ───────────────────────────────────")]
     [Tooltip("Near-miss only fires when belief is in this range. " +
              "Below it = not scary enough. Above it = Granny goes to Chase instead.")]
-    [Range(0.3f, 0.7f)]    public float nearMissBeliefMin     = 0.50f;
-    [Range(0.5f, 0.95f)]   public float nearMissBeliefMax     = 0.74f;
+    [Range(0.3f, 0.7f)] public float nearMissBeliefMin = 0.50f;
+    [Range(0.5f, 0.95f)] public float nearMissBeliefMax = 0.74f;
     [Tooltip("Player must be within this world-distance for the near-miss to fire.")]
-    [Range(0.5f, 5f)]      public float nearMissTriggerDist   = 2.5f;
+    [Range(0.5f, 5f)] public float nearMissTriggerDist = 2.5f;
     [Tooltip("Seconds before another near-miss can fire.")]
-    [Range(10f, 120f)]     public float nearMissCooldown      = 30f;
+    [Range(10f, 120f)] public float nearMissCooldown = 30f;
 
     [Header("── Horror: Tension ─────────────────────────────────────")]
     [Tooltip("Fear score rise rate per second while hunting/chasing.")]
-    [Range(0.01f, 0.2f)]   public float fearRiseRate          = 0.06f;
+    [Range(0.01f, 0.2f)] public float fearRiseRate = 0.06f;
     [Tooltip("Fear score fall rate per second while patrolling.")]
-    [Range(0.005f, 0.1f)]  public float fearFallRate          = 0.02f;
+    [Range(0.005f, 0.1f)] public float fearFallRate = 0.02f;
     [Tooltip("Speed bonus added to Granny at maximum fear (on top of chase speed).")]
-    [Range(0f, 2f)]        public float maxFearSpeedBonus     = 0.8f;
+    [Range(0f, 2f)] public float maxFearSpeedBonus = 0.8f;
 
     [Header("── Horror: False Scares ────────────────────────────────")]
     [Tooltip("Seconds between false-scare beats.")]
-    [Range(20f, 180f)]     public float falseScareCooldown    = 45f;
+    [Range(20f, 180f)] public float falseScareCooldown = 45f;
     [Tooltip("Probability of a false scare firing on each patrol stop.")]
-    [Range(0f, 0.6f)]      public float falseScareProbability = 0.25f;
+    [Range(0f, 0.6f)] public float falseScareProbability = 0.25f;
 
     [Header("── Animations ──────────────────────────────────────────")]
     public Animator anim;
-    public string animIdleName    = "Granny_Idle";
-    public string animWalkName    = "Granny_Walk";
-    public string animAttackName  = "Granny_Attack";
-    public string animReactName   = "Granny_React";
-    public string animCrazyName   = "Granny_Crazy";
+    public string animIdleName = "Granny_Idle";
+    public string animWalkName = "Granny_Walk";
+    public string animAttackName = "Granny_Attack";
+    public string animReactName = "Granny_React";
+    public string animCrazyName = "Granny_Crazy";
 
     [Header("── Ambient Voices ───────────────────────────────────────")]
     public AudioSource grannyAudioSource;
     public AudioClip footstepClip;
     public List<AudioClip> ambientHorrorVoices = new List<AudioClip>();
     [Tooltip("Random voice interval when player is FAR from Granny (seconds).")]
-    [Range(1f, 20f)] public float ambientVoiceIntervalFarMin  = 5f;
-    [Range(1f, 30f)] public float ambientVoiceIntervalFarMax  = 10f;
+    [Range(1f, 20f)] public float ambientVoiceIntervalFarMin = 5f;
+    [Range(1f, 30f)] public float ambientVoiceIntervalFarMax = 10f;
     [Tooltip("Random voice interval when player is NEAR Granny (seconds).")]
     [Range(1f, 10f)] public float ambientVoiceIntervalNearMin = 2f;
     [Range(1f, 15f)] public float ambientVoiceIntervalNearMax = 5f;
     [Tooltip("Distance threshold (metres) that switches near vs far voice intervals.")]
-    [Range(2f, 20f)] public float ambientVoiceNearDistance    = 8f;
+    [Range(2f, 20f)] public float ambientVoiceNearDistance = 8f;
     [Tooltip("Audio clip played the moment Granny sees the player.")]
     public AudioClip onSeePlayerAudio;
 
     [Header("── Mental Breakdown Settings ────────────────────────────")]
     public AudioClip grannyMentalBreakdown;
     public GameObject mentalBreakDownAlert;
+
+    // ── NEW: Mutual Sighting ──────────────────────────────────────────────────
+    [Header("── Mutual Sighting (NEW) ───────────────────────────────")]
+    [Tooltip("How far into the player's camera viewport Granny must be (0 = edge, 1 = full). " +
+             "0 means anywhere on screen counts.")]
+    [Range(0f, 0.45f)] public float mutualSightingViewportPadding = 0.05f;
 
     #endregion
 
@@ -149,6 +155,13 @@ public class GrannyAI : MonoBehaviour
     /// <summary>Fired on every state transition.</summary>
     public static event Action<GrannyState> OnStateChanged;
 
+    // ── NEW EVENT ─────────────────────────────────────────────────────────────
+    /// <summary>
+    /// Fired when Granny spots the player AND the player's camera can also see Granny.
+    /// Subscribe from PlayerController to play mutual-sighting scream audio.
+    /// </summary>
+    public static event Action OnMutualSighting;
+
     #endregion
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -163,7 +176,7 @@ public class GrannyAI : MonoBehaviour
         {
             if (_state == value) return;
             var prev = _state;
-            _state   = value;
+            _state = value;
             OnStateChanged?.Invoke(_state);
             HandleStateTransition(prev, _state);
 
@@ -176,7 +189,7 @@ public class GrannyAI : MonoBehaviour
 
     // Components
     private NavMeshAgent agent;
-    private Transform    player;
+    private Transform player;
 
     // Room tracking
     private RoomNodeData currentTargetRoom;
@@ -184,19 +197,19 @@ public class GrannyAI : MonoBehaviour
     private RoomNodeData playerLastKnownRoom;
 
     // Patrol
-    private int  patrolIndex;
+    private int patrolIndex;
     private bool isWaitingAtWaypoint;
 
     // Flags / timers
-    private bool  isAttacking;
-    private bool  isWaitingAtStart;
+    private bool isAttacking;
+    private bool isWaitingAtStart;
     private float nearMissCooldownTimer;
     private float falseScareCooldownTimer;
     private float crazyCooldownTimer;
     private float fearScore;
 
     // Anchor
-    private Vector3    startPos;
+    private Vector3 startPos;
     private Quaternion startRot;
 
     // Music — fear-score driven
@@ -204,12 +217,18 @@ public class GrannyAI : MonoBehaviour
 
     private RoomNodeMarker[] _cachedMarkers;
 
+    // ── NEW: Mutual Sighting runtime fields ───────────────────────────────────
+    /// <summary>Cooldown so the mutual-sighting event doesn't fire every frame.</summary>
+    private float _mutualSightingCooldownTimer = 0f;
+    [Tooltip("Seconds before another mutual-sighting event can fire.")]
+    public float mutualSightingCooldown = 4f;
+
     // ── Editor-accessible runtime read-outs ──────────────────────────────────
     // (GrannyAIEditor reads these to show live status in Inspector)
     [NonSerialized] public GrannyState EditorCurrentState;
-    [NonSerialized] public float       EditorFearScore;
-    [NonSerialized] public string      EditorTargetRoom = "—";
-    [NonSerialized] public string      EditorGrannyRoom = "—";
+    [NonSerialized] public float EditorFearScore;
+    [NonSerialized] public string EditorTargetRoom = "—";
+    [NonSerialized] public string EditorGrannyRoom = "—";
 
     #endregion
 
@@ -222,6 +241,7 @@ public class GrannyAI : MonoBehaviour
         OnAttackPlayer = null;
         OnFearScoreChanged = null;
         OnStateChanged = null;
+        OnMutualSighting = null; // NEW: clear mutual sighting event
     }
 
     // Tracks whether the game has ended (fail or win) so audio is silenced
@@ -229,18 +249,18 @@ public class GrannyAI : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.OnGameStarted     += ResetGranny;
-        CanvasManager.OnGameRetry     += ResetGranny;
+        GameManager.OnGameStarted += ResetGranny;
+        CanvasManager.OnGameRetry += ResetGranny;
         GameManager.OnSurvivalStarted += EnterSurvivalMode;
-        GameManager.OnGameEnd         += OnGameEnded;
+        GameManager.OnGameEnd += OnGameEnded;
     }
 
     private void OnDisable()
     {
-        GameManager.OnGameStarted     -= ResetGranny;
-        CanvasManager.OnGameRetry     -= ResetGranny;
+        GameManager.OnGameStarted -= ResetGranny;
+        CanvasManager.OnGameRetry -= ResetGranny;
         GameManager.OnSurvivalStarted -= EnterSurvivalMode;
-        GameManager.OnGameEnd         -= OnGameEnded;
+        GameManager.OnGameEnd -= OnGameEnded;
 
         if (mentalBreakDownAlert != null)
             mentalBreakDownAlert.SetActive(false);
@@ -260,7 +280,7 @@ public class GrannyAI : MonoBehaviour
 
     private void Start()
     {
-        agent  = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
         player = FindFirstObjectByType<MovementController>(FindObjectsInactive.Include).transform;
 
         agent.updateRotation = true;
@@ -312,6 +332,9 @@ public class GrannyAI : MonoBehaviour
         ApplyFearSpeedBonus();
         HandleMusicTransitions();
         PushEditorReadouts();
+
+        // NEW: tick mutual sighting cooldown every frame
+        TickMutualSightingCooldown();
     }
 
     // LookAt IK removed — was not working correctly.
@@ -338,8 +361,8 @@ public class GrannyAI : MonoBehaviour
         if (_cachedMarkers == null || _cachedMarkers.Length == 0)
             _cachedMarkers = FindObjectsByType<RoomNodeMarker>(FindObjectsSortMode.None);
 
-        RoomNodeData best  = null;
-        float        bestD = float.MaxValue;
+        RoomNodeData best = null;
+        float bestD = float.MaxValue;
 
         foreach (var m in _cachedMarkers)
         {
@@ -355,7 +378,7 @@ public class GrannyAI : MonoBehaviour
     private Dictionary<RoomNodeData, float> BfsRooms(RoomNodeData source, int maxHops)
     {
         var visited = new Dictionary<RoomNodeData, float> { [source] = 1f };
-        var queue   = new Queue<(RoomNodeData room, int hops, float factor)>();
+        var queue = new Queue<(RoomNodeData room, int hops, float factor)>();
         queue.Enqueue((source, 0, 1f));
 
         while (queue.Count > 0)
@@ -379,18 +402,18 @@ public class GrannyAI : MonoBehaviour
     /// with a cross-floor fallback gated by crossFloorBeliefGate.</summary>
     private RoomNodeData GetHighestBeliefRoom()
     {
-        int          grannyFloor = grannyCurrentRoom?.floorIndex ?? 0;
-        RoomNodeData bestSame    = null;
-        RoomNodeData bestOther   = null;
-        float        scoreSame   = 0f;
-        float        scoreOther  = 0f;
+        int grannyFloor = grannyCurrentRoom?.floorIndex ?? 0;
+        RoomNodeData bestSame = null;
+        RoomNodeData bestOther = null;
+        float scoreSame = 0f;
+        float scoreOther = 0f;
 
         foreach (var room in allRooms)
         {
             if (room == null || room.beliefScore <= 0.01f) continue;
             if (room.floorIndex == grannyFloor)
             {
-                if (room.beliefScore > scoreSame)  { scoreSame  = room.beliefScore; bestSame  = room; }
+                if (room.beliefScore > scoreSame) { scoreSame = room.beliefScore; bestSame = room; }
             }
             else
             {
@@ -398,7 +421,7 @@ public class GrannyAI : MonoBehaviour
             }
         }
 
-        if (bestSame  != null) return bestSame;
+        if (bestSame != null) return bestSame;
         if (bestOther != null && scoreOther >= crossFloorBeliefGate) return bestOther;
         return null;
     }
@@ -437,14 +460,14 @@ public class GrannyAI : MonoBehaviour
         if (source == null) return;
 
         float baseStrength = loud ? soundBeliefLoud : soundBeliefQuiet;
-        var   affected     = BfsRooms(source, soundPropagationHops);
+        var affected = BfsRooms(source, soundPropagationHops);
 
         foreach (var kvp in affected)
         {
-            float injected           = baseStrength * kvp.Value;
-            kvp.Key.beliefScore      = Mathf.Max(kvp.Key.beliefScore, injected);
-            kvp.Key.grudgeHeat       = Mathf.Min(1f, kvp.Key.grudgeHeat + injected * 0.3f);
-            kvp.Key.lastHeardTime    = Time.time;
+            float injected = baseStrength * kvp.Value;
+            kvp.Key.beliefScore = Mathf.Max(kvp.Key.beliefScore, injected);
+            kvp.Key.grudgeHeat = Mathf.Min(1f, kvp.Key.grudgeHeat + injected * 0.3f);
+            kvp.Key.lastHeardTime = Time.time;
         }
 
         playerLastKnownRoom = source;
@@ -467,7 +490,7 @@ public class GrannyAI : MonoBehaviour
 
         Vector3 toPlayer = (player.position - transform.position).normalized;
         if (Vector3.Angle(transform.forward, toPlayer) > visionAngle * 0.5f) return false;
-        if (Vector3.Distance(transform.position, player.position) > visionRange)  return false;
+        if (Vector3.Distance(transform.position, player.position) > visionRange) return false;
 
         return !Physics.Raycast(transform.position + Vector3.up * 1.4f,
                                 toPlayer, visionRange, visionBlockMask);
@@ -503,13 +526,20 @@ public class GrannyAI : MonoBehaviour
             {
                 grannyAudioSource.PlayOneShot(onSeePlayerAudio);
                 _seePlayerAudioPlayed = true;
+
+                // ── NEW: Check if Granny is also visible IN the player's camera ──────
+                if (IsVisibleToPlayerCamera())
+                {
+                    FireMutualSightingEvent();
+                }
+                // ─────────────────────────────────────────────────────────────────────
             }
 
             RoomNodeData pRoom = GetRoomForPosition(player.position);
             if (pRoom != null)
             {
-                pRoom.beliefScore   = 1f;
-                pRoom.grudgeHeat    = Mathf.Min(1f, pRoom.grudgeHeat + 0.5f);
+                pRoom.beliefScore = 1f;
+                pRoom.grudgeHeat = Mathf.Min(1f, pRoom.grudgeHeat + 0.5f);
                 pRoom.lastHeardTime = Time.time;
                 playerLastKnownRoom = pRoom;
             }
@@ -524,6 +554,57 @@ public class GrannyAI : MonoBehaviour
         }
     }
 
+    // ── NEW: Mutual Sighting Helpers ──────────────────────────────────────────
+
+    /// <summary>
+    /// Returns true when Granny's world position projects inside the player camera's
+    /// viewport AND no wall occludes her.
+    /// </summary>
+    private bool IsVisibleToPlayerCamera()
+    {
+        if (player == null) return false;
+
+        Camera playerCam = Camera.main;
+        if (playerCam == null) return false;
+
+        // Project Granny's centre (chest height) into viewport space
+        Vector3 viewportPoint = playerCam.WorldToViewportPoint(transform.position + Vector3.up * 1.4f);
+
+        float pad = mutualSightingViewportPadding;
+        bool inFrustum = viewportPoint.x >= pad &&
+                         viewportPoint.x <= 1f - pad &&
+                         viewportPoint.y >= pad &&
+                         viewportPoint.y <= 1f - pad &&
+                         viewportPoint.z > 0f;          // in front of camera
+
+        if (!inFrustum) return false;
+
+        // Line-of-sight check so walls don't allow false positives
+        Vector3 origin = playerCam.transform.position;
+        Vector3 dirToGranny = (transform.position + Vector3.up * 1.4f) - origin;
+        if (Physics.Raycast(origin, dirToGranny.normalized, dirToGranny.magnitude, visionBlockMask))
+            return false;
+
+        return true;
+    }
+
+    /// <summary>Fires OnMutualSighting with a per-instance cooldown guard.</summary>
+    private void FireMutualSightingEvent()
+    {
+        if (_mutualSightingCooldownTimer > 0f) return;
+        _mutualSightingCooldownTimer = mutualSightingCooldown;
+        OnMutualSighting?.Invoke();
+    }
+
+    /// <summary>Called every Update to count down the mutual-sighting cooldown.</summary>
+    private void TickMutualSightingCooldown()
+    {
+        if (_mutualSightingCooldownTimer > 0f)
+            _mutualSightingCooldownTimer -= Time.deltaTime;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+
     #endregion
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -535,17 +616,17 @@ public class GrannyAI : MonoBehaviour
         {
             if (room == null) continue;
             room.beliefScore = Mathf.MoveTowards(room.beliefScore, 0f, beliefDecayRate * Time.deltaTime);
-            room.grudgeHeat  = Mathf.MoveTowards(room.grudgeHeat,  0f, grudgeDecayRate  * Time.deltaTime);
+            room.grudgeHeat = Mathf.MoveTowards(room.grudgeHeat, 0f, grudgeDecayRate * Time.deltaTime);
         }
     }
 
     private void EvaluateStateFromBelief()
     {
-        if (State == GrannyState.Chase  || State == GrannyState.Attack ||
+        if (State == GrannyState.Chase || State == GrannyState.Attack ||
             State == GrannyState.Survival || State == GrannyState.NearMiss || State == GrannyState.Crazy) return;
 
         float max = GetMaxBeliefScore();
-        if      (max >= beliefHuntThreshold)    State = GrannyState.Hunt;
+        if (max >= beliefHuntThreshold) State = GrannyState.Hunt;
         else if (max >= beliefCuriousThreshold) State = GrannyState.Curious;
     }
 
@@ -560,10 +641,10 @@ public class GrannyAI : MonoBehaviour
 
         switch (State)
         {
-            case GrannyState.Patrol:   TickPatrol();   break;
-            case GrannyState.Curious:  TickCurious();  break;
-            case GrannyState.Hunt:     TickHunt();     break;
-            case GrannyState.Chase:    TickChase();    break;
+            case GrannyState.Patrol: TickPatrol(); break;
+            case GrannyState.Curious: TickCurious(); break;
+            case GrannyState.Hunt: TickHunt(); break;
+            case GrannyState.Chase: TickChase(); break;
             case GrannyState.Survival: TickSurvival(); break;
         }
     }
@@ -606,8 +687,8 @@ public class GrannyAI : MonoBehaviour
     {
         if (UnityEngine.Random.value < 0.30f)
         {
-            RoomNodeData hottest  = null;
-            float        hotScore = 0f;
+            RoomNodeData hottest = null;
+            float hotScore = 0f;
             foreach (var r in allRooms)
                 if (r != null && r.grudgeHeat > hotScore) { hotScore = r.grudgeHeat; hottest = r; }
             if (hottest != null && hotScore > 0.1f) return hottest;
@@ -627,7 +708,7 @@ public class GrannyAI : MonoBehaviour
         NavigateToRoom(target);
 
         float max = GetMaxBeliefScore();
-        if      (max >= beliefHuntThreshold)   State = GrannyState.Hunt;
+        if (max >= beliefHuntThreshold) State = GrannyState.Hunt;
         else if (max < beliefCuriousThreshold) State = GrannyState.Patrol;
     }
 
@@ -681,7 +762,7 @@ public class GrannyAI : MonoBehaviour
         if (room == currentTargetRoom && agent.hasPath) return;
 
         currentTargetRoom = room;
-        Transform marker  = GetMarkerTransform(room);
+        Transform marker = GetMarkerTransform(room);
         if (marker != null)
             agent.SetDestination(marker.position);
     }
@@ -711,14 +792,14 @@ public class GrannyAI : MonoBehaviour
 
     private void TryTriggerNearMiss(RoomNodeData room)
     {
-        if (nearMissCooldownTimer > 0f)                                 return;
-        if (!room.isHidingSpotRoom)                                     return;
+        if (nearMissCooldownTimer > 0f) return;
+        if (!room.isHidingSpotRoom) return;
         if (room.beliefScore < nearMissBeliefMin ||
-            room.beliefScore > nearMissBeliefMax)                       return;
-        if (GetRoomForPosition(player.position) != room)                return;
-        if (HasVisualOnPlayer())                                        return;
+            room.beliefScore > nearMissBeliefMax) return;
+        if (GetRoomForPosition(player.position) != room) return;
+        if (HasVisualOnPlayer()) return;
         if (Vector3.Distance(transform.position, player.position) >
-            nearMissTriggerDist)                                        return;
+            nearMissTriggerDist) return;
 
         StartCoroutine(NearMissBeat());
     }
@@ -735,7 +816,7 @@ public class GrannyAI : MonoBehaviour
         approxDir.y = 0f;
 
         Quaternion startRot = transform.rotation;
-        Quaternion lookRot  = Quaternion.LookRotation(approxDir);
+        Quaternion lookRot = Quaternion.LookRotation(approxDir);
 
         float elapsed = 0f;
         while (elapsed < 2.0f)
@@ -797,7 +878,7 @@ public class GrannyAI : MonoBehaviour
 
     private void UpdateFearScore()
     {
-        bool escalating = State == GrannyState.Hunt    || State == GrannyState.Chase ||
+        bool escalating = State == GrannyState.Hunt || State == GrannyState.Chase ||
                           State == GrannyState.Survival || State == GrannyState.NearMiss;
 
         fearScore = escalating
@@ -815,9 +896,9 @@ public class GrannyAI : MonoBehaviour
 
     private void TickTimers()
     {
-        if (nearMissCooldownTimer   > 0f) nearMissCooldownTimer   -= Time.deltaTime;
+        if (nearMissCooldownTimer > 0f) nearMissCooldownTimer -= Time.deltaTime;
         if (falseScareCooldownTimer > 0f) falseScareCooldownTimer -= Time.deltaTime;
-        
+
         if (crazyCooldownTimer > 0f && State != GrannyState.Crazy && State != GrannyState.Attack && State != GrannyState.Survival)
         {
             crazyCooldownTimer -= Time.deltaTime;
@@ -837,7 +918,7 @@ public class GrannyAI : MonoBehaviour
     {
         // Granny is "running" (actively chasing the player)
         bool isRunning = State == GrannyState.Chase ||
-                         State == GrannyState.Hunt  ||
+                         State == GrannyState.Hunt ||
                          State == GrannyState.Survival;
 
         if (isRunning && !_suspensePlaying)
@@ -873,7 +954,7 @@ public class GrannyAI : MonoBehaviour
     private IEnumerator AttackSequence()
     {
         if (isAttacking) yield break;
-        isAttacking     = true;
+        isAttacking = true;
         agent.isStopped = true;
         GameHaptics.Instance.FailureHaptic();
 
@@ -885,7 +966,7 @@ public class GrannyAI : MonoBehaviour
 
         yield return new WaitForSeconds(attackAnimDuration);
 
-        isAttacking     = false;
+        isAttacking = false;
         agent.isStopped = false;
 
         if (State != GrannyState.Survival) State = GrannyState.Patrol;
@@ -905,7 +986,7 @@ public class GrannyAI : MonoBehaviour
     private IEnumerator StartDelayRoutine()
     {
         isWaitingAtStart = true;
-        agent.enabled    = false;
+        agent.enabled = false;
 
         transform.position = startPos;
         transform.rotation = startRot;
@@ -916,11 +997,14 @@ public class GrannyAI : MonoBehaviour
         nearMissCooldownTimer = falseScareCooldownTimer = 0f;
         crazyCooldownTimer = UnityEngine.Random.Range(30f, 60f);
 
+        // NEW: reset mutual sighting cooldown on granny reset
+        _mutualSightingCooldownTimer = 0f;
+
         yield return new WaitForSeconds(startDelay);
 
-        agent.enabled    = true;
+        agent.enabled = true;
         isWaitingAtStart = false;
-        State            = GrannyState.Patrol;
+        State = GrannyState.Patrol;
 
         if (patrolRoute.Count > 0) NavigateToRoom(patrolRoute[0]);
 
@@ -939,7 +1023,7 @@ public class GrannyAI : MonoBehaviour
 
             float waitTime = dist <= ambientVoiceNearDistance
                 ? UnityEngine.Random.Range(ambientVoiceIntervalNearMin, ambientVoiceIntervalNearMax)
-                : UnityEngine.Random.Range(ambientVoiceIntervalFarMin,  ambientVoiceIntervalFarMax);
+                : UnityEngine.Random.Range(ambientVoiceIntervalFarMin, ambientVoiceIntervalFarMax);
 
             yield return new WaitForSeconds(waitTime);
 
@@ -1043,9 +1127,9 @@ public class GrannyAI : MonoBehaviour
     private void PushEditorReadouts()
     {
         EditorCurrentState = State;
-        EditorFearScore    = fearScore;
-        EditorTargetRoom   = currentTargetRoom?.roomId ?? "—";
-        EditorGrannyRoom   = grannyCurrentRoom?.roomId ?? "—";
+        EditorFearScore = fearScore;
+        EditorTargetRoom = currentTargetRoom?.roomId ?? "—";
+        EditorGrannyRoom = grannyCurrentRoom?.roomId ?? "—";
     }
 
     #endregion
@@ -1087,8 +1171,12 @@ public class GrannyAI : MonoBehaviour
         // Label
         UnityEditor.Handles.Label(transform.position + Vector3.up * 2.8f,
             $"State: {_state}\nFear: {fearScore:P0}",
-            new GUIStyle { fontSize = 10, fontStyle = FontStyle.Bold,
-                           normal = { textColor = Color.white } });
+            new GUIStyle
+            {
+                fontSize = 10,
+                fontStyle = FontStyle.Bold,
+                normal = { textColor = Color.white }
+            });
 #endif
     }
 
