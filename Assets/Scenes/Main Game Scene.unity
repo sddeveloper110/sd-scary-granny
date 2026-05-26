@@ -43854,8 +43854,8 @@ MonoBehaviour:
     m_Bits: 128
   proximityDetectionRadius: 4.24
   proximityMaxYDifference: 1.7
-  attackDistance: 1.03
-  attackAnimDuration: 0.5
+  attackDistance: 2
+  attackAnimDuration: 2.22
   nearMissBeliefMin: 0.5
   nearMissBeliefMax: 0.74
   nearMissTriggerDist: 2.5
@@ -47659,7 +47659,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 22400762, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002670288
+      value: -0.0000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 22426080, guid: 67117722a812a2e46ab8cb8eafbf5f5e, type: 3}
       propertyPath: m_AnchorMax.x

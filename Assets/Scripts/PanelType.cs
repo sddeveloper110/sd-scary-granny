@@ -19,4 +19,5 @@ public enum PanelType
     LocationSelection,
     ModeSelection,
     Difficulty,
+    BreakdownTutorial,
 }

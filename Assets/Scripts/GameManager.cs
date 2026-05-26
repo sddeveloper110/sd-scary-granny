@@ -203,6 +203,14 @@ public class GameManager : MonoBehaviour
     private void HandleGhostAttack()
     {
         isGameStarted = false;
+        StartCoroutine(GhostAttackRoutine());
+    }
+
+    private IEnumerator GhostAttackRoutine()
+    {
+        GrannyAI granny = FindFirstObjectByType<GrannyAI>();
+        float waitTime = granny != null ? granny.attackAnimDuration : 1.5f;
+        yield return new WaitForSeconds(waitTime);
         GameEnd();
     }
 

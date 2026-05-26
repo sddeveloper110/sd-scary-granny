@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -74,6 +74,18 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator HitSequence()
     {
+        GrannyAI granny = FindFirstObjectByType<GrannyAI>();
+        if (granny != null)
+        {
+            var camLook = FindFirstObjectByType<FirstPersonMobileTools.DynamicFirstPerson.CameraLook>();
+            if (camLook != null)
+            {
+                // Set target Y to camLook's Y so that the camera doesn't pitch up/down (only rotates on Y axis)
+                Vector3 targetPos = new Vector3(granny.transform.position.x, camLook.transform.position.y, granny.transform.position.z);
+                camLook.LookAtTarget(targetPos);
+            }
+        }
+
         // 1. Force Camera to look straight (X = 0)
         Vector3 currentRot = playerCamera.transform.localEulerAngles;
         playerCamera.transform.localEulerAngles = new Vector3(0, currentRot.y, 0);

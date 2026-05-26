@@ -958,13 +958,14 @@ public class GrannyAI : MonoBehaviour
         agent.isStopped = true;
         GameHaptics.Instance.FailureHaptic();
 
-        transform.position = player.position + player.forward * 0.8f;
-        transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
-
         anim?.Play(animAttackName);
         OnAttackPlayer?.Invoke();
 
         yield return new WaitForSeconds(attackAnimDuration);
+
+        // If the game has ended (player caught), stay in attack pose and don't resume walking
+        if (GameManager.Instance == null || !GameManager.Instance.isGameStarted)
+            yield break;
 
         isAttacking = false;
         agent.isStopped = false;
@@ -1051,6 +1052,20 @@ public class GrannyAI : MonoBehaviour
         if (grannyAudioSource != null && grannyMentalBreakdown != null)
         {
             grannyAudioSource.PlayOneShot(grannyMentalBreakdown);
+        }
+
+        if (PlayerPrefs.GetInt("HasSeenBreakdownTutorial", 0) == 0)
+        {
+            PlayerPrefs.SetInt("HasSeenBreakdownTutorial", 1);
+            PlayerPrefs.Save();
+            
+            Time.timeScale = 0f;
+            UIPanelEnabler.OpenPanel(PanelType.BreakdownTutorial);
+            
+            yield return new WaitForSecondsRealtime(3f);
+            
+            UIPanelEnabler.ClosePanel(PanelType.BreakdownTutorial);
+            Time.timeScale = 1f;
         }
 
         yield return new WaitForSeconds(10f);
