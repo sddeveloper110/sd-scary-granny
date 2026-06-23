@@ -977,6 +977,11 @@ public class GrannyAI : MonoBehaviour
     {
         StopAllCoroutines();
         _state = GrannyState.Idle;
+        isAttacking = false;
+        
+        if (agent != null && agent.isActiveAndEnabled)
+            agent.isStopped = false;
+
         if (mentalBreakDownAlert != null)
         {
             mentalBreakDownAlert.SetActive(false);
@@ -1059,10 +1064,12 @@ public class GrannyAI : MonoBehaviour
             PlayerPrefs.SetInt("HasSeenBreakdownTutorial", 1);
             PlayerPrefs.Save();
             
+            yield return new WaitForSeconds(1f);
+            
             Time.timeScale = 0f;
             UIPanelEnabler.OpenPanel(PanelType.BreakdownTutorial);
             
-            yield return new WaitForSecondsRealtime(3f);
+            yield return new WaitForSecondsRealtime(5f);
             
             UIPanelEnabler.ClosePanel(PanelType.BreakdownTutorial);
             Time.timeScale = 1f;

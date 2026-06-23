@@ -140,7 +140,22 @@ public class AdsManager : MonoBehaviour
     public bool isAdmobRewarded = true;
     public bool isAdmobAppOpen = true;
 
-    public bool isRemoteAdsEnabled = true;
+    private bool _isRemoteAdsEnabled = true;
+    public bool isRemoteAdsEnabled
+    {
+        get
+        {
+            if (FirebaseManager.Instance != null && FirebaseManager.Instance.isRemoteConfigReady)
+            {
+                return FirebaseManager.Instance.isFeatureEnabled;
+            }
+            return _isRemoteAdsEnabled;
+        }
+        set
+        {
+            _isRemoteAdsEnabled = value;
+        }
+    }
 
     public static AdType adsStatus;
     public static AdLoadingStatus smallBannerStatus = AdLoadingStatus.NotLoaded;
@@ -572,6 +587,7 @@ public class AdsManager : MonoBehaviour
         {
             Debug.Log("Admob_smallBanner_Displayed");
             Debug.Log("Admob_smallBanner recorded an impression");
+            FirebaseManager.TrackEvent("ad_impression_banner");
         };
         banner.OnAdClicked += () =>
         {
@@ -747,6 +763,7 @@ public class AdsManager : MonoBehaviour
         {
             Debug.Log("Admob_smallBanner2:Displayed");
             Debug.Log("Admob_smallBanner2:Displayed recorded an impression");
+            FirebaseManager.TrackEvent("ad_impression_banner_2");
         };
         banner2.OnAdClicked += () =>
         {
@@ -920,6 +937,7 @@ public class AdsManager : MonoBehaviour
         {
             Debug.Log("Admob:mediumBanner:Displayed");
             Debug.Log("Admob:mediumBanner:Displayed recorded an impression");
+            FirebaseManager.TrackEvent("ad_impression_medium_banner");
         };
         mediumbanner.OnAdClicked += () =>
         {
@@ -1088,6 +1106,7 @@ public class AdsManager : MonoBehaviour
                 ad.OnAdImpressionRecorded += () =>
                 {
                     Debug.Log("Admob:Interstitial Ad recorded an impression.");
+                    FirebaseManager.TrackEvent("ad_impression_interstitial");
                 };
                 ad.OnAdClicked += () =>
                 {
@@ -1250,6 +1269,7 @@ public class AdsManager : MonoBehaviour
                 {
                     rAdStatus = AdLoadingStatus.NotLoaded;
                     Debug.Log("Admob: Rewarded Ad recorded an impression.");
+                    FirebaseManager.TrackEvent("ad_impression_rewarded");
                 };
                 ad.OnAdClicked += () =>
                 {
@@ -1406,6 +1426,7 @@ public class AdsManager : MonoBehaviour
                 ad.OnAdImpressionRecorded += () =>
                 {
                     Debug.Log("Admob: App open ad recorded an impression : ");
+                    FirebaseManager.TrackEvent("ad_impression_app_open");
                 };
                 ad.OnAdClicked += () =>
                 {
@@ -1542,6 +1563,7 @@ public class AdsManager : MonoBehaviour
                 ad.OnAdImpressionRecorded += () =>
                 {
                     Debug.Log("Admob: AppOpen2 Ad : impression recorded");
+                    FirebaseManager.TrackEvent("ad_impression_app_open_2");
                 };
 
                 ad.OnAdClicked += () =>

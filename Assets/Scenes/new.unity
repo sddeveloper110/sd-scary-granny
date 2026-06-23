@@ -1695,6 +1695,7 @@ GameObject:
   - component: {fileID: 354223258}
   - component: {fileID: 354223257}
   - component: {fileID: 354223261}
+  - component: {fileID: 354223262}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1833,23 +1834,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AdsManager
   ADMOB_ID:
-    ADMOB_BANNER_AD_ID: ca-app-pub-3940256099942544/6300978111
-    ADMOB_BANNER_AD_ID_2: ca-app-pub-3940256099942544/6300978111
-    ADMOB_MEDIUM_BANNER_AD_ID: ca-app-pub-3940256099942544/6300978111
-    ADMOB_INTERTITIAL_AD_ID: ca-app-pub-3940256099942544/1033173712
-    ADMOB_REWARDED_AD_ID: ca-app-pub-3940256099942544/5224354917
-    ADMOB_AppOpen_AD_ID: ca-app-pub-3940256099942544/9257395921
-    ADMOB_AppOpen_AD_ID_2: ca-app-pub-3940256099942544/9257395921
+    ADMOB_BANNER_AD_ID: ca-app-pub-8962685452714136/2316355921
+    ADMOB_BANNER_AD_ID_2: ca-app-pub-8962685452714136/2426516651
+    ADMOB_MEDIUM_BANNER_AD_ID: ca-app-pub-8962685452714136/3785654185
+    ADMOB_INTERTITIAL_AD_ID: ca-app-pub-8962685452714136/1159490847
+    ADMOB_REWARDED_AD_ID: ca-app-pub-8962685452714136/3422388181
+    ADMOB_AppOpen_AD_ID: ca-app-pub-8962685452714136/3113746519
+    ADMOB_AppOpen_AD_ID_2: ca-app-pub-8962685452714136/3113746519
   isShowBanner: 1
   isDoubleBannerBanner: 1
   NoAdLoaded: {fileID: 898566172}
-  loadAdPanel: {fileID: 1394116255}
+  loadAdPanel: {fileID: 1872596961}
   isAdmobBanner: 1
   isAdmobMedium: 1
   isAdmobInter: 1
   isAdmobRewarded: 1
   isAdmobAppOpen: 1
-  isRemoteAdsEnabled: 1
   _AdmobBannerPos: 1
   _AdmobBanner2Pos: 2
   _AdmobBannerSize: 0
@@ -1857,6 +1857,19 @@ MonoBehaviour:
   _AdmobMediumBannerPos: 4
   adBreakPanel: {fileID: 1872596961}
   adBreakCountdownTxt: {fileID: 1289343610}
+--- !u!114 &354223262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354223256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c889cc90ab5f015419da13325b37ef7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: IngameDebugConsole.Runtime::FirebaseManager
+  adPermissionTemp: 0
 --- !u!1 &400017473
 GameObject:
   m_ObjectHideFlags: 0

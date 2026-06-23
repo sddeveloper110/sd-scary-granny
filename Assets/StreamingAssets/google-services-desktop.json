@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "869184408468",
+    "project_id": "scary-granny-da973",
+    "storage_bucket": "scary-granny-da973.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869184408468:android:1b66139ef7fd5e126e9d81",
+        "android_client_info": {
+          "package_name": "com.SoftwareDistrict.ScaryGrannyHauntedGame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABslxlEJLLskjoRgeQNm6Y7xhOwbYwMoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
